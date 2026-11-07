@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24" shape-rendering="crispEdges">
+  <!-- Classic Pixel Arrow Outline (Black) -->
+  <path d="M 0,0 V 17 L 3.5,13.5 L 6.5,20.5 L 9.5,19 L 6.5,12 H 12 Z" fill="#000000"/>
+  <!-- Classic Pixel Arrow Interior (White) -->
+  <path d="M 1,2 V 14.2 L 3.8,11.5 L 6.8,18.3 L 8.2,17.6 L 5.3,10.8 L 9.8,10.8 Z" fill="#FFFFFF"/>
+</svg>

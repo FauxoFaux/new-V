@@ -1,0 +1,213 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Ugly Dave';
+  src: url('/fonts/UglyDave.woff') format('woff'),
+       url('/fonts/UglyDaveRegular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ugly Dave Alternates';
+  src: url('/fonts/UglyDaveAlternates.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Misfit';
+  src: url('/fonts/Misfit.woff') format('woff'),
+       url('/fonts/Misfit2.woff') format('woff'),
+       url('/fonts/MISFITS_.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Misfits';
+  src: url('/fonts/MISFITS_.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mad Ink';
+  src: url('/fonts/MadInk.woff2') format('woff2'),
+       url('/fonts/MadInk.woff') format('woff'),
+       url('/fonts/MadInk.otf') format('opentype'),
+       url('/fonts/MadInk.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer utilities {
+  .font-ugly-dave,
+  .font-uglydave {
+    font-family: 'Ugly Dave', 'Ugly Dave Alternates', 'Permanent Marker', cursive, sans-serif;
+    letter-spacing: 0.02em;
+  }
+  .font-misfit {
+    font-family: 'Ugly Dave', 'Ugly Dave Alternates', 'Misfit', 'Permanent Marker', cursive, sans-serif;
+    letter-spacing: 0.02em;
+  }
+  .font-madink {
+    font-family: 'Ugly Dave', 'Ugly Dave Alternates', 'Mad Ink', 'Permanent Marker', cursive, sans-serif;
+    letter-spacing: 0.02em;
+  }
+  .font-display {
+    font-family: 'Ugly Dave', 'Ugly Dave Alternates', 'Permanent Marker', cursive, sans-serif;
+    letter-spacing: 0.02em;
+  }
+  .font-brush {
+    font-family: 'Ugly Dave', 'Ugly Dave Alternates', 'Permanent Marker', cursive, sans-serif;
+    letter-spacing: 0.02em;
+  }
+  .font-sans-display {
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: -0.025em;
+  }
+  .font-caps {
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    font-weight: 700;
+  }
+
+  /* Personal Touch Apple-Inspired Card UI Components */
+  .card-apple,
+  .card-hand-drawn,
+  .card-sketch-rect,
+  .card-hand-drawn-alt,
+  .card-sketch-rect-alt,
+  .card-hand-drawn-alt2,
+  .card-sketch-rect-alt2,
+  .card-hand-drawn-alt3,
+  .card-sketch-rect-alt3 {
+    background-color: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.09);
+    border-radius: 16px;
+    box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+  }
+
+  .card-apple:hover,
+  .card-hand-drawn:hover,
+  .card-sketch-rect:hover,
+  .card-hand-drawn-alt:hover,
+  .card-sketch-rect-alt:hover,
+  .card-hand-drawn-alt2:hover,
+  .card-sketch-rect-alt2:hover,
+  .card-hand-drawn-alt3:hover,
+  .card-sketch-rect-alt3:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 36px -8px rgba(0, 0, 0, 0.11), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.16);
+  }
+}
+
+@media (min-width: 1024px) {
+  html:has(#main-horizontal-container),
+  body:has(#main-horizontal-container),
+  #root:has(#main-horizontal-container) {
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 1023px) {
+  html, body, #root {
+    min-height: 100%;
+    overflow-x: clip;
+    overflow-y: auto;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #FFFFFF;
+  color: #000000;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom subtle scrollbar */
+.horizontal-scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.04);
+}
+
+.horizontal-scroll-container::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 9999px;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* Apple macOS Glass Dropdown */
+.cs-dropdown {
+  display: none;
+  position: absolute;
+  top: 44px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  min-width: 220px;
+  box-shadow: 0 20px 48px -8px rgba(0, 0, 0, 0.14), 0 2px 8px -2px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  white-space: nowrap;
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  z-index: 100;
+  padding: 6px;
+}
+
+.cs-dropdown.open {
+  display: block;
+}
+
+.cs-dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+  gap: 8px;
+  padding: 9px 14px;
+  font-size: 12.5px;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #1D1D1F;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: all 0.15s ease;
+}
+
+.cs-dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.cs-dropdown-item:hover, .cs-dropdown-item:focus, .cs-dropdown-item:active, .cs-dropdown-item.active {
+  background: rgba(0, 0, 0, 0.05);
+  color: #000000;
+}
