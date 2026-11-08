@@ -5,7 +5,12 @@ import {
   PeekPhotosRow,
 } from './components/PeekPhotos';
 import { HoverMaskCutout } from './components/HoverMaskCutout';
-import { PlayScreen } from './components/PlayScreen';
+import { TvCurvedMedia } from './components/TvCurvedMedia';
+import { ThreeDCarouselCard } from './components/ThreeDCarouselCard';
+
+const PlayScreen = React.lazy(() =>
+  import('./components/PlayScreen').then((m) => ({ default: m.PlayScreen }))
+);
 
 const EASE_EDITORIAL = [0.16, 1, 0.3, 1] as const;
 
@@ -42,6 +47,13 @@ export default function App() {
 
   const handleCardMouseLeave = () => {
     setCardCursor((prev) => (prev.visible ? { ...prev, visible: false } : prev));
+  };
+
+  const handleCardClick = (e: React.MouseEvent, projectId: string) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href = `/case-study.html?project=${projectId}`;
   };
 
   // Close mobile menu on desktop resize
@@ -308,29 +320,31 @@ export default function App() {
 
   if (currentScreen === 'play') {
     return (
-      <PlayScreen
-        onBack={() => {
-          setCurrentScreen('home');
-          setActiveTab('');
-          if (window.location.hash === '#play') {
-            window.history.pushState('', document.title, window.location.pathname);
-          }
-        }}
-      />
+      <React.Suspense fallback={<div className="min-h-screen bg-white" />}>
+        <PlayScreen
+          onBack={() => {
+            setCurrentScreen('home');
+            setActiveTab('');
+            if (window.location.hash === '#play') {
+              window.history.pushState('', document.title, window.location.pathname);
+            }
+          }}
+        />
+      </React.Suspense>
     );
   }
 
   return (
     <div className="w-full h-full min-h-screen bg-[#FFFFFF] text-[#1D1D1F] selection:bg-[#0071E3] selection:text-white flex flex-col font-sans lg:overflow-hidden">
-      {/* Navigation Header - Apple Frosted Glass Nav */}
+      {/* Navigation Header - Transparent Nav (No background) */}
       <motion.header
         id="main-navigation-header"
         initial={shouldReduceMotion ? false : { y: -16, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: EASE_EDITORIAL }}
-        className="fixed top-0 left-0 right-0 z-50 w-full bg-white/80 backdrop-blur-2xl backdrop-saturate-180 px-5 sm:px-8 md:px-12 lg:px-16 py-3.5 transition-colors border-b border-black/[0.04]"
+        className="fixed top-0 left-0 right-0 z-50 w-full bg-transparent px-5 sm:px-8 md:px-12 lg:px-16 py-4 transition-colors pointer-events-none"
       >
-        <nav className="mx-auto max-w-[1340px] w-full flex items-center justify-between">
+        <nav className="mx-auto max-w-[1340px] w-full flex items-center justify-between pointer-events-auto">
           {/* Logo */}
           <a
             href="#top"
@@ -427,7 +441,7 @@ export default function App() {
 
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
-          <div className="lg:hidden mt-3 pt-3 border-t border-black/10 pb-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-150">
+          <div className="lg:hidden mt-3 p-4 bg-white/95 backdrop-blur-2xl border border-black/10 rounded-2xl shadow-2xl space-y-1 animate-in fade-in slide-in-from-top-2 duration-150 pointer-events-auto">
             <a
               href="#work"
               onClick={(e) => handleMobileNavClick('work', e)}
@@ -555,232 +569,199 @@ export default function App() {
           className="relative z-10 py-20 sm:py-28 lg:py-0 lg:h-screen lg:flex lg:flex-row lg:items-center lg:gap-12 xl:gap-14 lg:pl-24 xl:pl-32 lg:pr-36 xl:pr-48 px-6 sm:px-10 shrink-0 w-full lg:w-auto max-w-[1340px] lg:max-w-none mx-auto lg:mx-0"
         >
           {/* Header */}
-          <div className="mb-10 lg:mb-0 lg:w-[300px] xl:w-[340px] lg:shrink-0 flex flex-col justify-center">
+          <div className="mb-10 lg:mb-0 lg:w-[320px] xl:w-[360px] lg:shrink-0 flex flex-col justify-center">
             <h2 className="font-ugly-dave text-[38px] sm:text-[46px] lg:text-[50px] font-normal leading-[1.05] text-black tracking-[0.015em]">
               Selected Work
             </h2>
           </div>
 
-          {/* Cards: Horizontal row on desktop, 2-column grid on tablet/mobile */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row lg:items-center gap-8 lg:gap-10 xl:gap-12 w-full lg:w-auto lg:shrink-0">
+          {/* Cards: 3D Perspective Horizontal Carousel on desktop, responsive standard layout on tablet/mobile */}
+          <div 
+            className="flex flex-col gap-12 sm:gap-16 lg:flex-row lg:items-center lg:gap-10 xl:gap-14 w-full lg:w-auto lg:shrink-0 overflow-visible py-4"
+          >
             {/* PROJECT 1: YOUTOPIA */}
-            <div className="w-full lg:w-[560px] xl:w-[620px] 2xl:w-[660px] lg:h-[490px] xl:h-[515px] shrink-0">
-              <motion.a
-                href="case-study.html?project=youtopia"
-                onMouseEnter={handleCardMouseEnter}
-                onMouseMove={handleCardMouseMove}
-                onMouseLeave={handleCardMouseLeave}
-                initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.65, ease: EASE_EDITORIAL }}
-                className="card-apple p-0 flex flex-col justify-between overflow-hidden text-black w-full h-full min-h-[460px] lg:min-h-0 rounded-[20px] group transition-all"
-              >
-                <div className="overflow-hidden h-[250px] sm:h-[270px] lg:h-[265px] xl:h-[285px] w-full shrink-0 bg-black/[0.03] border-b border-black/[0.06] relative">
-                  <img
-                    src="/Home/Y_WC.webp"
-                    alt="Youtopia Work Preview"
-                    className="w-full h-full object-cover block"
-                    width={1200}
-                    height={633}
-                    loading="eager"
-                    fetchPriority="high"
-                    decoding="async"
-                  />
-                </div>
-                <div className="p-5 sm:p-6 lg:p-5 xl:p-6 flex flex-col flex-1 justify-between gap-3.5">
-                  <div>
-                    <h3 className="font-sans text-[18px] sm:text-[19px] font-semibold text-[#1D1D1F] tracking-tight">Youtopia</h3>
-                    <p className="text-[13px] sm:text-[13.5px] text-[#6E6E73] leading-relaxed mt-1">
-                      Designing six interconnected products, from consumer onboarding to restaurant operations, around an AI nutrition platform that was still being defined.
-                    </p>
-                  </div>
-
-                  <div>
-                    <div className="grid grid-cols-2 gap-3 py-1.5 border-t border-black/[0.06]">
-                      <div>
-                        <div className="font-sans text-[14.5px] sm:text-[15.5px] font-semibold text-[#1D1D1F] leading-tight">25%+</div>
-                        <div className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.08em] text-[#86868B] truncate mt-0.5 font-bold">faster task completion</div>
-                      </div>
-                      <div>
-                        <div className="font-sans text-[14.5px] sm:text-[15.5px] font-semibold text-[#1D1D1F] leading-tight">Reusable</div>
-                        <div className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.08em] text-[#86868B] truncate mt-0.5 font-bold">Design Patterns</div>
-                      </div>
+            <div className="w-full max-w-xl mx-auto lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
+              <ThreeDCarouselCard scrollContainerRef={horizontalScrollRef}>
+                <motion.div
+                  initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.65, ease: EASE_EDITORIAL }}
+                  className="w-full"
+                >
+                  <a
+                    href="/case-study.html?project=youtopia"
+                    onClick={(e) => handleCardClick(e, 'youtopia')}
+                    onMouseEnter={handleCardMouseEnter}
+                    onMouseMove={handleCardMouseMove}
+                    onMouseLeave={handleCardMouseLeave}
+                    className="group block text-black w-full cursor-pointer transition-all"
+                  >
+                    <TvCurvedMedia
+                      id="youtopia"
+                      type="image"
+                      src="/Home/Y_WC.webp"
+                      alt="Youtopia Work Preview"
+                      width={1200}
+                      height={633}
+                      loading="eager"
+                      fetchPriority="high"
+                      scrollContainerRef={horizontalScrollRef}
+                      tags={['AI', '0→1', 'Systems', 'Product Strategy']}
+                      onClick={(e) => handleCardClick(e, 'youtopia')}
+                    />
+                    <div
+                      className="pt-4 sm:pt-5 flex flex-col gap-1.5 cursor-pointer"
+                      onClick={(e) => handleCardClick(e, 'youtopia')}
+                    >
+                      <h3 className="font-sans text-[19px] sm:text-[20px] font-semibold text-[#1D1D1F] tracking-tight group-hover:text-black transition-colors flex items-center justify-between">
+                        <span>Youtopia</span>
+                        <ArrowUpRight className="w-4 h-4 text-[#86868B] group-hover:text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all opacity-0 group-hover:opacity-100" />
+                      </h3>
+                      <p className="text-[13px] sm:text-[13.5px] text-[#6E6E73] leading-relaxed mt-0.5">
+                        Designing six interconnected products, from consumer onboarding to restaurant operations, around an AI nutrition platform that was still being defined.
+                      </p>
                     </div>
-
-                    <div className="flex flex-wrap items-center gap-1.5 pt-1.5">
-                      <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">AI</span>
-                      <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">0→1</span>
-                      <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">Systems</span>
-                      <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">Product Strategy</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.a>
+                  </a>
+                </motion.div>
+              </ThreeDCarouselCard>
             </div>
 
             {/* PROJECT 2: JUSTICKETS */}
-            <div className="w-full lg:w-[560px] xl:w-[620px] 2xl:w-[660px] lg:h-[490px] xl:h-[515px] shrink-0">
-              <motion.a
-                href="case-study.html?project=justickets"
-                onMouseEnter={handleCardMouseEnter}
-                onMouseMove={handleCardMouseMove}
-                onMouseLeave={handleCardMouseLeave}
-                initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.65, delay: 0.08, ease: EASE_EDITORIAL }}
-                className="card-apple p-0 flex flex-col justify-between overflow-hidden text-black w-full h-full min-h-[460px] lg:min-h-0 rounded-[20px] group transition-all"
-              >
-                <div className="relative overflow-hidden h-[250px] sm:h-[270px] lg:h-[265px] xl:h-[285px] w-full shrink-0 flex items-center justify-center bg-[#3B0F66] border-b border-black/[0.06]">
-                  <video
-                    src="/JT/JT_GIF.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="metadata"
-                    aria-label="Justickets Mobile App Interface Preview"
-                    className="h-full w-auto max-w-full object-contain block"
-                  />
-                </div>
-                <div className="p-5 sm:p-6 lg:p-5 xl:p-6 flex flex-col flex-1 justify-between gap-3.5">
-                  <div>
-                    <h3 className="font-sans text-[18px] sm:text-[19px] font-semibold text-[#1D1D1F] tracking-tight">Justickets</h3>
-                    <p className="text-[13px] sm:text-[13.5px] text-[#6E6E73] leading-relaxed mt-1">
-                      Scaling a production movie-ticketing product without slowing feature delivery.
-                    </p>
-                  </div>
-
-                  <div>
-                    <div className="grid grid-cols-2 gap-3 py-1.5 border-t border-black/[0.06]">
-                      <div>
-                        <div className="font-sans text-[14.5px] sm:text-[15.5px] font-semibold text-[#1D1D1F] leading-tight">1M+</div>
-                        <div className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.08em] text-[#86868B] truncate mt-0.5 font-bold">app downloads</div>
-                      </div>
-                      <div>
-                        <div className="font-sans text-[14.5px] sm:text-[15.5px] font-semibold text-[#1D1D1F] leading-tight">Optimized</div>
-                        <div className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.08em] text-[#86868B] truncate mt-0.5 font-bold">Purchase Funnel</div>
-                      </div>
+            <div className="w-full max-w-xl mx-auto lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
+              <ThreeDCarouselCard scrollContainerRef={horizontalScrollRef}>
+                <motion.div
+                  initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.65, delay: 0.08, ease: EASE_EDITORIAL }}
+                  className="w-full"
+                >
+                  <a
+                    href="/case-study.html?project=justickets"
+                    onClick={(e) => handleCardClick(e, 'justickets')}
+                    onMouseEnter={handleCardMouseEnter}
+                    onMouseMove={handleCardMouseMove}
+                    onMouseLeave={handleCardMouseLeave}
+                    className="group block text-black w-full cursor-pointer transition-all"
+                  >
+                    <TvCurvedMedia
+                      id="justickets"
+                      type="video"
+                      src="/JT/JT_GIF.mp4"
+                      alt="Justickets Mobile App Interface Preview"
+                      bg="bg-[#3B0F66]"
+                      scrollContainerRef={horizontalScrollRef}
+                      tags={['Consumer', 'Design Systems', 'Production']}
+                      onClick={(e) => handleCardClick(e, 'justickets')}
+                    />
+                    <div
+                      className="pt-4 sm:pt-5 flex flex-col gap-1.5 cursor-pointer"
+                      onClick={(e) => handleCardClick(e, 'justickets')}
+                    >
+                      <h3 className="font-sans text-[19px] sm:text-[20px] font-semibold text-[#1D1D1F] tracking-tight group-hover:text-black transition-colors flex items-center justify-between">
+                        <span>Justickets</span>
+                        <ArrowUpRight className="w-4 h-4 text-[#86868B] group-hover:text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all opacity-0 group-hover:opacity-100" />
+                      </h3>
+                      <p className="text-[13px] sm:text-[13.5px] text-[#6E6E73] leading-relaxed mt-0.5">
+                        Scaling a production movie-ticketing product without slowing feature delivery.
+                      </p>
                     </div>
-
-                    <div className="flex flex-wrap items-center gap-1.5 pt-1.5">
-                      <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">Consumer</span>
-                      <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">Design Systems</span>
-                      <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">Production</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.a>
+                  </a>
+                </motion.div>
+              </ThreeDCarouselCard>
             </div>
 
             {/* PROJECT 3: REVLR */}
-            <div className="w-full lg:w-[560px] xl:w-[620px] 2xl:w-[660px] lg:h-[490px] xl:h-[515px] shrink-0">
-              <motion.a
-                href="case-study.html?project=revlr"
-                onMouseEnter={handleCardMouseEnter}
-                onMouseMove={handleCardMouseMove}
-                onMouseLeave={handleCardMouseLeave}
-                initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.65, ease: EASE_EDITORIAL }}
-                className="card-apple p-0 flex flex-col justify-between overflow-hidden text-black w-full h-full min-h-[460px] lg:min-h-0 rounded-[20px] group transition-all"
-              >
-                <div className="overflow-hidden h-[250px] sm:h-[270px] lg:h-[265px] xl:h-[285px] w-full shrink-0 bg-black/[0.03] border-b border-black/[0.06] relative">
-                  <img
-                    src="/Home/R_WC.webp"
-                    alt="REVLR Work Preview"
-                    className="w-full h-full object-cover block"
-                    width={1584}
-                    height={1042}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-                <div className="p-5 sm:p-6 lg:p-5 xl:p-6 flex flex-col flex-1 justify-between gap-3.5">
-                  <div>
-                    <h3 className="font-sans text-[18px] sm:text-[19px] font-semibold text-[#1D1D1F] tracking-tight">REVLR</h3>
-                    <p className="text-[13px] sm:text-[13.5px] text-[#6E6E73] leading-relaxed mt-1">
-                      Spatial interaction framework for complex system modeling in virtual reality.
-                    </p>
-                  </div>
-
-                  <div>
-                    <div className="grid grid-cols-2 gap-3 py-1.5 border-t border-black/[0.06]">
-                      <div>
-                        <div className="font-sans text-[14.5px] sm:text-[15.5px] font-semibold text-[#1D1D1F] leading-tight">40%+</div>
-                        <div className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.08em] text-[#86868B] truncate mt-0.5 font-bold">higher engagement</div>
-                      </div>
-                      <div>
-                        <div className="font-sans text-[14.5px] sm:text-[15.5px] font-semibold text-[#1D1D1F] leading-tight">-30%</div>
-                        <div className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.08em] text-[#86868B] truncate mt-0.5 font-bold">Cognitive Load</div>
-                      </div>
+            <div className="w-full max-w-xl mx-auto lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
+              <ThreeDCarouselCard scrollContainerRef={horizontalScrollRef}>
+                <motion.div
+                  initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.65, ease: EASE_EDITORIAL }}
+                  className="w-full"
+                >
+                  <a
+                    href="/case-study.html?project=revlr"
+                    onClick={(e) => handleCardClick(e, 'revlr')}
+                    onMouseEnter={handleCardMouseEnter}
+                    onMouseMove={handleCardMouseMove}
+                    onMouseLeave={handleCardMouseLeave}
+                    className="group block text-black w-full cursor-pointer transition-all"
+                  >
+                    <TvCurvedMedia
+                      id="revlr"
+                      type="image"
+                      src="/Home/R_WC.webp"
+                      alt="REVLR Work Preview"
+                      width={1584}
+                      height={1042}
+                      loading="lazy"
+                      scrollContainerRef={horizontalScrollRef}
+                      tags={['Spatial', 'Interaction', 'Research']}
+                      onClick={(e) => handleCardClick(e, 'revlr')}
+                    />
+                    <div
+                      className="pt-4 sm:pt-5 flex flex-col gap-1.5 cursor-pointer"
+                      onClick={(e) => handleCardClick(e, 'revlr')}
+                    >
+                      <h3 className="font-sans text-[19px] sm:text-[20px] font-semibold text-[#1D1D1F] tracking-tight group-hover:text-black transition-colors flex items-center justify-between">
+                        <span>REVLR</span>
+                        <ArrowUpRight className="w-4 h-4 text-[#86868B] group-hover:text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all opacity-0 group-hover:opacity-100" />
+                      </h3>
+                      <p className="text-[13px] sm:text-[13.5px] text-[#6E6E73] leading-relaxed mt-0.5">
+                        Spatial interaction framework for complex system modeling in virtual reality.
+                      </p>
                     </div>
-
-                    <div className="flex flex-wrap items-center gap-1.5 pt-1.5">
-                      <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">Spatial</span>
-                      <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">Interaction</span>
-                      <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">Research</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.a>
+                  </a>
+                </motion.div>
+              </ThreeDCarouselCard>
             </div>
 
             {/* PROJECT 4: MY BLOCK COUNTS */}
-            <div className="w-full lg:w-[560px] xl:w-[620px] 2xl:w-[660px] lg:h-[490px] xl:h-[515px] shrink-0">
-              <motion.a
-                href="case-study.html?project=myblockcounts"
-                onMouseEnter={handleCardMouseEnter}
-                onMouseMove={handleCardMouseMove}
-                onMouseLeave={handleCardMouseLeave}
-                initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.65, delay: 0.08, ease: EASE_EDITORIAL }}
-                className="card-apple p-0 flex flex-col justify-between overflow-hidden text-black w-full h-full min-h-[460px] lg:min-h-0 rounded-[20px] group transition-all"
-              >
-                <div className="relative overflow-hidden h-[250px] sm:h-[270px] lg:h-[265px] xl:h-[285px] w-full shrink-0 flex items-center justify-center bg-[#1bab51] border-b border-black/[0.06]">
-                  <video
-                    src="/MBC/MBC_GIF.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="metadata"
-                    aria-label="My Block Counts Mobile App Interface Preview"
-                    className="h-full w-auto max-w-full object-contain block"
-                  />
-                </div>
-                <div className="p-5 sm:p-6 lg:p-5 xl:p-6 flex flex-col flex-1 justify-between gap-3.5">
-                  <div>
-                    <h3 className="font-sans text-[18px] sm:text-[19px] font-semibold text-[#1D1D1F] tracking-tight">My Block Counts</h3>
-                    <p className="text-[13px] sm:text-[13.5px] text-[#6E6E73] leading-relaxed mt-1">
-                      Redesigning an abandoned civic app so that filling out a survey felt like activism, not a form.
-                    </p>
-                  </div>
-
-                  <div>
-                    <div className="grid grid-cols-2 gap-3 py-1.5 border-t border-black/[0.06]">
-                      <div>
-                        <div className="font-sans text-[14.5px] sm:text-[15.5px] font-semibold text-[#1D1D1F] leading-tight">+30%</div>
-                        <div className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.08em] text-[#86868B] truncate mt-0.5 font-bold">User Engagement</div>
-                      </div>
-                      <div>
-                        <div className="font-sans text-[14.5px] sm:text-[15.5px] font-semibold text-[#1D1D1F] leading-tight">Simplified</div>
-                        <div className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.08em] text-[#86868B] truncate mt-0.5 font-bold">Info Structures</div>
-                      </div>
+            <div className="w-full max-w-xl mx-auto lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
+              <ThreeDCarouselCard scrollContainerRef={horizontalScrollRef}>
+                <motion.div
+                  initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.65, delay: 0.08, ease: EASE_EDITORIAL }}
+                  className="w-full"
+                >
+                  <a
+                    href="/case-study.html?project=myblockcounts"
+                    onClick={(e) => handleCardClick(e, 'myblockcounts')}
+                    onMouseEnter={handleCardMouseEnter}
+                    onMouseMove={handleCardMouseMove}
+                    onMouseLeave={handleCardMouseLeave}
+                    className="group block text-black w-full cursor-pointer transition-all"
+                  >
+                    <TvCurvedMedia
+                      id="myblockcounts"
+                      type="video"
+                      src="/MBC/MBC_GIF.mp4"
+                      alt="My Block Counts Mobile App Interface Preview"
+                      bg="bg-[#1bab51]"
+                      scrollContainerRef={horizontalScrollRef}
+                      tags={['Civic Tech', 'Accessibility', 'Research']}
+                      onClick={(e) => handleCardClick(e, 'myblockcounts')}
+                    />
+                    <div
+                      className="pt-4 sm:pt-5 flex flex-col gap-1.5 cursor-pointer"
+                      onClick={(e) => handleCardClick(e, 'myblockcounts')}
+                    >
+                      <h3 className="font-sans text-[19px] sm:text-[20px] font-semibold text-[#1D1D1F] tracking-tight group-hover:text-black transition-colors flex items-center justify-between">
+                        <span>My Block Counts</span>
+                        <ArrowUpRight className="w-4 h-4 text-[#86868B] group-hover:text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all opacity-0 group-hover:opacity-100" />
+                      </h3>
+                      <p className="text-[13px] sm:text-[13.5px] text-[#6E6E73] leading-relaxed mt-0.5">
+                        Redesigning an abandoned civic app so that filling out a survey felt like activism, not a form.
+                      </p>
                     </div>
-
-                    <div className="flex flex-wrap items-center gap-1.5 pt-1.5">
-                      <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">Civic Tech</span>
-                      <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">Accessibility</span>
-                      <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">Research</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.a>
+                  </a>
+                </motion.div>
+              </ThreeDCarouselCard>
             </div>
           </div>
         </section>
@@ -801,93 +782,89 @@ export default function App() {
           </div>
 
           {/* Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row lg:items-center gap-8 lg:gap-10 xl:gap-12 w-full lg:w-auto lg:shrink-0">
+          <div className="flex flex-col gap-12 sm:gap-16 lg:flex-row lg:items-center lg:gap-10 xl:gap-12 w-full lg:w-auto lg:shrink-0 overflow-visible py-4">
             {/* BUILD 1: MISE */}
-            <div className="w-full lg:w-[560px] xl:w-[620px] 2xl:w-[660px] lg:h-[490px] xl:h-[515px] shrink-0">
-              <motion.a
-                href="https://misemobileapp.vercel.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                onMouseEnter={(e) => handleCardMouseEnter(e, 'View App')}
-                onMouseMove={(e) => handleCardMouseMove(e, 'View App')}
-                onMouseLeave={handleCardMouseLeave}
-                initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.65, ease: EASE_EDITORIAL }}
-                className="card-apple p-0 flex flex-col justify-between overflow-hidden text-black w-full h-full min-h-[460px] lg:min-h-0 rounded-[20px] group transition-all"
-              >
-                <div className="relative bg-black overflow-hidden h-[250px] sm:h-[270px] lg:h-[265px] xl:h-[285px] w-full shrink-0 flex items-center justify-center border-b border-black/[0.06]">
-                  <picture className="h-full w-full flex items-center justify-center">
-                    <source srcSet="/Home/Mise_GIF.webp" type="image/webp" />
-                    <img
-                      src="/Home/Mise_GIF.gif"
+            <div className="w-full max-w-xl mx-auto lg:max-w-none lg:w-[700px] xl:w-[760px] 2xl:w-[820px] lg:shrink-0 overflow-visible">
+              <ThreeDCarouselCard scrollContainerRef={horizontalScrollRef}>
+                <motion.div
+                  initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.65, ease: EASE_EDITORIAL }}
+                  className="w-full"
+                >
+                  <a
+                    href="https://misemobileapp.vercel.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onMouseEnter={(e) => handleCardMouseEnter(e, 'View App')}
+                    onMouseMove={(e) => handleCardMouseMove(e, 'View App')}
+                    onMouseLeave={handleCardMouseLeave}
+                    className="group block text-black w-full cursor-pointer transition-all"
+                  >
+                    <TvCurvedMedia
+                      id="mise"
+                      type="video"
+                      src="/Home/Mise_GIF.mp4"
                       alt="MISE Recipe App Preview"
-                      className="h-full w-auto max-w-full object-contain block"
-                      loading="lazy"
-                      decoding="async"
+                      bg="bg-black"
+                      scrollContainerRef={horizontalScrollRef}
+                      tags={['Vibe Coding', 'AI UX', 'Mobile']}
                     />
-                  </picture>
-                </div>
-                <div className="p-5 sm:p-6 lg:p-5 xl:p-6 flex flex-col flex-1 justify-between gap-3.5">
-                  <div>
-                    <h3 className="font-sans text-[18px] sm:text-[19px] font-semibold text-[#1D1D1F] tracking-tight">MISE</h3>
-                    <p className="text-[13px] sm:text-[13.5px] text-[#6E6E73] leading-relaxed mt-1">
-                      I kept saving recipes from TikTok, YouTube, and Instagram and never actually making them. MISE turns those saved recipes into meals I can actually cook.
-                    </p>
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-1.5 pt-1.5">
-                    <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">Vibe Coding</span>
-                    <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">AI UX</span>
-                    <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">Mobile</span>
-                  </div>
-                </div>
-              </motion.a>
+                    <div className="pt-4 sm:pt-5 flex flex-col gap-1.5 cursor-pointer">
+                      <h3 className="font-sans text-[19px] sm:text-[20px] font-semibold text-[#1D1D1F] tracking-tight group-hover:text-black transition-colors flex items-center justify-between">
+                        <span>MISE</span>
+                        <ArrowUpRight className="w-4 h-4 text-[#86868B] group-hover:text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all opacity-0 group-hover:opacity-100" />
+                      </h3>
+                      <p className="text-[13px] sm:text-[13.5px] text-[#6E6E73] leading-relaxed mt-0.5">
+                        I kept saving recipes from TikTok, YouTube, and Instagram and never actually making them. MISE turns those saved recipes into meals I can actually cook.
+                      </p>
+                    </div>
+                  </a>
+                </motion.div>
+              </ThreeDCarouselCard>
             </div>
 
             {/* BUILD 2: NETFLIX */}
-            <div className="w-full lg:w-[560px] xl:w-[620px] 2xl:w-[660px] lg:h-[490px] xl:h-[515px] shrink-0">
-              <motion.a
-                href="https://netflix-social-feature.vercel.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                onMouseEnter={(e) => handleCardMouseEnter(e, 'View Feature')}
-                onMouseMove={(e) => handleCardMouseMove(e, 'View Feature')}
-                onMouseLeave={handleCardMouseLeave}
-                initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.65, delay: 0.08, ease: EASE_EDITORIAL }}
-                className="card-apple p-0 flex flex-col justify-between overflow-hidden text-black w-full h-full min-h-[460px] lg:min-h-0 rounded-[20px] group transition-all"
-              >
-                <div className="bg-neutral-950 overflow-hidden h-[250px] sm:h-[270px] lg:h-[265px] xl:h-[285px] w-full shrink-0 border-b border-black/[0.06] flex items-center justify-center">
-                  <picture className="w-full h-full block">
-                    <source srcSet="/Home/NETFLIX_GIF.webp" type="image/webp" />
-                    <img
-                      src="/Home/NETFLIX_GIF.gif"
+            <div className="w-full max-w-xl mx-auto lg:max-w-none lg:w-[700px] xl:w-[760px] 2xl:w-[820px] lg:shrink-0 overflow-visible">
+              <ThreeDCarouselCard scrollContainerRef={horizontalScrollRef}>
+                <motion.div
+                  initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.65, delay: 0.08, ease: EASE_EDITORIAL }}
+                  className="w-full"
+                >
+                  <a
+                    href="https://netflix-social-feature.vercel.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onMouseEnter={(e) => handleCardMouseEnter(e, 'View Feature')}
+                    onMouseMove={(e) => handleCardMouseMove(e, 'View Feature')}
+                    onMouseLeave={handleCardMouseLeave}
+                    className="group block text-black w-full cursor-pointer transition-all"
+                  >
+                    <TvCurvedMedia
+                      id="netflix"
+                      type="video"
+                      src="/Home/NETFLIX_GIF.mp4"
                       alt="Netflix Social Feature Preview"
-                      className="w-full h-full object-cover block"
-                      loading="lazy"
-                      decoding="async"
+                      bg="bg-neutral-950"
+                      scrollContainerRef={horizontalScrollRef}
+                      tags={['Full Stack', 'Vibe Coding', 'Social UX']}
                     />
-                  </picture>
-                </div>
-                <div className="p-5 sm:p-6 lg:p-5 xl:p-6 flex flex-col flex-1 justify-between gap-3.5">
-                  <div>
-                    <h3 className="font-sans text-[18px] sm:text-[19px] font-semibold text-[#1D1D1F] tracking-tight">Netflix, but a little more personal</h3>
-                    <p className="text-[13px] sm:text-[13.5px] text-[#6E6E73] leading-relaxed mt-1">
-                      I kept getting tired of scrolling through my Netflix list trying to figure out what to watch. I wanted a simpler way to discover something good, so I built a social layer where friends can share what they think I’ll love and help me find something worth watching.
-                    </p>
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-1.5 pt-1.5">
-                    <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">Full Stack</span>
-                    <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">Vibe Coding</span>
-                    <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-0.5 rounded-full bg-black/[0.04] text-[#1D1D1F] border border-black/[0.04] font-bold">Social UX</span>
-                  </div>
-                </div>
-              </motion.a>
+                    <div className="pt-4 sm:pt-5 flex flex-col gap-1.5 cursor-pointer">
+                      <h3 className="font-sans text-[19px] sm:text-[20px] font-semibold text-[#1D1D1F] tracking-tight group-hover:text-black transition-colors flex items-center justify-between">
+                        <span>Netflix, but a little more personal</span>
+                        <ArrowUpRight className="w-4 h-4 text-[#86868B] group-hover:text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all opacity-0 group-hover:opacity-100" />
+                      </h3>
+                      <p className="text-[13px] sm:text-[13.5px] text-[#6E6E73] leading-relaxed mt-0.5">
+                        I kept getting tired of scrolling through my Netflix list trying to figure out what to watch. I wanted a simpler way to discover something good, so I built a social layer where friends can share what they think I’ll love and help me find something worth watching.
+                      </p>
+                    </div>
+                  </a>
+                </motion.div>
+              </ThreeDCarouselCard>
             </div>
           </div>
         </section>
@@ -940,15 +917,18 @@ export default function App() {
               className="shrink-0"
             >
               <div className="card-apple overflow-hidden w-[220px] sm:w-[250px] lg:w-[230px] xl:w-[255px] aspect-[1111/1600] rounded-[22px] shadow-lg border border-black/[0.06] bg-[#FAFAFA]">
-                <img
-                  src="/Home/about.png"
-                  alt="Kay portrait illustration"
-                  className="w-full h-full object-contain"
-                  width={1111}
-                  height={1600}
-                  loading="lazy"
-                  decoding="async"
-                />
+                <picture className="w-full h-full block">
+                  <source srcSet="/Home/about.webp" type="image/webp" />
+                  <img
+                    src="/Home/about.webp"
+                    alt="Kay portrait illustration"
+                    className="w-full h-full object-contain"
+                    width={1111}
+                    height={1600}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
               </div>
             </motion.div>
 

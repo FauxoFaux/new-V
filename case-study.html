@@ -19,7 +19,8 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-                        display: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        caps: ['Plus Jakarta Sans', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
                     },
                     colors: {
                         bg: '#FFFFFF',
@@ -96,7 +97,31 @@
             overflow-x: hidden;
         }
 
-        .font-display { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; font-weight: 700; }
+        /* Home page typography match */
+        body, p, .cs-para {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            letter-spacing: normal;
+        }
+        .font-sans-display {
+            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            letter-spacing: -0.025em;
+        }
+        .font-caps {
+            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            font-weight: 700;
+        }
+        .font-display {
+            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-weight: 700;
+        }
+        .cs-toc-item {
+            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            font-weight: 700;
+        }
 
         /* Apple macOS Glass Dropdown */
         .cs-dropdown {
@@ -497,7 +522,7 @@
         <!-- Left Sticky Sidebar (Desktop Only) -->
         <aside class="hidden lg:block w-[220px] xl:w-[240px] shrink-0 sticky top-12 self-start pt-2">
             <!-- Back to Projects Link -->
-            <a href="/#work" class="inline-flex items-center gap-2 text-[11px] uppercase font-semibold tracking-[0.2em] text-[#86868B] hover:text-black transition-colors mb-10 group cursor-pointer" aria-label="Back to projects">
+            <a href="/#work" class="inline-flex items-center gap-2 font-caps text-[11px] tracking-[0.14em] text-[#86868B] hover:text-black transition-colors mb-10 group cursor-pointer" aria-label="Back to projects">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:-translate-x-1">
                     <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
@@ -506,26 +531,26 @@
 
             <!-- Case Study Label & Project Title -->
             <div class="mb-10">
-                <span class="block text-[10.5px] uppercase tracking-[0.22em] font-mono text-[#86868B] mb-1.5 font-bold">CASE STUDY</span>
+                <span class="block font-caps text-[11px] tracking-[0.14em] text-[#86868B] mb-1.5 font-bold">CASE STUDY</span>
                 <h2 id="cs-sidebar-title" class="text-[18px] font-semibold text-black tracking-tight capitalize">Youtopia</h2>
             </div>
 
             <!-- Dynamic Table of Contents (TOC) with Vertical Line and Dots -->
-            <nav id="cs-sidebar-toc" class="relative pl-4 space-y-4 text-[11.5px] tracking-[0.16em] uppercase">
+            <nav id="cs-sidebar-toc" class="relative pl-4 space-y-3.5 font-caps text-[11px] tracking-[0.12em]">
                 <!-- Generated dynamically via JS -->
             </nav>
         </aside>
 
         <!-- Mobile Top Nav Bar (Mobile / Tablet Only) -->
         <div class="lg:hidden w-full flex items-center justify-between pb-6 border-b border-black/[0.08] mb-6">
-            <a href="/#work" class="inline-flex items-center gap-1.5 text-[11.5px] uppercase font-semibold tracking-[0.18em] text-[#86868B] hover:text-black transition-colors">
+            <a href="/#work" class="inline-flex items-center gap-1.5 font-caps text-[11px] tracking-[0.14em] text-[#86868B] hover:text-black transition-colors">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
                 <span>BACK TO PROJECTS</span>
             </a>
             <div class="text-right">
-                <span class="block text-[10px] uppercase tracking-[0.2em] font-mono text-[#86868B]">CASE STUDY</span>
+                <span class="block font-caps text-[10px] tracking-[0.14em] text-[#86868B] font-bold">CASE STUDY</span>
                 <span id="cs-mobile-title" class="text-[14px] font-semibold text-black">Youtopia</span>
             </div>
         </div>
@@ -547,25 +572,25 @@
             <section id="cs-meta-section" class="border-y border-black/[0.08] py-8 text-black mt-8 sm:mt-10 mb-10 sm:mb-14 cs-meta-animate">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
                     <div>
-                        <span class="text-[11px] uppercase tracking-[0.2em] font-mono text-[#86868B] block mb-1.5 font-bold">ROLE</span>
+                        <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] block mb-1.5 font-bold">ROLE</span>
                         <div id="cs-meta-role" class="text-[#1D1D1F] text-[14px] sm:text-[15px] font-medium leading-[1.6]">Product & Brand Designer</div>
                     </div>
                     <div>
-                        <span class="text-[11px] uppercase tracking-[0.2em] font-mono text-[#86868B] block mb-1.5 font-bold">DURATION</span>
+                        <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] block mb-1.5 font-bold">DURATION</span>
                         <div id="cs-meta-duration" class="text-[#1D1D1F] text-[14px] sm:text-[15px] font-medium leading-[1.6]">Nov 2025 – Mar 2026</div>
                     </div>
                     <div>
-                        <span class="text-[11px] uppercase tracking-[0.2em] font-mono text-[#86868B] block mb-1.5 font-bold">TEAM</span>
+                        <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] block mb-1.5 font-bold">TEAM</span>
                         <div id="cs-meta-team" class="text-[#1D1D1F] text-[14px] sm:text-[15px] leading-[1.6] font-medium">Founder · PM · Architects · Principal Engineers · Marketing</div>
                     </div>
                     <div>
-                        <span class="text-[11px] uppercase tracking-[0.2em] font-mono text-[#86868B] block mb-1.5 font-bold">SHIPPED</span>
+                        <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] block mb-1.5 font-bold">SHIPPED</span>
                         <div id="cs-meta-shipped" class="text-[#1D1D1F] font-medium text-[14px] sm:text-[15px] leading-[1.6]">Validated Product Architecture</div>
                     </div>
                 </div>
                 
                 <div class="pt-6 border-t border-black/[0.06]">
-                    <span class="text-[11px] uppercase tracking-[0.2em] font-mono text-[#86868B] block mb-1.5 font-bold">RESPONSIBILITIES</span>
+                    <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] block mb-1.5 font-bold">RESPONSIBILITIES</span>
                     <div id="cs-meta-responsibilities" class="text-[#333336] text-[14px] sm:text-[15px] leading-[1.65] font-normal">Product strategy · Information architecture · Interaction design · UX writing · Design system · Engineering collaboration</div>
                 </div>
             </section>
@@ -579,7 +604,7 @@
                     </svg>
                 </div>
                 
-                <span class="inline-block text-[11px] uppercase tracking-[0.22em] font-mono text-[#86868B] font-bold mb-2">Restricted Access</span>
+                <span class="inline-block font-caps text-[11px] tracking-[0.14em] text-[#86868B] font-bold mb-2">RESTRICTED ACCESS</span>
                 <h2 class="font-display text-[26px] sm:text-[32px] font-bold leading-tight text-black uppercase tracking-tight mb-6">PROTECTED CASE STUDY</h2>
 
                 <form id="cs-password-form" class="space-y-4" onsubmit="handlePasswordSubmit(event)">
@@ -609,13 +634,13 @@
                         </button>
                     </div>
                     
-                    <div id="cs-password-error" class="hidden text-red-600 bg-red-50 border border-red-200 px-3 py-1.5 rounded-lg text-xs font-mono font-medium">
+                    <div id="cs-password-error" class="hidden text-red-600 bg-red-50 border border-red-200 px-3 py-1.5 rounded-lg text-xs font-sans font-medium">
                         Incorrect password. Please try again.
                     </div>
 
                     <button
                         type="submit"
-                        class="w-full py-3 px-6 rounded-xl bg-black text-white font-mono text-xs uppercase tracking-[0.16em] font-semibold hover:bg-neutral-800 active:scale-[0.99] transition-all cursor-pointer shadow-sm"
+                        class="w-full py-3 px-6 rounded-xl bg-black text-white font-caps text-[12px] tracking-[0.12em] font-bold hover:bg-neutral-800 active:scale-[0.99] transition-all cursor-pointer shadow-sm"
                     >
                         Unlock Case Study
                     </button>
@@ -639,9 +664,9 @@
             </div>
 
             <!-- Minimalist Footer matching App.tsx -->
-            <footer class="border-t border-black/[0.08] py-10 text-[#86868B] font-medium font-mono text-[11.5px] tracking-[0.18em] uppercase flex flex-col sm:flex-row items-center justify-between gap-4 w-full bg-transparent mt-12">
+            <footer class="border-t border-black/[0.08] py-8 text-[#86868B] font-caps text-[11px] tracking-[0.12em] font-bold flex flex-col sm:flex-row items-center justify-between gap-4 w-full bg-transparent mt-12">
                 <span>© 2026 Keerthana Ravichandran</span>
-                <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="text-[#86868B] hover:text-black transition-colors cursor-pointer font-semibold">
+                <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="text-[#86868B] hover:text-black transition-colors cursor-pointer font-caps font-bold tracking-[0.09em]">
                     Back to top ↑
                 </button>
             </footer>
@@ -683,11 +708,11 @@
                         
                         <div class="text-center mb-6 sm:mb-8">
                             <h2 class="font-display text-[26px] sm:text-[34px] md:text-[40px] font-bold text-[#1D1D1F] tracking-tight uppercase">One System, Four Surfaces</h2>
-                            <p class="mt-2 text-[11px] sm:text-[12px] uppercase tracking-[0.22em] font-mono text-[#86868B] font-semibold">THE YOUTOPIA ECOSYSTEM</p>
+                            <p class="mt-2 font-caps text-[11px] sm:text-[12px] tracking-[0.14em] text-[#86868B] font-bold">THE YOUTOPIA ECOSYSTEM</p>
                         </div>
 
                         <div class="relative w-full mx-auto">
-                            <div class="text-[10px] uppercase font-mono tracking-wider text-[#FFD025] text-center sm:hidden mb-2">
+                            <div class="font-caps text-[10px] tracking-[0.1em] text-[#FFD025] text-center sm:hidden mb-2 font-bold">
                                 ← Scroll diagram horizontally →
                             </div>
                             <div class="w-full overflow-x-auto pb-2 scrollbar-thin">
@@ -759,7 +784,7 @@
                                 </div>
 
                                 <div class="relative w-full mx-auto">
-                                    <div class="text-[10px] uppercase font-mono tracking-wider text-[#2036B8] dark:text-[#8B95FF] text-center sm:hidden mb-2">
+                                    <div class="font-caps text-[10px] tracking-[0.1em] text-[#2036B8] dark:text-[#8B95FF] text-center sm:hidden mb-2 font-bold">
                                         ← Scroll image to view full diagram →
                                     </div>
                                     <div class="w-full overflow-x-auto pb-2 scrollbar-thin">
@@ -781,21 +806,21 @@
                                         <!-- 01 // Consumer App -->
                                         <g>
                                             <rect x="20" y="20" width="260" height="115" rx="12" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                            <text x="35" y="52" class="fill-[#111118] dark:fill-white font-mono font-bold text-[14px]">01 // Consumer App</text>
+                                            <text x="35" y="52" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[14px]">01 // Consumer App</text>
                                             <text x="35" y="78" class="fill-[#475569] dark:fill-[#94A3B8] text-[12px]">Onboarding, daily meal ordering,</text>
                                             <text x="35" y="96" class="fill-[#475569] dark:fill-[#94A3B8] text-[12px]">&amp; household profile management.</text>
                                         </g>
                                         <!-- 02 // Diagnostics Integration -->
                                         <g>
                                             <rect x="320" y="20" width="260" height="115" rx="12" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                            <text x="335" y="52" class="fill-[#111118] dark:fill-white font-mono font-bold text-[14px]">02 // Diagnostics Integration</text>
+                                            <text x="335" y="52" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[14px]">02 // Diagnostics Integration</text>
                                             <text x="335" y="78" class="fill-[#475569] dark:fill-[#94A3B8] text-[12px]">Biomarker data ingest (blood, DNA)</text>
                                             <text x="335" y="96" class="fill-[#475569] dark:fill-[#94A3B8] text-[12px]">translated into personalized targets.</text>
                                         </g>
                                         <!-- 03 // Producer Portal -->
                                         <g>
                                             <rect x="620" y="20" width="260" height="115" rx="12" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                            <text x="635" y="52" class="fill-[#111118] dark:fill-white font-mono font-bold text-[14px]">03 // Producer Portal</text>
+                                            <text x="635" y="52" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[14px]">03 // Producer Portal</text>
                                             <text x="635" y="78" class="fill-[#475569] dark:fill-[#94A3B8] text-[12px]">Chef recipe creation with automated</text>
                                             <text x="635" y="96" class="fill-[#475569] dark:fill-[#94A3B8] text-[12px]">AI macro balancing behind scenes.</text>
                                         </g>
@@ -806,7 +831,7 @@
                                             <rect x="206" y="196" width="488" height="123" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
                                             <path d="M 206 206 A 10 10 0 0 1 216 196 L 684 196 A 10 10 0 0 1 694 206 L 694 228 L 206 228 Z" class="fill-[#2036B8] dark:fill-[#5A6BFF]" />
 
-                                            <text x="450" y="217" text-anchor="middle" class="fill-white font-mono font-bold text-[11px] tracking-[0.18em]">CENTRAL CORE ENGINE</text>
+                                            <text x="450" y="217" text-anchor="middle" class="fill-white font-caps font-bold font-bold text-[11px] tracking-[0.18em]">CENTRAL CORE ENGINE</text>
                                             <text x="450" y="254" text-anchor="middle" class="fill-[#111118] dark:fill-white font-bold text-[18px]">AI Nutrition &amp; Matching Platform</text>
                                             <text x="450" y="280" text-anchor="middle" class="fill-[#475569] dark:fill-[#94A3B8] text-[13px]">Biomarker diagnostics, automated meal calculation, &amp; shared</text>
                                             <text x="450" y="298" text-anchor="middle" class="fill-[#475569] dark:fill-[#94A3B8] text-[13px]">household permission logic</text>
@@ -831,21 +856,21 @@
                                         <!-- 04 // Admin Operations -->
                                         <g>
                                             <rect x="20" y="385" width="260" height="115" rx="12" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                            <text x="35" y="417" class="fill-[#111118] dark:fill-white font-mono font-bold text-[14px]">04 // Admin Operations</text>
+                                            <text x="35" y="417" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[14px]">04 // Admin Operations</text>
                                             <text x="35" y="443" class="fill-[#475569] dark:fill-[#94A3B8] text-[12px]">Regional hub management, delivery</text>
                                             <text x="35" y="461" class="fill-[#475569] dark:fill-[#94A3B8] text-[12px]">geofencing, and system overrides.</text>
                                         </g>
                                         <!-- 05 // Web Experience -->
                                         <g>
                                             <rect x="320" y="385" width="260" height="115" rx="12" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                            <text x="335" y="417" class="fill-[#111118] dark:fill-white font-mono font-bold text-[14px]">05 // Web Experience</text>
+                                            <text x="335" y="417" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[14px]">05 // Web Experience</text>
                                             <text x="335" y="443" class="fill-[#475569] dark:fill-[#94A3B8] text-[12px]">Educational acquisition funnel</text>
                                             <text x="335" y="461" class="fill-[#475569] dark:fill-[#94A3B8] text-[12px]">designed to teach value before setup.</text>
                                         </g>
                                         <!-- 06 // Brand & Packaging -->
                                         <g>
                                             <rect x="620" y="385" width="260" height="115" rx="12" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                            <text x="635" y="417" class="fill-[#111118] dark:fill-white font-mono font-bold text-[14px]">06 // Brand &amp; Packaging</text>
+                                            <text x="635" y="417" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[14px]">06 // Brand &amp; Packaging</text>
                                             <text x="635" y="443" class="fill-[#475569] dark:fill-[#94A3B8] text-[12px]">Design system tokens and dynamic</text>
                                             <text x="635" y="461" class="fill-[#475569] dark:fill-[#94A3B8] text-[12px]">labeling for physical meal packaging.</text>
                                         </g>
@@ -865,7 +890,7 @@
                         researchHTML: `
                             <div class="w-full rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-5 sm:p-8 my-6 shadow-md cs-hover-card">
                                 <div class="mb-4">
-                                    <span class="text-[12px] sm:text-[13px] font-semibold text-white/90 font-mono tracking-wide uppercase">Website &amp; Educational Acquisition Funnel</span>
+                                    <span class="text-[12px] sm:text-[13px] font-semibold text-white/90 font-caps tracking-[0.09em] uppercase font-bold">Website &amp; Educational Acquisition Funnel</span>
                                 </div>
                                 <div class="w-full flex justify-center items-center overflow-hidden rounded-xl bg-black/10">
                                     <picture>
@@ -894,7 +919,7 @@
                                     </div>
 
                                     <div class="relative w-full mx-auto">
-                                        <div class="text-[10px] uppercase font-mono tracking-wider text-[#2036B8] dark:text-[#8B95FF] text-center sm:hidden mb-2">
+                                        <div class="font-caps text-[10px] tracking-[0.1em] text-[#2036B8] dark:text-[#8B95FF] text-center sm:hidden mb-2 font-bold">
                                             ← Scroll image to view full diagram →
                                         </div>
                                         <div class="w-full overflow-x-auto pb-2 scrollbar-thin">
@@ -903,10 +928,10 @@
                                             <rect x="450" y="10" width="275" height="260" rx="12" class="fill-white dark:fill-[#1C1C2B] stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="2" opacity="0.9" />
 
                                             <!-- Table Header -->
-                                            <text x="25" y="36" class="fill-[#475569] dark:fill-[#94A3B8] font-mono font-bold text-[11px] sm:text-[12px]">EVALUATION CRITERIA</text>
-                                            <text x="235" y="36" class="fill-[#475569] dark:fill-[#94A3B8] font-mono font-bold text-[11px] sm:text-[12px]">OPTION A: INDIVIDUAL PERSON</text>
-                                            <text x="465" y="36" class="fill-[#2036B8] dark:fill-[#5A6BFF] font-mono font-bold text-[11px] sm:text-[12px]">OPTION B: HOUSEHOLD-OWNED (SELECTED)</text>
-                                            <text x="745" y="36" class="fill-[#475569] dark:fill-[#94A3B8] font-mono font-bold text-[11px] sm:text-[12px]">OPTION C: SUBSCRIPTION ID</text>
+                                            <text x="25" y="36" class="fill-[#475569] dark:fill-[#94A3B8] font-caps font-bold font-bold text-[11px] sm:text-[12px]">EVALUATION CRITERIA</text>
+                                            <text x="235" y="36" class="fill-[#475569] dark:fill-[#94A3B8] font-caps font-bold font-bold text-[11px] sm:text-[12px]">OPTION A: INDIVIDUAL PERSON</text>
+                                            <text x="465" y="36" class="fill-[#2036B8] dark:fill-[#5A6BFF] font-caps font-bold font-bold text-[11px] sm:text-[12px]">OPTION B: HOUSEHOLD-OWNED (SELECTED)</text>
+                                            <text x="745" y="36" class="fill-[#475569] dark:fill-[#94A3B8] font-caps font-bold font-bold text-[11px] sm:text-[12px]">OPTION C: SUBSCRIPTION ID</text>
                                             <line x1="25" y1="52" x2="955" y2="52" class="stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
 
                                             <!-- Row 1: Billing & Split Payments -->
@@ -938,37 +963,37 @@
 
                                             <!-- Downstream Divider line & Title -->
                                             <line x1="25" y1="310" x2="955" y2="310" class="stroke-[#2036B8]/40 dark:stroke-[#5A6BFF]/40" stroke-width="1.5" />
-                                            <text x="25" y="338" class="fill-[#2036B8] dark:fill-[#5A6BFF] font-mono font-bold text-[12px] tracking-[0.18em]">DOWNSTREAM SYSTEM EFFECTS</text>
+                                            <text x="25" y="338" class="fill-[#2036B8] dark:fill-[#5A6BFF] font-caps font-bold font-bold text-[12px] tracking-[0.18em]">DOWNSTREAM SYSTEM EFFECTS</text>
 
                                             <!-- Downstream Cards (Outlines match 4 surfaces: stroke-[#C8D4E8] / dark:stroke-[#2C2C36]) -->
                                             <!-- Card 01 -->
                                             <g>
                                                 <rect x="25" y="360" width="176" height="120" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="37" y="392" class="fill-[#111118] dark:fill-white font-mono font-bold text-[12px]">01 // Pricing Model</text>
+                                                <text x="37" y="392" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[12px]">01 // Pricing Model</text>
                                                 <text x="37" y="418" class="fill-[#64748B] dark:fill-[#94A3B8] text-[12px]">Tiered household seats</text>
                                             </g>
                                             <!-- Card 02 -->
                                             <g>
                                                 <rect x="216" y="360" width="176" height="120" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="228" y="392" class="fill-[#111118] dark:fill-white font-mono font-bold text-[12px]">02 // Diagnostics</text>
+                                                <text x="228" y="392" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[12px]">02 // Diagnostics</text>
                                                 <text x="228" y="418" class="fill-[#64748B] dark:fill-[#94A3B8] text-[12px]">Inherited baseline metrics</text>
                                             </g>
                                             <!-- Card 03 -->
                                             <g>
                                                 <rect x="407" y="360" width="176" height="120" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="419" y="392" class="fill-[#111118] dark:fill-white font-mono font-bold text-[12px]">03 // Permissions</text>
+                                                <text x="419" y="392" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[12px]">03 // Permissions</text>
                                                 <text x="419" y="418" class="fill-[#64748B] dark:fill-[#94A3B8] text-[12px]">Parental/Admin controls</text>
                                             </g>
                                             <!-- Card 04 -->
                                             <g>
                                                 <rect x="598" y="360" width="176" height="120" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="610" y="392" class="fill-[#111118] dark:fill-white font-mono font-bold text-[12px]">04 // Onboarding</text>
+                                                <text x="610" y="392" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[12px]">04 // Onboarding</text>
                                                 <text x="610" y="418" class="fill-[#64748B] dark:fill-[#94A3B8] text-[12px]">Invite &amp; claim flows</text>
                                             </g>
                                             <!-- Card 05 (Selected/Highlight) -->
                                             <g>
                                                 <rect x="789" y="360" width="176" height="120" rx="10" class="fill-white dark:fill-[#191924] stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="2" />
-                                                <text x="801" y="392" class="fill-[#2036B8] dark:fill-[#5A6BFF] font-mono font-bold text-[12px]">05 // AI Rec Engine</text>
+                                                <text x="801" y="392" class="fill-[#2036B8] dark:fill-[#5A6BFF] font-caps font-bold font-bold text-[12px]">05 // AI Rec Engine</text>
                                                 <text x="801" y="418" class="fill-[#2036B8] dark:fill-[#8B95FF] font-medium text-[12px]">Shared batch optimization</text>
                                             </g>
                                         </svg>
@@ -977,7 +1002,7 @@
                                 </div>
                                 <div class="w-full rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-5 sm:p-8 mt-6 shadow-md cs-hover-card">
                                     <div class="mb-4">
-                                        <span class="text-[12px] sm:text-[13px] font-semibold text-white/90 font-mono tracking-wide uppercase">Consumer Mobile App Screens</span>
+                                        <span class="text-[12px] sm:text-[13px] font-semibold text-white/90 font-caps tracking-[0.09em] uppercase font-bold">Consumer Mobile App Screens</span>
                                     </div>
                                     <div class="w-full flex justify-center items-center overflow-hidden rounded-xl bg-black/10">
                                         <picture>
@@ -1002,7 +1027,7 @@
                                     </div>
 
                                     <div class="relative w-full mx-auto">
-                                        <div class="text-[10px] uppercase font-mono tracking-wider text-[#2036B8] dark:text-[#8B95FF] text-center sm:hidden mb-2">
+                                        <div class="font-caps text-[10px] tracking-[0.1em] text-[#2036B8] dark:text-[#8B95FF] text-center sm:hidden mb-2 font-bold">
                                             ← Scroll image to view full diagram →
                                         </div>
                                         <div class="w-full overflow-x-auto pb-2 scrollbar-thin">
@@ -1010,7 +1035,7 @@
                                             <!-- TOP CARD: VISIBLE TO CHEF -->
                                             <g>
                                                 <rect x="20" y="10" width="880" height="135" rx="12" class="fill-white dark:fill-[#191924] stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="1.5" />
-                                                <text x="45" y="44" class="fill-[#2036B8] dark:fill-[#5A6BFF] font-mono font-bold text-[12px] tracking-[0.12em]">VISIBLE TO CHEF</text>
+                                                <text x="45" y="44" class="fill-[#2036B8] dark:fill-[#5A6BFF] font-caps font-bold font-bold text-[12px] tracking-[0.12em]">VISIBLE TO CHEF</text>
                                                 
                                                 <!-- 4 Columns -->
                                                 <!-- Col 1 -->
@@ -1035,7 +1060,7 @@
                                             <!-- BOTTOM CARD: HANDLED BY THE PLATFORM -->
                                             <g>
                                                 <rect x="20" y="195" width="880" height="185" rx="12" class="fill-white dark:fill-[#191924] stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="1.5" />
-                                                <text x="45" y="235" class="fill-[#2036B8] dark:fill-[#5A6BFF] font-mono font-bold text-[12px] tracking-[0.12em]">HANDLED BY THE PLATFORM</text>
+                                                <text x="45" y="235" class="fill-[#2036B8] dark:fill-[#5A6BFF] font-caps font-bold font-bold text-[12px] tracking-[0.12em]">HANDLED BY THE PLATFORM</text>
 
                                                 <!-- Col 1 -->
                                                 <text x="166" y="285" text-anchor="middle" class="fill-[#111118] dark:fill-white font-medium text-[13.5px]">Nutrient-target matching</text>
@@ -1070,7 +1095,7 @@
                                     </div>
 
                                     <div class="relative w-full mx-auto">
-                                        <div class="text-[10px] uppercase font-mono tracking-wider text-[#2036B8] dark:text-[#8B95FF] text-center sm:hidden mb-2">
+                                        <div class="font-caps text-[10px] tracking-[0.1em] text-[#2036B8] dark:text-[#8B95FF] text-center sm:hidden mb-2 font-bold">
                                             ← Scroll image to view full diagram →
                                         </div>
                                         <div class="w-full overflow-x-auto pb-2 scrollbar-thin">
@@ -1079,7 +1104,7 @@
                                             <g>
                                                 <rect x="20" y="100" width="185" height="180" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
                                                 <line x1="30" y1="100" x2="195" y2="100" class="stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="4" stroke-linecap="round" />
-                                                <text x="35" y="132" class="fill-[#111118] dark:fill-white font-mono font-bold text-[12px]">01 // Restaurant Node</text>
+                                                <text x="35" y="132" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[12px]">01 // Restaurant Node</text>
                                                 
                                                 <circle cx="38" cy="160" r="2.5" class="fill-[#2036B8] dark:fill-[#5A6BFF]" />
                                                 <text x="48" y="164" class="fill-[#64748B] dark:fill-[#94A3B8] text-[11.5px]">Kitchen Batch Capacity</text>
@@ -1099,7 +1124,7 @@
                                             <g>
                                                 <rect x="255" y="100" width="185" height="180" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
                                                 <line x1="265" y1="100" x2="430" y2="100" class="stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="4" stroke-linecap="round" />
-                                                <text x="270" y="132" class="fill-[#111118] dark:fill-white font-mono font-bold text-[12px]">02 // Regional Hub</text>
+                                                <text x="270" y="132" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[12px]">02 // Regional Hub</text>
                                                 
                                                 <circle cx="273" cy="160" r="2.5" class="fill-[#2036B8] dark:fill-[#5A6BFF]" />
                                                 <text x="283" y="164" class="fill-[#64748B] dark:fill-[#94A3B8] text-[11.5px]">Cold Storage Limits</text>
@@ -1121,7 +1146,7 @@
                                                 
                                                 <!-- Header Banner -->
                                                 <path d="M 490 75 A 10 10 0 0 1 500 65 L 720 65 A 10 10 0 0 1 730 75 L 730 105 L 490 105 Z" class="fill-[#2036B8] dark:fill-[#5A6BFF]" />
-                                                <text x="610" y="90" text-anchor="middle" class="fill-white font-mono font-bold text-[11px] tracking-[0.05em]">03 // DYNAMIC GEOFENCE ENGINE</text>
+                                                <text x="610" y="90" text-anchor="middle" class="fill-white font-caps font-bold font-bold text-[11px] tracking-[0.05em]">03 // DYNAMIC GEOFENCE ENGINE</text>
 
                                                 <!-- Body content -->
                                                 <text x="508" y="132" class="fill-[#111118] dark:fill-white font-bold text-[13px]">Active Service Boundaries</text>
@@ -1130,7 +1155,7 @@
 
                                                 <line x1="508" y1="192" x2="712" y2="192" class="stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1" />
 
-                                                <text x="508" y="218" class="fill-[#2036B8] dark:fill-[#5A6BFF] font-mono font-bold text-[11px] tracking-wide">CASCADING RULE:</text>
+                                                <text x="508" y="218" class="fill-[#2036B8] dark:fill-[#5A6BFF] font-caps font-bold font-bold text-[11px] tracking-wide">CASCADING RULE:</text>
                                                 <text x="508" y="240" class="fill-[#111118] dark:fill-white text-[11.5px]">Hub failure instantly shrinks</text>
                                                 <text x="508" y="258" class="fill-[#111118] dark:fill-white text-[11.5px]">Consumer App ordering area.</text>
                                             </g>
@@ -1145,7 +1170,7 @@
                                             <g>
                                                 <rect x="795" y="10" width="185" height="160" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
                                                 <line x1="805" y1="10" x2="970" y2="10" class="stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="4" stroke-linecap="round" />
-                                                <text x="810" y="42" class="fill-[#111118] dark:fill-white font-mono font-bold text-[12px]">04A // Dispatch Router</text>
+                                                <text x="810" y="42" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[12px]">04A // Dispatch Router</text>
 
                                                 <circle cx="813" cy="70" r="2.5" class="fill-[#2036B8] dark:fill-[#5A6BFF]" />
                                                 <text x="823" y="74" class="fill-[#64748B] dark:fill-[#94A3B8] text-[11.5px]">Courier Assignment</text>
@@ -1161,7 +1186,7 @@
                                             <g>
                                                 <rect x="795" y="210" width="185" height="160" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
                                                 <line x1="805" y1="210" x2="970" y2="210" class="stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="4" stroke-linecap="round" />
-                                                <text x="810" y="242" class="fill-[#111118] dark:fill-white font-mono font-bold text-[12px]">04B // Consumer State</text>
+                                                <text x="810" y="242" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[12px]">04B // Consumer State</text>
 
                                                 <circle cx="813" cy="270" r="2.5" class="fill-[#2036B8] dark:fill-[#5A6BFF]" />
                                                 <text x="823" y="274" class="fill-[#64748B] dark:fill-[#94A3B8] text-[11.5px]">Menu Availability</text>
@@ -1182,7 +1207,7 @@
                     decisionsHTML: `
                         <div class="w-full rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-5 sm:p-8 mt-6 shadow-md cs-hover-card">
                             <div class="mb-4">
-                                <span class="text-[12px] sm:text-[13px] font-semibold text-white/90 font-mono tracking-wide uppercase">Producer App &amp; Admin Operations Web Platform</span>
+                                <span class="text-[12px] sm:text-[13px] font-semibold text-white/90 font-caps tracking-[0.09em] uppercase font-bold">Producer App &amp; Admin Operations Web Platform</span>
                             </div>
                             <div class="w-full flex justify-center items-center overflow-hidden rounded-xl bg-black/10">
                                 <picture>
@@ -1202,7 +1227,7 @@
                             </div>
 
                             <div class="relative w-full mx-auto">
-                                <div class="text-[10px] uppercase font-mono tracking-wider text-[#2036B8] dark:text-[#8B95FF] text-center sm:hidden mb-2">
+                                <div class="font-caps text-[10px] tracking-[0.1em] text-[#2036B8] dark:text-[#8B95FF] text-center sm:hidden mb-2 font-bold">
                                     ← Scroll image to view full diagram →
                                 </div>
                                 <div class="w-full overflow-x-auto pb-2 scrollbar-thin">
@@ -1211,7 +1236,7 @@
                                     <g>
                                         <rect x="20" y="20" width="290" height="215" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
                                         <line x1="30" y1="20" x2="300" y2="20" class="stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="4" stroke-linecap="round" />
-                                        <text x="36" y="52" class="fill-[#111118] dark:fill-white font-mono font-bold text-[11.5px]">PATTERN A // PROGRESSIVE SETUP STEP</text>
+                                        <text x="36" y="52" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11.5px]">PATTERN A // PROGRESSIVE SETUP STEP</text>
                                         <text x="36" y="70" class="fill-[#64748B] dark:fill-[#94A3B8] text-[11px]">Applied in: Consumer Onboarding, Chef Verification</text>
                                         
                                         <rect x="35" y="86" width="260" height="38" rx="6" class="fill-[#F1F5F9] dark:fill-[#222232] stroke-[#E2E8F0] dark:stroke-[#2E2E42]" stroke-width="1" />
@@ -1225,7 +1250,7 @@
                                     <g>
                                         <rect x="335" y="20" width="290" height="215" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
                                         <line x1="345" y1="20" x2="615" y2="20" class="stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="4" stroke-linecap="round" />
-                                        <text x="351" y="52" class="fill-[#111118] dark:fill-white font-mono font-bold text-[11.5px]">PATTERN B // HOUSEHOLD ENTITY CARD</text>
+                                        <text x="351" y="52" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11.5px]">PATTERN B // HOUSEHOLD ENTITY CARD</text>
                                         <text x="351" y="70" class="fill-[#64748B] dark:fill-[#94A3B8] text-[11px]">Applied in: Consumer App, Admin Ops, Billing</text>
                                         
                                         <rect x="350" y="86" width="260" height="38" rx="6" class="fill-[#F1F5F9] dark:fill-[#222232] stroke-[#E2E8F0] dark:stroke-[#2E2E42]" stroke-width="1" />
@@ -1239,7 +1264,7 @@
                                     <g>
                                         <rect x="650" y="20" width="290" height="215" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
                                         <line x1="660" y1="20" x2="930" y2="20" class="stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="4" stroke-linecap="round" />
-                                        <text x="666" y="52" class="fill-[#111118] dark:fill-white font-mono font-bold text-[11.5px]">PATTERN C // OPERATIONAL GEOFENCE CARD</text>
+                                        <text x="666" y="52" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11.5px]">PATTERN C // OPERATIONAL GEOFENCE CARD</text>
                                         <text x="666" y="70" class="fill-[#64748B] dark:fill-[#94A3B8] text-[11px]">Applied in: Admin Ops, Delivery Routing</text>
                                         
                                         <rect x="665" y="86" width="260" height="38" rx="6" class="fill-[#F1F5F9] dark:fill-[#222232] stroke-[#E2E8F0] dark:stroke-[#2E2E42]" stroke-width="1" />
@@ -1253,7 +1278,7 @@
                                     <g>
                                         <rect x="20" y="265" width="290" height="215" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
                                         <line x1="30" y1="265" x2="300" y2="265" class="stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="4" stroke-linecap="round" />
-                                        <text x="36" y="297" class="fill-[#111118] dark:fill-white font-mono font-bold text-[11.5px]">PATTERN D // RECIPE COMPLIANCE BADGE</text>
+                                        <text x="36" y="297" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11.5px]">PATTERN D // RECIPE COMPLIANCE BADGE</text>
                                         <text x="36" y="315" class="fill-[#64748B] dark:fill-[#94A3B8] text-[11px]">Applied in: Producer Portal, Consumer Meal View</text>
                                         
                                         <rect x="35" y="331" width="260" height="38" rx="6" class="fill-[#F1F5F9] dark:fill-[#222232] stroke-[#E2E8F0] dark:stroke-[#2E2E42]" stroke-width="1" />
@@ -1267,7 +1292,7 @@
                                     <g>
                                         <rect x="335" y="265" width="290" height="215" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
                                         <line x1="345" y1="265" x2="615" y2="265" class="stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="4" stroke-linecap="round" />
-                                        <text x="351" y="297" class="fill-[#111118] dark:fill-white font-mono font-bold text-[11.5px]">PATTERN E // SYSTEM OVERRIDE DIALOG</text>
+                                        <text x="351" y="297" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11.5px]">PATTERN E // SYSTEM OVERRIDE DIALOG</text>
                                         <text x="351" y="315" class="fill-[#64748B] dark:fill-[#94A3B8] text-[11px]">Applied in: Admin Control, Support Desk</text>
                                         
                                         <rect x="350" y="331" width="260" height="38" rx="6" class="fill-[#F1F5F9] dark:fill-[#222232] stroke-[#E2E8F0] dark:stroke-[#2E2E42]" stroke-width="1" />
@@ -1281,7 +1306,7 @@
                                     <g>
                                         <rect x="650" y="265" width="290" height="215" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
                                         <line x1="660" y1="265" x2="930" y2="265" class="stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="4" stroke-linecap="round" />
-                                        <text x="666" y="297" class="fill-[#111118] dark:fill-white font-mono font-bold text-[11.5px]">PATTERN F // DYNAMIC PACKAGING LABEL</text>
+                                        <text x="666" y="297" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11.5px]">PATTERN F // DYNAMIC PACKAGING LABEL</text>
                                         <text x="666" y="315" class="fill-[#64748B] dark:fill-[#94A3B8] text-[11px]">Applied in: Kitchen Print Engine, Physical Box</text>
                                         
                                         <rect x="665" y="331" width="260" height="38" rx="6" class="fill-[#F1F5F9] dark:fill-[#222232] stroke-[#E2E8F0] dark:stroke-[#2E2E42]" stroke-width="1" />
@@ -1298,14 +1323,14 @@
                             <!-- Collage 1: Previous Packaging & Dynamic Thermal Meal Label -->
                             <div class="w-full rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-5 sm:p-7 shadow-md cs-hover-card">
                                 <div class="mb-4">
-                                    <span class="text-[12px] sm:text-[13px] font-semibold text-white/90 font-mono tracking-wide uppercase">Previous Packaging &amp; Dynamic Thermal Meal Label</span>
+                                    <span class="text-[12px] sm:text-[13px] font-semibold text-white/90 font-caps tracking-[0.09em] uppercase font-bold">Previous Packaging &amp; Dynamic Thermal Meal Label</span>
                                 </div>
                                 <div class="w-full overflow-hidden rounded-xl bg-black/15 border border-white/10">
                                     <picture class="w-full block">
                                         <source srcset="/YT/Collage_Previous_Packaging.webp" type="image/webp" />
                                         <img src="/YT/Collage_Previous_Packaging.png" alt="Previous Physical Packaging &amp; Dynamic Thermal Meal Label" class="w-full h-auto object-contain transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
                                     </picture>
-                                    <div class="grid grid-cols-2 text-center py-2.5 px-3 bg-black/30 border-t border-white/10 text-[11px] sm:text-[11.5px] font-mono text-white/80 uppercase tracking-wider">
+                                    <div class="grid grid-cols-2 text-center py-2.5 px-3 bg-black/30 border-t border-white/10 text-[11px] sm:text-[11.5px] font-caps text-white/80 uppercase tracking-[0.09em] font-bold">
                                         <span class="truncate px-1">Previous Physical Packaging</span>
                                         <span class="truncate px-1">Dynamic Thermal Meal Label</span>
                                     </div>
@@ -1315,14 +1340,14 @@
                             <!-- Collage 2: Redesigned Packaging System & Packaging Form Factor & Seal -->
                             <div class="w-full rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-5 sm:p-7 shadow-md cs-hover-card">
                                 <div class="mb-4">
-                                    <span class="text-[12px] sm:text-[13px] font-semibold text-white/90 font-mono tracking-wide uppercase">Redesigned Packaging System &amp; Packaging Form Factor &amp; Seal</span>
+                                    <span class="text-[12px] sm:text-[13px] font-semibold text-white/90 font-caps tracking-[0.09em] uppercase font-bold">Redesigned Packaging System &amp; Packaging Form Factor &amp; Seal</span>
                                 </div>
                                 <div class="w-full overflow-hidden rounded-xl bg-black/15 border border-white/10">
                                     <picture class="w-full block">
                                         <source srcset="/YT/Collage_Redesigned_Packaging.webp" type="image/webp" />
                                         <img src="/YT/Collage_Redesigned_Packaging.png" alt="Redesigned Packaging Delivery Bag &amp; Packaging Form Factor &amp; Seal Detail" class="w-full h-auto object-contain transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
                                     </picture>
-                                    <div class="grid grid-cols-2 text-center py-2.5 px-3 bg-black/30 border-t border-white/10 text-[11px] sm:text-[11.5px] font-mono text-white/80 uppercase tracking-wider">
+                                    <div class="grid grid-cols-2 text-center py-2.5 px-3 bg-black/30 border-t border-white/10 text-[11px] sm:text-[11.5px] font-caps text-white/80 uppercase tracking-[0.09em] font-bold">
                                         <span class="truncate px-1">Redesigned Packaging Delivery Bag</span>
                                         <span class="truncate px-1">Packaging Form Factor &amp; Seal Detail</span>
                                     </div>
@@ -1339,7 +1364,7 @@
                             </div>
 
                             <div class="relative w-full mx-auto">
-                                <div class="text-[10px] uppercase font-mono tracking-wider text-[#2036B8] dark:text-[#8B95FF] text-center sm:hidden mb-2">
+                                <div class="font-caps text-[10px] tracking-[0.1em] text-[#2036B8] dark:text-[#8B95FF] text-center sm:hidden mb-2 font-bold">
                                     ← Scroll image to view full diagram →
                                 </div>
                                 <div class="w-full overflow-x-auto pb-2 scrollbar-thin">
@@ -1351,10 +1376,10 @@
                                     <path d="M 20 25 A 10 10 0 0 1 30 15 L 930 15 A 10 10 0 0 1 940 25 L 940 58 L 20 58 Z" class="fill-[#2036B8] dark:fill-[#5A6BFF]" />
 
                                     <!-- Header Column Titles -->
-                                    <text x="40" y="41" class="fill-white font-mono font-bold text-[11px] tracking-wider">TEST SCENARIO</text>
-                                    <text x="220" y="41" class="fill-white font-mono font-bold text-[11px] tracking-wider">SYSTEM EDGE CONDITION</text>
-                                    <text x="430" y="41" class="fill-white font-mono font-bold text-[11px] tracking-wider">EXPECTED BEHAVIOR</text>
-                                    <text x="825" y="41" class="fill-white font-mono font-bold text-[11px] tracking-wider">RESULT</text>
+                                    <text x="40" y="41" class="fill-white font-caps font-bold text-[11px] tracking-[0.09em]">TEST SCENARIO</text>
+                                    <text x="220" y="41" class="fill-white font-caps font-bold text-[11px] tracking-[0.09em]">SYSTEM EDGE CONDITION</text>
+                                    <text x="430" y="41" class="fill-white font-caps font-bold text-[11px] tracking-[0.09em]">EXPECTED BEHAVIOR</text>
+                                    <text x="825" y="41" class="fill-white font-caps font-bold text-[11px] tracking-[0.09em]">RESULT</text>
 
                                     <!-- ROW 1 -->
                                     <g>
@@ -1368,7 +1393,7 @@
                                         <text x="430" y="108" class="fill-[#2036B8] dark:fill-[#5A6BFF] font-semibold text-[12px]">Child safety takes priority over meal preference.</text>
 
                                         <rect x="815" y="80" width="85" height="32" rx="6" class="fill-[#2036B8] dark:fill-[#5A6BFF]" />
-                                        <text x="857.5" y="100.5" text-anchor="middle" class="fill-white font-mono font-bold text-[11px] tracking-wider">PASSED</text>
+                                        <text x="857.5" y="100.5" text-anchor="middle" class="fill-white font-caps font-bold text-[11px] tracking-[0.09em]">PASSED</text>
                                     </g>
 
                                     <line x1="20" y1="148" x2="940" y2="148" class="stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1" />
@@ -1385,7 +1410,7 @@
                                         <text x="430" y="198" class="fill-[#2036B8] dark:fill-[#5A6BFF] font-semibold text-[12px]">Prevents orders that cannot meet quality standards.</text>
 
                                         <rect x="815" y="170" width="85" height="32" rx="6" class="fill-[#2036B8] dark:fill-[#5A6BFF]" />
-                                        <text x="857.5" y="190.5" text-anchor="middle" class="fill-white font-mono font-bold text-[11px] tracking-wider">PASSED</text>
+                                        <text x="857.5" y="190.5" text-anchor="middle" class="fill-white font-caps font-bold text-[11px] tracking-[0.09em]">PASSED</text>
                                     </g>
 
                                     <line x1="20" y1="238" x2="940" y2="238" class="stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1" />
@@ -1402,7 +1427,7 @@
                                         <text x="430" y="288" class="fill-[#2036B8] dark:fill-[#5A6BFF] font-semibold text-[12px]">Routes to clinical ops dashboard for manual review.</text>
 
                                         <rect x="815" y="260" width="85" height="32" rx="6" class="fill-[#2036B8] dark:fill-[#5A6BFF]" />
-                                        <text x="857.5" y="280.5" text-anchor="middle" class="fill-white font-mono font-bold text-[11px] tracking-wider">PASSED</text>
+                                        <text x="857.5" y="280.5" text-anchor="middle" class="fill-white font-caps font-bold text-[11px] tracking-[0.09em]">PASSED</text>
                                     </g>
 
                                     <line x1="20" y1="328" x2="940" y2="328" class="stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1" />
@@ -1419,7 +1444,7 @@
                                         <text x="430" y="378" class="fill-[#2036B8] dark:fill-[#5A6BFF] font-semibold text-[12px]">Prevents service disruption to children or dependents.</text>
 
                                         <rect x="815" y="350" width="85" height="32" rx="6" class="fill-[#2036B8] dark:fill-[#5A6BFF]" />
-                                        <text x="857.5" y="370.5" text-anchor="middle" class="fill-white font-mono font-bold text-[11px] tracking-wider">PASSED</text>
+                                        <text x="857.5" y="370.5" text-anchor="middle" class="fill-white font-caps font-bold text-[11px] tracking-[0.09em]">PASSED</text>
                                     </g>
                                 </svg>
                                 </div>
@@ -1591,7 +1616,7 @@
                         researchHTML: `
                             <div class="w-full border border-[#2036B8] dark:border-[#5A6BFF] rounded-2xl bg-transparent p-5 sm:p-8 md:p-10 my-8 shadow-sm overflow-hidden">
                                 <div class="relative w-full mx-auto">
-                                    <div class="text-[10px] uppercase font-mono tracking-wider text-[#2036B8] dark:text-[#8B95FF] text-center sm:hidden mb-2">
+                                    <div class="font-caps text-[10px] tracking-[0.1em] text-[#2036B8] dark:text-[#8B95FF] text-center sm:hidden mb-2 font-bold">
                                         ← Scroll image to view full diagram →
                                     </div>
                                     <div class="w-full overflow-x-auto pb-2 scrollbar-thin">
@@ -1614,14 +1639,14 @@
                                             <!-- CENTER CIRCLE -->
                                             <g>
                                                 <circle cx="460" cy="270" r="62" class="fill-[#FFD025] stroke-[#FFD025]" stroke-width="2.5" />
-                                                <text x="460" y="264" text-anchor="middle" class="fill-black font-bold font-mono text-[13.5px] tracking-wider">KEY</text>
-                                                <text x="460" y="282" text-anchor="middle" class="fill-black font-bold font-mono text-[13.5px] tracking-wider">INSIGHTS</text>
+                                                <text x="460" y="264" text-anchor="middle" class="fill-black font-bold font-caps font-bold text-[13.5px] tracking-wider">KEY</text>
+                                                <text x="460" y="282" text-anchor="middle" class="fill-black font-bold font-caps font-bold text-[13.5px] tracking-wider">INSIGHTS</text>
                                             </g>
 
                                             <!-- CARD 1: COMMUNITY PARTNERS (Top Left) -->
                                             <g>
                                                 <rect x="50" y="30" width="220" height="100" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="66" y="52" class="fill-[#111118] dark:fill-white font-mono font-bold text-[11px] tracking-tight">COMMUNITY PARTNERS</text>
+                                                <text x="66" y="52" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11px] tracking-tight">COMMUNITY PARTNERS</text>
                                                 <text x="66" y="71" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">Community organizations</text>
                                                 <text x="66" y="86" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">working directly with</text>
                                                 <text x="66" y="101" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">Baltimore residents</text>
@@ -1636,7 +1661,7 @@
                                             <!-- CARD 2: WYPR INTERVIEWS (Mid Left) -->
                                             <g>
                                                 <rect x="30" y="220" width="220" height="100" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="46" y="242" class="fill-[#111118] dark:fill-white font-mono font-bold text-[11px] tracking-tight">WYPR INTERVIEWS</text>
+                                                <text x="46" y="242" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11px] tracking-tight">WYPR INTERVIEWS</text>
                                                 <text x="46" y="261" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">Public radio interviews</text>
                                                 <text x="46" y="276" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">with community members</text>
                                                 <text x="46" y="291" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">and organizers</text>
@@ -1650,7 +1675,7 @@
                                             <!-- CARD 3: COMMUNITY WORKSHOPS (Bottom Left) -->
                                             <g>
                                                 <rect x="50" y="410" width="220" height="100" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="66" y="432" class="fill-[#111118] dark:fill-white font-mono font-bold text-[11px] tracking-tight">COMMUNITY WORKSHOPS</text>
+                                                <text x="66" y="432" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11px] tracking-tight">COMMUNITY WORKSHOPS</text>
                                                 <text x="66" y="451" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">Feedback sessions with</text>
                                                 <text x="66" y="466" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">residents and community</text>
                                                 <text x="66" y="481" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">advocates</text>
@@ -1664,7 +1689,7 @@
                                             <!-- CARD 4: COMPETITIVE ANALYSIS (Bottom Center) -->
                                             <g>
                                                 <rect x="350" y="415" width="220" height="100" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="366" y="437" class="fill-[#111118] dark:fill-white font-mono font-bold text-[11px] tracking-tight">COMPETITIVE ANALYSIS</text>
+                                                <text x="366" y="437" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11px] tracking-tight">COMPETITIVE ANALYSIS</text>
                                                 <text x="366" y="460" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">3–4 civic engagement and</text>
                                                 <text x="366" y="478" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">environmental reporting apps</text>
                                                 <g transform="translate(532, 425)" class="text-[#2036B8] dark:text-[#5A6BFF]">
@@ -1676,7 +1701,7 @@
                                             <!-- CARD 5: APP STORE REVIEWS (Bottom Right) -->
                                             <g>
                                                 <rect x="650" y="410" width="220" height="100" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="666" y="432" class="fill-[#111118] dark:fill-white font-mono font-bold text-[11px] tracking-tight">APP STORE REVIEWS</text>
+                                                <text x="666" y="432" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11px] tracking-tight">APP STORE REVIEWS</text>
                                                 <text x="666" y="455" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">User feedback from</text>
                                                 <text x="666" y="473" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">existing product reviews</text>
                                                 <g transform="translate(832, 420)" class="text-[#2036B8] dark:text-[#5A6BFF]">
@@ -1688,7 +1713,7 @@
                                             <!-- CARD 6: ACCESSIBILITY AUDIT (Mid Right) -->
                                             <g>
                                                 <rect x="670" y="220" width="220" height="100" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="686" y="242" class="fill-[#111118] dark:fill-white font-mono font-bold text-[11px] tracking-tight">ACCESSIBILITY AUDIT</text>
+                                                <text x="686" y="242" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11px] tracking-tight">ACCESSIBILITY AUDIT</text>
                                                 <text x="686" y="265" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">WAVE audits and manual</text>
                                                 <text x="686" y="283" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">accessibility reviews</text>
                                                 <g transform="translate(852, 230)" class="text-[#2036B8] dark:text-[#5A6BFF]">
@@ -1700,7 +1725,7 @@
                                             <!-- CARD 7: ENGINEERING CONSTRAINTS (Top Right) -->
                                             <g>
                                                 <rect x="650" y="30" width="220" height="100" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="666" y="52" class="fill-[#111118] dark:fill-white font-mono font-bold text-[11px] tracking-tight">ENGINEERING CONSTRAINTS</text>
+                                                <text x="666" y="52" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11px] tracking-tight">ENGINEERING CONSTRAINTS</text>
                                                 <text x="666" y="75" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">Technical feasibility and</text>
                                                 <text x="666" y="93" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">implementation planning</text>
                                                 <g transform="translate(832, 40)" class="text-[#2036B8] dark:text-[#5A6BFF]">
@@ -1730,18 +1755,18 @@
                                     <!-- ORIGINAL EXPERIENCE BOX -->
                                     <div class="w-full rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-5 sm:p-8 space-y-4 shadow-md">
                                         <div class="flex items-center gap-2">
-                                            <span class="text-[13px] font-semibold text-white/90 font-mono tracking-wide">Original Experience</span>
+                                            <span class="text-[12px] font-caps font-bold text-white tracking-[0.09em] uppercase">Original Experience</span>
                                         </div>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 justify-items-center">
                                             <!-- Old Screen 1 -->
                                             <div class="p-3 flex flex-col justify-center items-center text-center space-y-2">
                                                 <img src="/MBC/O_OB.png" alt="My Block Counts Old Screen 1" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain transition-transform duration-300 hover:scale-[1.02]" loading="lazy" decoding="async" />
-                                                <span class="text-[11px] sm:text-[12px] text-white/70 font-mono leading-tight">Login Before Survey</span>
+                                                <span class="text-[11px] sm:text-[12px] text-white/80 font-sans font-medium leading-tight">Login Before Survey</span>
                                             </div>
                                             <!-- Old Screen 2 -->
                                             <div class="p-3 flex flex-col justify-center items-center text-center space-y-2">
                                                 <img src="/MBC/O_Survey.png" alt="My Block Counts Old Screen 2" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain transition-transform duration-300 hover:scale-[1.02]" loading="lazy" decoding="async" />
-                                                <span class="text-[11px] sm:text-[12px] text-white/70 font-mono leading-tight">Category Selection Without Context</span>
+                                                <span class="text-[11px] sm:text-[12px] text-white/80 font-sans font-medium leading-tight">Category Selection Without Context</span>
                                             </div>
                                         </div>
                                     </div>
@@ -1749,28 +1774,28 @@
                                     <!-- NEW ONBOARDING SEQUENCE BOX -->
                                     <div class="w-full rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-5 sm:p-8 space-y-4 shadow-md">
                                         <div class="flex items-center gap-2">
-                                            <span class="text-[13px] font-semibold text-white/90 font-mono tracking-wide">New Onboarding Sequence</span>
+                                            <span class="text-[12px] font-caps font-bold text-white tracking-[0.09em] uppercase">New Onboarding Sequence</span>
                                         </div>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 justify-items-center">
                                             <!-- New Screen 1 -->
                                             <div class="p-2 flex flex-col justify-center items-center text-center space-y-2 w-full">
-                                                <img src="/MBC/OB1.png" alt="My Block Counts New Screen 1" class="max-h-[340px] sm:max-h-[380px] w-auto object-contain transition-transform duration-300 hover:scale-[1.02]" loading="lazy" decoding="async" />
-                                                <span class="text-[11px] sm:text-[12px] text-white/70 font-mono leading-tight">Mission Introduction</span>
+                                                <img src="/MBC/OB1.webp" alt="My Block Counts New Screen 1" class="max-h-[340px] sm:max-h-[380px] w-auto object-contain transition-transform duration-300 hover:scale-[1.02]" loading="lazy" decoding="async" />
+                                                <span class="text-[11px] sm:text-[12px] text-white/80 font-sans font-medium leading-tight">Mission Introduction</span>
                                             </div>
                                             <!-- New Screen 2 -->
                                             <div class="p-2 flex flex-col justify-center items-center text-center space-y-2 w-full">
-                                                <img src="/MBC/OB2.png" alt="My Block Counts New Screen 2" class="max-h-[340px] sm:max-h-[380px] w-auto object-contain transition-transform duration-300 hover:scale-[1.02]" loading="lazy" decoding="async" />
-                                                <span class="text-[11px] sm:text-[12px] text-white/70 font-mono leading-tight">Community Observation</span>
+                                                <img src="/MBC/OB2.webp" alt="My Block Counts New Screen 2" class="max-h-[340px] sm:max-h-[380px] w-auto object-contain transition-transform duration-300 hover:scale-[1.02]" loading="lazy" decoding="async" />
+                                                <span class="text-[11px] sm:text-[12px] text-white/80 font-sans font-medium leading-tight">Community Observation</span>
                                             </div>
                                             <!-- New Screen 3 -->
                                             <div class="p-2 flex flex-col justify-center items-center text-center space-y-2 w-full">
-                                                <img src="/MBC/OB3.png" alt="My Block Counts New Screen 3" class="max-h-[340px] sm:max-h-[380px] w-auto object-contain transition-transform duration-300 hover:scale-[1.02]" loading="lazy" decoding="async" />
-                                                <span class="text-[11px] sm:text-[12px] text-white/70 font-mono leading-tight">Impact Framing</span>
+                                                <img src="/MBC/OB3.webp" alt="My Block Counts New Screen 3" class="max-h-[340px] sm:max-h-[380px] w-auto object-contain transition-transform duration-300 hover:scale-[1.02]" loading="lazy" decoding="async" />
+                                                <span class="text-[11px] sm:text-[12px] text-white/80 font-sans font-medium leading-tight">Impact Framing</span>
                                             </div>
                                             <!-- New Screen 4 -->
                                             <div class="p-2 flex flex-col justify-center items-center text-center space-y-2 w-full">
-                                                <img src="/MBC/OB4.png" alt="My Block Counts New Screen 4" class="max-h-[340px] sm:max-h-[380px] w-auto object-contain transition-transform duration-300 hover:scale-[1.02]" loading="lazy" decoding="async" />
-                                                <span class="text-[11px] sm:text-[12px] text-white/70 font-mono leading-tight">Oriented Entry</span>
+                                                <img src="/MBC/OB4.webp" alt="My Block Counts New Screen 4" class="max-h-[340px] sm:max-h-[380px] w-auto object-contain transition-transform duration-300 hover:scale-[1.02]" loading="lazy" decoding="async" />
+                                                <span class="text-[11px] sm:text-[12px] text-white/80 font-sans font-medium leading-tight">Oriented Entry</span>
                                             </div>
                                         </div>
                                     </div>
@@ -1788,13 +1813,13 @@
                                         <!-- BEFORE BLOCK -->
                                         <div class="p-3 flex flex-col justify-center items-center text-center space-y-2 w-full">
                                             <img src="/MBC/O_Questions.png" alt="My Block Counts Old Screen" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain transition-transform duration-300 hover:scale-[1.02]" loading="lazy" decoding="async" />
-                                            <span class="text-[11px] sm:text-[12px] text-white/70 font-mono leading-tight">Question-First Survey Layout</span>
+                                            <span class="text-[11px] sm:text-[12px] text-white/80 font-sans font-medium leading-tight">Question-First Survey Layout</span>
                                         </div>
 
                                         <!-- AFTER BLOCK -->
                                         <div class="p-3 flex flex-col justify-center items-center text-center space-y-2 w-full">
                                             <img src="/MBC/New_Questions.png" alt="My Block Counts New Screen" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain transition-transform duration-300 hover:scale-[1.02]" loading="lazy" decoding="async" />
-                                            <span class="text-[11px] sm:text-[12px] text-white/70 font-mono leading-tight">Contextual Progress & Visual Feedback</span>
+                                            <span class="text-[11px] sm:text-[12px] text-white/80 font-sans font-medium leading-tight">Contextual Progress & Visual Feedback</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1810,33 +1835,33 @@
                                     <div class="p-4 sm:p-6 rounded-xl bg-white/5 border border-white/15 space-y-6">
                                         <!-- ROW 1 -->
                                         <div class="space-y-3">
-                                            <div class="text-[11px] font-mono font-bold tracking-wider text-white/70 uppercase">
+                                            <div class="text-[10.5px] font-caps font-bold tracking-[0.09em] text-white/80 uppercase">
                                                 IF LANGUAGE IS JUST A FUNCTION
                                             </div>
                                             <div class="flex items-center justify-between w-full overflow-x-auto sm:overflow-x-visible pb-2 sm:pb-0 gap-1 sm:gap-2">
                                                 <!-- Step 1: Splash -->
-                                                <div class="flex-1 min-w-[70px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-white/15 bg-white/10 text-[11px] sm:text-[12px] font-mono font-semibold text-white text-center shadow-xs">
+                                                <div class="flex-1 min-w-[70px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-white/15 bg-white/10 text-[11px] sm:text-[12px] font-caps font-bold text-white text-center tracking-[0.04em] shadow-xs">
                                                     Splash
                                                 </div>
                                                 <div class="h-0.5 w-2 sm:w-3 md:w-5 bg-white/20 shrink-0"></div>
                                                 <!-- Step 2: Onboarding -->
-                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-white/15 bg-white/10 text-[11px] sm:text-[12px] font-mono font-semibold text-white text-center shadow-xs">
+                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-white/15 bg-white/10 text-[11px] sm:text-[12px] font-caps font-bold text-white text-center tracking-[0.04em] shadow-xs">
                                                     Onboarding
                                                 </div>
                                                 <div class="h-0.5 w-2 sm:w-3 md:w-5 bg-white/20 shrink-0"></div>
                                                 <!-- Step 3: Permissions -->
-                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-white/15 bg-white/10 text-[11px] sm:text-[12px] font-mono font-semibold text-white text-center shadow-xs">
+                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-white/15 bg-white/10 text-[11px] sm:text-[12px] font-caps font-bold text-white text-center tracking-[0.04em] shadow-xs">
                                                     Permissions
                                                 </div>
                                                 <div class="h-0.5 w-2 sm:w-3 md:w-5 bg-white/20 shrink-0"></div>
                                                 <!-- Step 4: Language (buried at step 4) -->
-                                                <div class="flex-1 min-w-[80px] sm:min-w-0 py-1.5 sm:py-2 px-1 sm:px-2 rounded-lg border-2 border-dashed border-red-400/80 bg-red-500/20 text-[11px] sm:text-[12px] font-mono font-bold text-red-200 text-center shadow-xs">
+                                                <div class="flex-1 min-w-[80px] sm:min-w-0 py-1.5 sm:py-2 px-1 sm:px-2 rounded-lg border-2 border-dashed border-red-400/80 bg-red-500/20 text-[11px] sm:text-[12px] font-caps font-bold text-red-200 text-center tracking-[0.04em] shadow-xs">
                                                     <div>Language</div>
                                                     <div class="text-[9px] sm:text-[9.5px] font-normal text-red-300 mt-0.5">buried at step 4</div>
                                                 </div>
                                                 <div class="h-0.5 w-2 sm:w-3 md:w-5 bg-white/20 shrink-0"></div>
                                                 <!-- Step 5: 45-Q Survey -->
-                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-white/15 bg-white/10 text-[11px] sm:text-[12px] font-mono font-semibold text-white text-center shadow-xs">
+                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-white/15 bg-white/10 text-[11px] sm:text-[12px] font-caps font-bold text-white text-center tracking-[0.04em] shadow-xs">
                                                     45-Q Survey
                                                 </div>
                                             </div>
@@ -1848,39 +1873,39 @@
                                         <!-- ROW 2 -->
                                         <div class="space-y-3">
                                             <div class="flex items-center justify-between">
-                                                <div class="text-[11px] font-mono font-bold tracking-wider text-[#FFD025] uppercase">
+                                                <div class="text-[10.5px] font-caps font-bold tracking-[0.09em] text-[#FFD025] uppercase">
                                                     IF LANGUAGE IS A TRUST SIGNAL
                                                 </div>
-                                                <span class="px-2.5 py-0.5 rounded-full bg-[#FFD025] text-[#0A0E27] font-mono font-bold text-[10px] tracking-wider uppercase">
+                                                <span class="px-2.5 py-0.5 rounded-full bg-[#FFD025] text-[#0A0E27] font-caps font-bold text-[10px] tracking-[0.08em] uppercase">
                                                     SHIPPED
                                                 </span>
                                             </div>
                                             <div class="flex items-center justify-between w-full overflow-x-auto sm:overflow-x-visible pb-2 sm:pb-0 gap-1 sm:gap-2">
                                                 <!-- Step 1: Language (step 1 · first interaction) -->
                                                 <div class="flex-1 min-w-[105px] sm:min-w-0 py-1.5 sm:py-2 px-1 sm:px-2 rounded-lg bg-[#FFD025]/20 border border-[#FFD025] text-center shadow-md">
-                                                    <div class="text-[11.5px] sm:text-[12.5px] font-mono font-bold text-white">Language</div>
-                                                    <div class="mt-1 inline-block px-1.5 py-0.5 rounded bg-[#FFD025]/30 border border-[#FFD025]/80 text-[#FFD025] text-[10px] sm:text-[10.5px] font-mono font-bold uppercase tracking-[0.06em] leading-snug">
+                                                    <div class="text-[11.5px] sm:text-[12px] font-caps font-bold text-white uppercase tracking-[0.06em]">Language</div>
+                                                    <div class="mt-1 inline-block px-1.5 py-0.5 rounded bg-[#FFD025]/30 border border-[#FFD025]/80 text-[#FFD025] text-[10px] sm:text-[10.5px] font-caps font-bold uppercase tracking-[0.08em] leading-snug">
                                                         step 1 &middot; first interaction
                                                     </div>
                                                 </div>
                                                 <div class="h-0.5 w-2 sm:w-3 md:w-5 bg-white/20 shrink-0"></div>
                                                 <!-- Step 2: Splash -->
-                                                <div class="flex-1 min-w-[70px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-white/15 bg-white/10 text-[11px] sm:text-[12px] font-mono font-semibold text-white text-center shadow-xs">
+                                                <div class="flex-1 min-w-[70px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-white/15 bg-white/10 text-[11px] sm:text-[12px] font-caps font-bold text-white text-center tracking-[0.04em] shadow-xs">
                                                     Splash
                                                 </div>
                                                 <div class="h-0.5 w-2 sm:w-3 md:w-5 bg-white/20 shrink-0"></div>
                                                 <!-- Step 3: Onboarding -->
-                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-white/15 bg-white/10 text-[11px] sm:text-[12px] font-mono font-semibold text-white text-center shadow-xs">
+                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-white/15 bg-white/10 text-[11px] sm:text-[12px] font-caps font-bold text-white text-center tracking-[0.04em] shadow-xs">
                                                     Onboarding
                                                 </div>
                                                 <div class="h-0.5 w-2 sm:w-3 md:w-5 bg-white/20 shrink-0"></div>
                                                 <!-- Step 4: Permissions -->
-                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-white/15 bg-white/10 text-[11px] sm:text-[12px] font-mono font-semibold text-white text-center shadow-xs">
+                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-white/15 bg-white/10 text-[11px] sm:text-[12px] font-caps font-bold text-white text-center tracking-[0.04em] shadow-xs">
                                                     Permissions
                                                 </div>
                                                 <div class="h-0.5 w-2 sm:w-3 md:w-5 bg-white/20 shrink-0"></div>
                                                 <!-- Step 5: 45-Q Survey -->
-                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-white/15 bg-white/10 text-[11px] sm:text-[12px] font-mono font-semibold text-white text-center shadow-xs">
+                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-white/15 bg-white/10 text-[11px] sm:text-[12px] font-caps font-bold text-white text-center tracking-[0.04em] shadow-xs">
                                                     45-Q Survey
                                                 </div>
                                             </div>
@@ -1900,13 +1925,13 @@
                                         <!-- OLD SCREEN 1 BLOCK -->
                                         <div class="p-3 flex flex-col justify-center items-center text-center space-y-2 w-full">
                                             <img src="/MBC/O_Survey.png" alt="My Block Counts Old Screen 1" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain transition-transform duration-300 hover:scale-[1.02]" loading="lazy" decoding="async" />
-                                            <span class="text-[11px] sm:text-[12px] text-white/70 font-mono leading-tight">Text-Only Category Grid</span>
+                                            <span class="text-[11px] sm:text-[12px] text-white/80 font-sans font-medium leading-tight">Text-Only Category Grid</span>
                                         </div>
 
                                         <!-- NEW SCREEN 1 BLOCK -->
                                         <div class="p-3 flex flex-col justify-center items-center text-center space-y-2 w-full">
                                             <img src="/MBC/New_Survey.png.png" alt="My Block Counts New Screen 1" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain transition-transform duration-300 hover:scale-[1.02]" loading="lazy" decoding="async" />
-                                            <span class="text-[11px] sm:text-[12px] text-white/70 font-mono leading-tight">Illustrated Category Grid</span>
+                                            <span class="text-[11px] sm:text-[12px] text-white/80 font-sans font-medium leading-tight">Illustrated Category Grid</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1951,7 +1976,7 @@
                 next: 'youtopia',
                 heroHTML: `
                     <div id="cs-hero-image" class="w-full rounded-2xl overflow-hidden mb-16 shadow-2xl aspect-[16/9] min-h-[280px] sm:min-h-[360px] border border-white/20 bg-white/10 backdrop-blur-md">
-                        <img src="/JT/J_Hero.png" alt="Justickets Hero Image" class="w-full h-full object-cover" loading="eager" decoding="async" />
+                        <img src="/JT/J_Hero.webp" alt="Justickets Hero Image" class="w-full h-full object-cover" loading="eager" decoding="async" />
                     </div>
                 `,
                 content: {
@@ -1981,28 +2006,28 @@
                             title: "BEFORE / AFTER SEAT SELECTION AND PAYMENT",
                             body: "This became the system's reference standard because it was the highest-stakes, most-repeated pattern in the app. Before: Inconsistent spacing and unclear seat states created friction at checkout the exact moment users were closest to abandoning if something felt uncertain. After: Defined and standardized four explicit seat states available, selected, reserved, blocked with consistent spacing and hierarchy carried through the entire booking flow. One more product decision, not just a component one: food & beverage ordering could have shipped as its own ecommerce-style flow, separate from ticket booking. I chose to fold it into checkout using the same component patterns as the rest of the app instead so buying snacks felt like one more step in getting your ticket, not a second app bolted onto the first.",
                             impact: "IMPACT: STANDARDIZED 4 SEAT STATES & INTEGRATED FOOD & BEVERAGE ORDERING INTO CHECKOUT FLOW.",
-                            image: "/JT/JT_Seat.png"
+                            image: "/JT/JT_Seat.webp"
                         },
                         {
                             num: "DECISION 02",
                             title: "FOOD & BEVERAGE: ECOMMERCE FLOW, OR PART OF TICKET BOOKING?",
                             body: "Food & beverage ordering could have shipped as its own ecommerce-style flow, separate from ticket booking. I chose to fold it into checkout using the same component patterns as the rest of the app instead, so buying snacks felt like one more step in getting your ticket, not a second app bolted onto the first.",
                             impact: "IMPACT: INTEGRATED FOOD & BEVERAGE DIRECTLY INTO CHECKOUT FLOW USING SHARED COMPONENT PATTERNS.",
-                            image: "/JT/JT_Food.png"
+                            image: "/JT/JT_Food.webp"
                         },
                         {
                             num: "DECISION 03",
                             title: "PAYMENT: BUILD A NEW PATTERN, OR EXTEND THE SEAT-SELECTION SYSTEM?",
                             body: "The payment summary screen was built on the same component base established by seat selection: buttons, inputs, spacing, hierarchy, rather than starting from zero the way every prior feature had before the system existed. This was the proof that the system worked: the highest-friction screen in the app inherited stability from a decision made two screens earlier.",
                             impact: "IMPACT: UNIFIED PAYMENT SUMMARY SCREEN BUILT ON SHARED SYSTEM COMPONENT BASE.",
-                            image: "/JT/JT_Payment.png"
+                            image: "/JT/JT_Payment.webp"
                         },
                         {
                             num: "DECISION 04",
                             title: "OFFERS & PROMOTIONS: INTERRUPT CHECKOUT, OR SUPPORT IT?",
                             body: "Offers needed to slot into the booking flow without competing with the checkout task the user was already mid-way through. Built using the same component standards as seat selection and payment, so a promotional moment felt like part of the same product, not an ad breaking the flow.",
                             impact: "IMPACT: SLOTTED PROMOTIONS INTO CHECKOUT FLOW WITH SHARED DESIGN STANDARDS.",
-                            image: "/JT/JT_Offers.png"
+                            image: "/JT/JT_Offers.webp"
                         }
                     ],
                     systemTitle: "Execution",
@@ -2032,7 +2057,7 @@
             // 1. CONTEXT
             sections.push(`
                 <section id="sec-context" class="space-y-4 cs-reveal scroll-mt-12">
-                    <span class="text-[11px] sm:text-[11.5px] uppercase tracking-[0.2em] font-mono text-[#86868B] block mb-1 font-bold">CONTEXT</span>
+                    <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] block mb-1 font-bold">CONTEXT</span>
                     <h2 class="font-display text-[26px] sm:text-[34px] md:text-[38px] font-bold text-[#1D1D1F] tracking-tight uppercase">THE CONTEXT</h2>
                     <p class="text-[15px] sm:text-[16px] md:text-[16.5px] leading-[1.72] text-[#333336] w-full font-normal">
                         ${data.context}
@@ -2043,7 +2068,7 @@
             // 2. PROBLEM DEFINITION
             let problemPointsHTML = data.problem.points.map((pt, idx) => `
                 <div class="px-5 py-4 sm:px-8 sm:py-5 text-[14.5px] sm:text-[15.5px] md:text-[16px] leading-[1.65] text-[#1D1D1F] flex items-start gap-4 sm:gap-6 hover:bg-black/[0.02] transition-colors duration-150 font-normal cursor-default group">
-                    <span class="font-mono text-[13.5px] sm:text-[14.5px] md:text-[15px] font-bold text-[#86868B] shrink-0 min-w-[28px] sm:min-w-[34px] pt-0.5">0${idx + 1}.</span>
+                    <span class="font-caps text-[12px] sm:text-[13px] font-bold text-[#86868B] shrink-0 min-w-[28px] sm:min-w-[32px] pt-0.5 tracking-[0.05em]">0${idx + 1}.</span>
                     <span class="break-words flex-1">${pt}</span>
                 </div>
             `).join('');
@@ -2053,7 +2078,7 @@
             sections.push(`
                 <section id="sec-problem" class="space-y-5 sm:space-y-6 cs-reveal scroll-mt-12">
                     <div class="space-y-2 sm:space-y-3">
-                        <span class="text-[11px] sm:text-[11.5px] uppercase tracking-[0.2em] font-mono text-[#86868B] block mb-1 font-bold">THE PROBLEM</span>
+                        <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] block mb-1 font-bold">THE PROBLEM</span>
                         <h2 class="font-display text-[26px] sm:text-[34px] md:text-[38px] font-bold text-[#1D1D1F] tracking-tight uppercase">PROBLEM DEFINITION</h2>
                         <p class="text-[15px] sm:text-[16.5px] md:text-[17px] font-medium leading-[1.68] text-[#333336] w-full">
                             ${data.problem.headline}
@@ -2090,7 +2115,7 @@
 
             sections.push(`
                 <section id="sec-research" class="space-y-4 cs-reveal scroll-mt-12">
-                    <span class="text-[11px] sm:text-[11.5px] uppercase tracking-[0.2em] font-mono text-[#86868B] block mb-1 font-bold">RESEARCH</span>
+                    <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] block mb-1 font-bold">RESEARCH</span>
                     <h2 class="font-display text-[26px] sm:text-[34px] md:text-[38px] font-bold text-[#1D1D1F] tracking-tight uppercase">${researchTitle}</h2>
                     <div>
                         ${researchParagraphs}
@@ -2116,7 +2141,7 @@
 
                 sections.push(`
                     <section id="sec-strategy" class="pt-2 sm:pt-4 pb-2 cs-reveal scroll-mt-12">
-                        <span class="text-[11px] sm:text-[11.5px] uppercase tracking-[0.2em] font-mono text-[#86868B] block mb-1 font-bold">STRATEGY</span>
+                        <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] block mb-1 font-bold">STRATEGY</span>
                         <h2 class="font-display text-[26px] sm:text-[34px] md:text-[38px] font-bold leading-[1.08] text-[#1D1D1F] mb-8 sm:mb-12 tracking-tight uppercase">
                             DESIGN STRATEGY
                         </h2>
@@ -2143,7 +2168,7 @@
                             <!-- Decision Text & Impact (Top) -->
                             <div class="space-y-4 sm:space-y-6 w-full">
                                 <div>
-                                    <div class="font-mono text-[#86868B] text-[11.5px] sm:text-[12.5px] md:text-[13px] tracking-[0.15em] uppercase font-bold mb-2 sm:mb-3">
+                                    <div class="font-caps text-[#86868B] text-[11px] sm:text-[11.5px] tracking-[0.12em] font-bold mb-2 sm:mb-3">
                                         ${dec.num}
                                     </div>
                                     <h3 class="font-display font-bold text-[22px] sm:text-[26px] md:text-[30px] leading-[1.2] text-[#1D1D1F] uppercase mb-4 sm:mb-6">
@@ -2155,7 +2180,7 @@
                                 </div>
                                 ${dec.impact ? `
                                 <div class="inline-block border border-black/[0.08] bg-[#F5F5F7] rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 mt-2 sm:mt-4 w-full">
-                                    <span class="text-[#1D1D1F] text-[11.5px] sm:text-[12.5px] md:text-[13px] font-mono font-bold tracking-[0.05em] uppercase leading-snug block">
+                                    <span class="text-[#1D1D1F] text-[11px] sm:text-[11.5px] font-caps font-bold tracking-[0.08em] leading-snug block">
                                         ${dec.impact}
                                     </span>
                                 </div>
@@ -2179,9 +2204,9 @@
                                 <!-- Left Column (6 Cols): Content & Impact -->
                                 <div class="lg:col-span-6 flex flex-col justify-between h-full space-y-4 sm:space-y-6">
                                     <div>
-                                        <div class="font-mono text-[#86868B] text-[11.5px] sm:text-[12.5px] md:text-[13px] tracking-[0.15em] uppercase font-bold mb-2 sm:mb-3">
-                                            ${dec.num}
-                                        </div>
+                                        <div class="font-caps text-[#86868B] text-[11px] sm:text-[11.5px] tracking-[0.12em] font-bold mb-2 sm:mb-3">
+                                        ${dec.num}
+                                    </div>
                                         <h3 class="font-display font-bold text-[22px] sm:text-[26px] md:text-[30px] leading-[1.2] text-[#1D1D1F] uppercase mb-4 sm:mb-6">
                                             ${dec.title}
                                         </h3>
@@ -2191,7 +2216,7 @@
                                     </div>
                                     ${dec.impact ? `
                                     <div class="inline-block border border-black/[0.08] bg-[#F5F5F7] rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 mt-4 sm:mt-6 w-full">
-                                        <span class="text-[#1D1D1F] text-[11.5px] sm:text-[12.5px] md:text-[13px] font-mono font-bold tracking-[0.05em] uppercase leading-snug block">
+                                        <span class="text-[#1D1D1F] text-[11px] sm:text-[11.5px] font-caps font-bold tracking-[0.08em] leading-snug block">
                                             ${dec.impact}
                                         </span>
                                     </div>
@@ -2219,7 +2244,9 @@
                 return `
                     <div class="space-y-4 sm:space-y-6 w-full cs-reveal">
                         <div>
-                            <div class="font-mono text-[#86868B] text-[11.5px] sm:text-[12.5px] md:text-[13px] tracking-[0.15em] uppercase font-bold mb-1.5 sm:mb-2">${dec.num}</div>
+                            <div class="font-caps text-[#86868B] text-[11px] sm:text-[11.5px] tracking-[0.12em] font-bold mb-2 sm:mb-3">
+                                        ${dec.num}
+                                    </div>
                             <h3 class="font-display font-bold text-[20px] sm:text-[24px] md:text-[28px] leading-[1.25] text-[#1D1D1F] mb-2 sm:mb-3">
                                 ${dec.title}
                             </h3>
@@ -2228,7 +2255,7 @@
                             </div>
                             ${dec.impact ? `
                             <div class="inline-block border border-black/[0.08] bg-[#F5F5F7] rounded-xl px-3.5 py-2.5 sm:px-4 sm:py-3 mt-3">
-                                <span class="text-[#1D1D1F] text-[11px] sm:text-[12px] md:text-[12.5px] font-mono font-bold tracking-[0.05em] uppercase leading-snug block">
+                                <span class="text-[#1D1D1F] text-[11px] sm:text-[11.5px] font-caps font-bold tracking-[0.08em] leading-snug block">
                                     ${dec.impact}
                                 </span>
                             </div>
@@ -2244,7 +2271,7 @@
             sections.push(`
                 <section id="sec-decisions" class="space-y-6 sm:space-y-12 cs-reveal scroll-mt-12">
                     <div>
-                        <span class="text-[11px] sm:text-[11.5px] uppercase tracking-[0.2em] font-mono text-[#86868B] block mb-1 font-bold">KEY DECISIONS</span>
+                        <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] block mb-1 font-bold">KEY DECISIONS</span>
                         <h2 class="font-display text-[26px] sm:text-[34px] md:text-[38px] font-bold text-[#1D1D1F] tracking-tight uppercase">KEY DESIGN DECISIONS</h2>
                     </div>
                     <div class="space-y-10 sm:space-y-16 w-full">
@@ -2259,7 +2286,7 @@
             let sysCard = data.systemHTML ? data.systemHTML : (data.systemPlaceholder ? `<div class="image-placeholder-card cs-hover-card">${data.systemPlaceholder}</div>` : '');
             sections.push(`
                 <section id="sec-system" class="space-y-4 cs-reveal scroll-mt-12">
-                    <span class="text-[11px] sm:text-[11.5px] uppercase tracking-[0.2em] font-mono text-[#86868B] block mb-1 font-bold">SYSTEM &amp; EXECUTION</span>
+                    <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] block mb-1 font-bold">SYSTEM &amp; EXECUTION</span>
                     <h2 class="font-display text-[26px] sm:text-[34px] md:text-[38px] font-bold text-[#1D1D1F] tracking-tight uppercase">${systemTitle}</h2>
                     <p class="text-[14.5px] sm:text-[15.5px] md:text-[16.5px] leading-[1.7] text-[#333336] w-full font-normal">
                         ${data.system}
@@ -2273,7 +2300,7 @@
                 let valCard = data.validationHTML ? data.validationHTML : (data.validationPlaceholder ? `<div class="image-placeholder-card cs-hover-card">${data.validationPlaceholder}</div>` : '');
                 sections.push(`
                     <section id="sec-validation" class="space-y-4 cs-reveal scroll-mt-12">
-                        <span class="text-[11px] sm:text-[11.5px] uppercase tracking-[0.2em] font-mono text-[#86868B] block mb-1 font-bold">VALIDATION</span>
+                        <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] block mb-1 font-bold">VALIDATION</span>
                         <h2 class="font-display text-[26px] sm:text-[32px] md:text-[38px] font-bold text-[#1D1D1F] tracking-tight uppercase">VALIDATION</h2>
                         <p class="text-[14.5px] sm:text-[15.5px] md:text-[16.5px] leading-[1.7] text-[#333336] w-full font-normal">
                             ${data.validation}
@@ -2284,10 +2311,10 @@
             }
 
             // 8. OUTCOME
-            let outcomeSubtext = data.outcome.subtext ? `<p class="text-[11.5px] sm:text-[12.5px] md:text-[13px] uppercase tracking-[0.2em] font-mono text-[#86868B] font-bold">${data.outcome.subtext}</p>` : '';
+            let outcomeSubtext = data.outcome.subtext ? `<p class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.12em] text-[#86868B] font-bold">${data.outcome.subtext}</p>` : '';
             let outcomePointsHTML = data.outcome.points.map((pt, idx) => `
                 <div class="px-5 py-4 sm:px-8 sm:py-5 text-[14.5px] sm:text-[15.5px] md:text-[16px] leading-[1.65] text-[#1D1D1F] flex items-start gap-4 sm:gap-6 hover:bg-black/[0.02] transition-colors duration-150 font-normal cursor-default group">
-                    <span class="font-mono text-[13.5px] sm:text-[14.5px] md:text-[15px] font-bold text-[#86868B] shrink-0 min-w-[28px] sm:min-w-[34px] pt-0.5">0${idx + 1}.</span>
+                    <span class="font-caps text-[12px] sm:text-[13px] font-bold text-[#86868B] shrink-0 min-w-[28px] sm:min-w-[32px] pt-0.5 tracking-[0.05em]">0${idx + 1}.</span>
                     <span class="break-words flex-1">${pt}</span>
                 </div>
             `).join('');
@@ -2295,7 +2322,7 @@
             sections.push(`
                 <section id="sec-outcome" class="space-y-4 sm:space-y-5 cs-reveal scroll-mt-12">
                     <div class="space-y-1.5 sm:space-y-2">
-                        <span class="text-[11px] sm:text-[11.5px] uppercase tracking-[0.2em] font-mono text-[#86868B] block mb-1 font-bold">OUTCOME</span>
+                        <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] block mb-1 font-bold">OUTCOME</span>
                         <h2 class="font-display text-[26px] sm:text-[34px] md:text-[38px] font-bold text-[#1D1D1F] tracking-tight uppercase">OUTCOME</h2>
                         ${outcomeSubtext}
                     </div>
@@ -2309,7 +2336,7 @@
             let reflectionCard = data.reflectionHTML ? data.reflectionHTML : (data.reflectionPlaceholder ? `<div class="image-placeholder-card cs-hover-card">${data.reflectionPlaceholder}</div>` : '');
             sections.push(`
                 <section id="sec-reflection" class="space-y-4 cs-reveal scroll-mt-12">
-                    <span class="text-[11px] sm:text-[11.5px] uppercase tracking-[0.2em] font-mono text-[#86868B] block mb-1 font-bold">REFLECTION</span>
+                    <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] block mb-1 font-bold">REFLECTION</span>
                     <h2 class="font-display text-[26px] sm:text-[34px] md:text-[38px] font-bold text-[#1D1D1F] tracking-tight uppercase">REFLECTION</h2>
                     <p class="text-[14.5px] sm:text-[15.5px] md:text-[16.5px] leading-[1.7] text-[#333336] w-full font-normal">
                         ${data.reflection}
@@ -2321,15 +2348,15 @@
             // 10. OWNERSHIP
             sections.push(`
                 <section id="sec-ownership" class="space-y-5 sm:space-y-6 cs-reveal scroll-mt-12">
-                    <span class="text-[11px] sm:text-[11.5px] uppercase tracking-[0.2em] font-mono text-[#86868B] block mb-1 font-bold">OWNERSHIP</span>
+                    <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] block mb-1 font-bold">OWNERSHIP</span>
                     <h2 class="font-display text-[26px] sm:text-[34px] md:text-[38px] font-bold text-[#1D1D1F] tracking-tight uppercase">OWNERSHIP</h2>
                     <div class="rounded-[24px] sm:rounded-[28px] border border-black/[0.08] bg-white p-6 sm:p-8 space-y-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] w-full cs-hover-card">
                         <div>
-                            <span class="text-[11px] sm:text-[11.5px] uppercase tracking-[0.2em] font-mono text-[#86868B] font-bold block mb-1.5">I LED</span>
+                            <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] font-bold block mb-1.5">I LED</span>
                             <p class="text-[14px] sm:text-[15px] md:text-[15.5px] leading-[1.68] text-[#1D1D1F] font-normal">${data.ownership.led}</p>
                         </div>
                         <div>
-                            <span class="text-[11px] sm:text-[11.5px] uppercase tracking-[0.2em] font-mono text-[#86868B] font-bold block mb-1.5">CO-DEFINED</span>
+                            <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] font-bold block mb-1.5">CO-DEFINED</span>
                             <p class="text-[14px] sm:text-[15px] md:text-[15.5px] leading-[1.68] text-[#1D1D1F] font-normal">${data.ownership.codefined}</p>
                         </div>
                     </div>
@@ -2451,7 +2478,7 @@
                 const tocNav = document.getElementById('cs-sidebar-toc');
                 if (tocNav) {
                     tocNav.innerHTML = `
-                        <div class="text-[11px] font-mono text-[#86868B] tracking-wider uppercase py-2">
+                        <div class="font-caps text-[11px] text-[#86868B] tracking-[0.14em] font-bold py-2">
                             PROTECTED
                         </div>
                     `;
@@ -2485,7 +2512,7 @@
                 `;
                 tocItems.forEach((item, idx) => {
                     tocHTML += `
-                        <a href="#${item.id}" data-toc-target="${item.id}" class="cs-toc-item group flex items-center gap-3 py-1 text-[11px] font-medium tracking-[0.16em] uppercase transition-colors cursor-pointer ${idx === 0 ? 'active' : ''}">
+                        <a href="#${item.id}" data-toc-target="${item.id}" class="cs-toc-item group flex items-center gap-3 py-1 font-caps text-[11px] font-bold tracking-[0.12em] transition-colors cursor-pointer ${idx === 0 ? 'active' : ''}">
                             <span class="cs-toc-dot shrink-0" aria-hidden="true"></span>
                             <span class="cs-toc-text truncate transition-all">${item.label}</span>
                         </a>
@@ -2512,8 +2539,8 @@
             if (ndaElem) {
                 if (project.content && project.content.ndaNotice) {
                     ndaElem.innerHTML = `
-                        <div class="p-5 sm:p-6 rounded-[22px] border border-amber-200/80 bg-amber-50/70 text-[13.5px] md:text-[14px] text-amber-950 w-full font-mono shadow-[0_2px_8px_rgba(0,0,0,0.02)] font-medium cs-hover-card">
-                            <span class="font-bold text-amber-800 uppercase tracking-wider">NDA Note:</span> ${project.content.ndaNotice}
+                        <div class="p-5 sm:p-6 rounded-[22px] border border-amber-200/80 bg-amber-50/70 text-[13.5px] md:text-[14px] text-amber-950 w-full font-sans shadow-[0_2px_8px_rgba(0,0,0,0.02)] font-normal cs-hover-card">
+                            <span class="font-caps font-bold text-amber-800 tracking-[0.09em]">NDA NOTE:</span> ${project.content.ndaNotice}
                         </div>
                     `;
                     ndaElem.classList.remove('hidden');
@@ -2552,8 +2579,9 @@
             const progressBar = document.getElementById('cs-scroll-progress');
             if (!progressBar) return;
 
-            const scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollTop = window.scrollY || (document.documentElement ? document.documentElement.scrollTop : 0) || (document.body ? document.body.scrollTop : 0) || 0;
+            const docEl = document.documentElement || document.body;
+            const docHeight = docEl ? (docEl.scrollHeight - window.innerHeight) : 0;
 
             if (docHeight <= 0) {
                 progressBar.style.width = '0%';
@@ -2577,6 +2605,7 @@
         window.addEventListener('scroll', onScrollProgress, { passive: true });
         window.addEventListener('resize', onScrollProgress, { passive: true });
         window.addEventListener('load', updateScrollProgress);
+        window.addEventListener('popstate', renderCaseStudy);
 
         let scrollRevealObserver = null;
 

@@ -208,16 +208,19 @@ export function HoverMaskCutout() {
       className="relative overflow-hidden w-[240px] sm:w-[290px] md:w-[350px] lg:w-[400px] xl:w-[430px] max-w-full select-none shrink-0 leading-none flex items-end"
     >
       {/* Base Cutout Portrait */}
-      <img
-        src="/Home/cutout.png"
-        alt="Kay portrait cutout"
-        className="w-full h-auto max-h-[50svh] sm:max-h-[54svh] md:max-h-[72svh] lg:max-h-[78svh] object-contain object-bottom block pointer-events-none select-none"
-        width={900}
-        height={1100}
-        loading="eager"
-        fetchPriority="high"
-        decoding="async"
-      />
+      <picture className="w-full h-auto max-h-[50svh] sm:max-h-[54svh] md:max-h-[72svh] lg:max-h-[78svh] block pointer-events-none select-none">
+        <source srcSet="/Home/cutout.webp" type="image/webp" />
+        <img
+          src="/Home/cutout.webp"
+          alt="Kay portrait cutout"
+          className="w-full h-auto max-h-[50svh] sm:max-h-[54svh] md:max-h-[72svh] lg:max-h-[78svh] object-contain object-bottom block pointer-events-none select-none"
+          width={900}
+          height={1100}
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+        />
+      </picture>
 
       {/* Crazy Hover Mask Reveal in Framer effect on top in blue bg color (#3275b4) that reveals the image on hover */}
       <svg

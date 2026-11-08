@@ -10,11 +10,11 @@ export interface PhotoItem {
   zIndex: number;
 }
 
-// 6 curated life and moment photos
+// 6 curated life and moment photos (using optimized WebP)
 export const PEEK_PHOTOS: PhotoItem[] = [
   {
     id: 'ph2',
-    src: '/Home/Ph2.JPG',
+    src: '/Home/Ph2.webp',
     alt: 'Kay life moment 2',
     defaultRotate: -6,
     hoverRotate: -1,
@@ -22,7 +22,7 @@ export const PEEK_PHOTOS: PhotoItem[] = [
   },
   {
     id: 'ph4',
-    src: '/Home/Ph4.png',
+    src: '/Home/Ph4.webp',
     alt: 'Kay life moment 4',
     defaultRotate: 5,
     hoverRotate: 1,
@@ -30,7 +30,7 @@ export const PEEK_PHOTOS: PhotoItem[] = [
   },
   {
     id: 'ph3',
-    src: '/Home/Ph3.png',
+    src: '/Home/Ph3.webp',
     alt: 'Kay life moment 3',
     defaultRotate: -4.5,
     hoverRotate: -0.5,
@@ -38,7 +38,7 @@ export const PEEK_PHOTOS: PhotoItem[] = [
   },
   {
     id: 'ph6',
-    src: '/Home/Ph6.png',
+    src: '/Home/Ph6.webp',
     alt: 'Kay life moment 6',
     defaultRotate: 5.5,
     hoverRotate: 1,
@@ -46,7 +46,7 @@ export const PEEK_PHOTOS: PhotoItem[] = [
   },
   {
     id: 'ph1',
-    src: '/Home/Ph1.jpg',
+    src: '/Home/Ph1.webp',
     alt: 'Kay life moment 1',
     defaultRotate: -5,
     hoverRotate: -0.5,
@@ -54,7 +54,7 @@ export const PEEK_PHOTOS: PhotoItem[] = [
   },
   {
     id: 'ph5',
-    src: '/Home/Ph5.png',
+    src: '/Home/Ph5.webp',
     alt: 'Kay life moment 5',
     defaultRotate: 6,
     hoverRotate: 1.5,
