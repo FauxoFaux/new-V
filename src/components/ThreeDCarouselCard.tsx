@@ -4,20 +4,21 @@ interface ThreeDCarouselCardProps {
   children: React.ReactNode;
   scrollContainerRef?: React.RefObject<HTMLDivElement | null>;
   className?: string;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 /**
  * ThreeDCarouselCard - Positions work cards in a true 3D Perspective Horizontal Carousel.
  * Active strictly on desktop screens (>= 1024px) with horizontal scroll.
- * - Center card: faces viewer directly (rotateY: 0deg, scale: 1, translateZ: 0px).
- * - Left/right cards: smooth 3D perspective yaw (rotateY) angled toward the viewer,
- *   receding naturally in Z-space.
+ * - Center card: faces viewer directly (rotateY: 0deg, scale: 1).
+ * - Left/right cards: smooth 3D perspective yaw (rotateY) angled toward the viewer.
  * - Smaller screens (< 1024px): completely disabled, standard flat responsive layout.
  */
 export const ThreeDCarouselCard: React.FC<ThreeDCarouselCardProps> = ({
   children,
   scrollContainerRef,
   className = '',
+  onClick,
 }) => {
   const outerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
@@ -62,16 +63,16 @@ export const ThreeDCarouselCard: React.FC<ThreeDCarouselCardProps> = ({
       const factor = Math.max(-1, Math.min(1, dist / maxDist));
 
       // Perspective yaw: left cards rotate right (positive), right cards rotate left (negative)
-      const maxRotateY = 18; // degrees
+      const maxRotateY = 14; // degrees
       const rotateY = -factor * maxRotateY;
 
       // Recedes back in Z-space as card moves away from center
       const absFactor = Math.abs(factor);
-      const translateZ = -absFactor * 120; // px
-      const scale = Math.max(0.93, 1 - absFactor * 0.08);
-      const opacity = Math.max(0.88, 1 - absFactor * 0.16);
+      const translateZ = -absFactor * 80; // px
+      const scale = Math.max(0.95, 1 - absFactor * 0.06);
+      const opacity = Math.max(0.92, 1 - absFactor * 0.12);
 
-      innerRef.current.style.transform = `perspective(1200px) translate3d(0, 0, ${translateZ.toFixed(1)}px) rotateY(${rotateY.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+      innerRef.current.style.transform = `translate3d(0, 0, ${translateZ.toFixed(1)}px) rotateY(${rotateY.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
       innerRef.current.style.opacity = opacity.toFixed(3);
 
       // Elevate center card z-index so neighboring 3D perspective cards never obstruct clicks
@@ -109,7 +110,7 @@ export const ThreeDCarouselCard: React.FC<ThreeDCarouselCardProps> = ({
   // For mobile & tablet screens: standard responsive layout without 3D perspective
   if (!isDesktop) {
     return (
-      <div ref={outerRef} className={`w-full ${className}`}>
+      <div ref={outerRef} onClick={onClick} className={`w-full ${className}`}>
         <div ref={innerRef} className="w-full h-full">
           {children}
         </div>
@@ -121,17 +122,16 @@ export const ThreeDCarouselCard: React.FC<ThreeDCarouselCardProps> = ({
   return (
     <div
       ref={outerRef}
+      onClick={onClick}
       className={`relative shrink-0 overflow-visible cursor-pointer ${className}`}
       style={{
         perspective: '1200px',
-        transformStyle: 'preserve-3d',
       }}
     >
       <div
         ref={innerRef}
         className="w-full h-full overflow-visible transition-[opacity,transform] duration-75 ease-out"
         style={{
-          transformStyle: 'preserve-3d',
           transformOrigin: '50% 50%',
           backfaceVisibility: 'hidden',
           willChange: 'transform, opacity',

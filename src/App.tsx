@@ -52,8 +52,12 @@ export default function App() {
   const handleCardClick = (e: React.MouseEvent, projectId: string) => {
     if (e.metaKey || e.ctrlKey || e.shiftKey) return;
     e.preventDefault();
-    e.stopPropagation();
-    window.location.href = `/case-study.html?project=${projectId}`;
+    const targetUrl = `/case-study.html?project=${projectId}`;
+    try {
+      window.location.assign(targetUrl);
+    } catch {
+      window.location.href = targetUrl;
+    }
   };
 
   // Close mobile menu on desktop resize
@@ -581,7 +585,10 @@ export default function App() {
           >
             {/* PROJECT 1: YOUTOPIA */}
             <div className="w-full max-w-xl mx-auto lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
-              <ThreeDCarouselCard scrollContainerRef={horizontalScrollRef}>
+              <ThreeDCarouselCard
+                scrollContainerRef={horizontalScrollRef}
+                onClick={(e) => handleCardClick(e, 'youtopia')}
+              >
                 <motion.div
                   initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -629,7 +636,10 @@ export default function App() {
 
             {/* PROJECT 2: JUSTICKETS */}
             <div className="w-full max-w-xl mx-auto lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
-              <ThreeDCarouselCard scrollContainerRef={horizontalScrollRef}>
+              <ThreeDCarouselCard
+                scrollContainerRef={horizontalScrollRef}
+                onClick={(e) => handleCardClick(e, 'justickets')}
+              >
                 <motion.div
                   initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -674,7 +684,10 @@ export default function App() {
 
             {/* PROJECT 3: REVLR */}
             <div className="w-full max-w-xl mx-auto lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
-              <ThreeDCarouselCard scrollContainerRef={horizontalScrollRef}>
+              <ThreeDCarouselCard
+                scrollContainerRef={horizontalScrollRef}
+                onClick={(e) => handleCardClick(e, 'revlr')}
+              >
                 <motion.div
                   initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -721,7 +734,10 @@ export default function App() {
 
             {/* PROJECT 4: MY BLOCK COUNTS */}
             <div className="w-full max-w-xl mx-auto lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
-              <ThreeDCarouselCard scrollContainerRef={horizontalScrollRef}>
+              <ThreeDCarouselCard
+                scrollContainerRef={horizontalScrollRef}
+                onClick={(e) => handleCardClick(e, 'myblockcounts')}
+              >
                 <motion.div
                   initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -916,7 +932,7 @@ export default function App() {
               transition={{ duration: 0.7, ease: EASE_EDITORIAL }}
               className="shrink-0"
             >
-              <div className="card-apple overflow-hidden w-[220px] sm:w-[250px] lg:w-[230px] xl:w-[255px] aspect-[1111/1600] rounded-[22px] shadow-lg border border-black/[0.06] bg-[#FAFAFA]">
+              <div className="card-apple overflow-hidden w-[220px] sm:w-[250px] lg:w-[230px] xl:w-[255px] aspect-[1111/1600] rounded-[10px] shadow-lg border border-black/[0.06] bg-[#FAFAFA]">
                 <picture className="w-full h-full block">
                   <source srcSet="/Home/about.webp" type="image/webp" />
                   <img

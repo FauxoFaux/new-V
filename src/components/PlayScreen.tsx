@@ -315,9 +315,9 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
                 style={{
                   transform: `translate(-50%, -50%) rotate(${angleDeg}deg) translate(var(--ring-radius)) rotate(${-angleDeg + tilt}deg)`,
                 }}
-                className={`absolute left-1/2 top-1/2 pointer-events-auto ${width} ${aspect} bg-white p-1 sm:p-1.5 rounded-[14px] sm:rounded-[18px] border border-black/[0.1] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer select-none group`}
+                className={`absolute left-1/2 top-1/2 pointer-events-auto ${width} ${aspect} bg-white p-1 sm:p-1.5 rounded-[10px] border border-black/[0.1] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer select-none group`}
               >
-                <div className="w-full h-full rounded-[10px] sm:rounded-[14px] overflow-hidden bg-[#F5F5F7] relative">
+                <div className="w-full h-full rounded-[8px] overflow-hidden bg-[#F5F5F7] relative">
                   <img
                     src={item.mediaUrl}
                     alt={item.title}
@@ -361,23 +361,30 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
       {/* 2. STICKY CATEGORY FILTER BAR */}
       <div
         id="gallery"
-        className="sticky top-14 z-40 w-full bg-white/90 backdrop-blur-xl border-b border-black/[0.06] py-3.5"
+        className="sticky top-14 z-40 w-full bg-white/90 backdrop-blur-xl border-b border-black/[0.08] py-2"
       >
         <div className="max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-center">
-          <div className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto max-w-full py-0.5 scrollbar-none">
+          <div className="flex items-center gap-6 sm:gap-8 lg:gap-10 overflow-x-auto max-w-full py-1 scrollbar-none">
             {CATEGORIES.map((cat) => {
               const isActive = activeCategory === cat;
               return (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-4 py-1.5 rounded-full text-[12.5px] sm:text-[13px] font-medium tracking-tight whitespace-nowrap transition-colors cursor-pointer ${
+                  className={`relative text-[13px] sm:text-[14.5px] whitespace-nowrap pb-2.5 pt-1.5 font-medium tracking-tight transition-colors cursor-pointer ${
                     isActive
-                      ? 'bg-black text-white'
-                      : 'border border-black/15 bg-white text-[#1D1D1F] hover:bg-black/5'
+                      ? 'text-black font-semibold'
+                      : 'text-[#86868B] hover:text-black'
                   }`}
                 >
-                  {cat}
+                  <span>{cat}</span>
+                  {isActive && (
+                    <motion.div
+                      layoutId="playActiveCategoryUnderline"
+                      className="absolute bottom-0 left-0 right-0 h-[2px] bg-black"
+                      transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                    />
+                  )}
                 </button>
               );
             })}
@@ -392,7 +399,7 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
             <div
               key={item.id}
               onClick={() => setSelectedItem(item)}
-              className="break-inside-avoid mb-5 sm:mb-6 group relative overflow-hidden rounded-[20px] sm:rounded-[24px] bg-[#F5F5F7] border border-black/[0.08] cursor-pointer select-none"
+              className="break-inside-avoid mb-5 sm:mb-6 group relative overflow-hidden rounded-[10px] bg-[#F5F5F7] border border-black/[0.08] cursor-pointer select-none"
             >
               <div className="relative w-full overflow-hidden">
                 <img
