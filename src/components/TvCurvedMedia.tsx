@@ -96,7 +96,7 @@ export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = ({
           onClick?.(e as unknown as React.MouseEvent);
         }
       }}
-      className={`relative w-full h-[250px] sm:h-[310px] md:h-[370px] lg:h-[480px] xl:h-[530px] 2xl:h-[570px] rounded-[10px] overflow-hidden border border-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.05)] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.1)] group-hover:border-black/20 transition-all duration-300 flex items-center justify-center cursor-pointer ${bg} ${className}`}
+      className={`relative w-full aspect-[16/10] md:aspect-[16/10] lg:aspect-auto lg:h-[480px] xl:h-[530px] 2xl:h-[570px] rounded-[10px] overflow-hidden border border-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.05)] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.1)] group-hover:border-black/20 transition-all duration-300 flex items-center justify-center cursor-pointer ${bg} ${className}`}
     >
       {type === 'image' ? (
         <img

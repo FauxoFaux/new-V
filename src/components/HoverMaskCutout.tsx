@@ -208,7 +208,7 @@ export function HoverMaskCutout() {
       className="relative overflow-hidden w-[240px] sm:w-[290px] md:w-[350px] lg:w-[400px] xl:w-[430px] max-w-full select-none shrink-0 leading-none flex items-end"
     >
       {/* Base Cutout Portrait */}
-      <picture className="w-full h-auto max-h-[50svh] sm:max-h-[54svh] md:max-h-[72svh] lg:max-h-[78svh] block pointer-events-none select-none">
+      <picture className="w-full h-auto max-h-[50svh] sm:max-h-[54svh] md:max-h-[72svh] lg:max-h-[78svh] block pointer-events-none select-none translate-y-[3px]">
         <source srcSet="/Home/cutout.webp" type="image/webp" />
         <img
           src="/Home/cutout.webp"
@@ -222,19 +222,19 @@ export function HoverMaskCutout() {
         />
       </picture>
 
-      {/* Crazy Hover Mask Reveal in Framer effect on top in blue bg color (#3275b4) that reveals the image on hover */}
+      {/* Hover Mask Reveal effect on top in white (#FFFFFF) that reveals the image on hover */}
       <svg
-        className="absolute inset-0 w-full h-full pointer-events-none z-10"
+        className="absolute -inset-2 w-[calc(100%+16px)] h-[calc(100%+16px)] pointer-events-none z-10"
         aria-hidden="true"
       >
         <defs>
           <filter
             id="framer-liquid-mask-goo"
             filterUnits="userSpaceOnUse"
-            x="0"
-            y="0"
-            width="100%"
-            height="100%"
+            x="-20"
+            y="-20"
+            width="calc(100% + 40px)"
+            height="calc(100% + 40px)"
           >
             <feGaussianBlur in="SourceGraphic" stdDeviation="16" result="blur" />
             <feColorMatrix
@@ -247,12 +247,12 @@ export function HoverMaskCutout() {
           <mask
             id="framer-blue-overlay-mask"
             maskUnits="userSpaceOnUse"
-            x="0"
-            y="0"
-            width="100%"
-            height="100%"
+            x="-20"
+            y="-20"
+            width="calc(100% + 40px)"
+            height="calc(100% + 40px)"
           >
-            <rect x="0" y="0" width="100%" height="100%" fill="white" />
+            <rect x="-20" y="-20" width="calc(100% + 40px)" height="calc(100% + 40px)" fill="white" />
             <g filter="url(#framer-liquid-mask-goo)">
               <g ref={trailGroupRef} />
               <circle
@@ -266,14 +266,16 @@ export function HoverMaskCutout() {
           </mask>
         </defs>
         <rect
-          x="0"
-          y="0"
-          width="100%"
-          height="100%"
+          x="-20"
+          y="-20"
+          width="calc(100% + 40px)"
+          height="calc(100% + 40px)"
           fill="#FFFFFF"
           mask="url(#framer-blue-overlay-mask)"
         />
       </svg>
+      {/* 2px bottom safety cover to ensure zero exposed edge in vertical layout */}
+      <div className="absolute -bottom-1 -left-2 -right-2 h-3 bg-white pointer-events-none z-20" aria-hidden="true" />
     </div>
   );
 }

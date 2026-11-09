@@ -325,6 +325,7 @@ export function PeekPhotosRow({
 }) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [canHover, setCanHover] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -333,6 +334,15 @@ export function PeekPhotosRow({
       const listener = (e: MediaQueryListEvent) => setCanHover(e.matches);
       mq.addEventListener('change', listener);
       return () => mq.removeEventListener('change', listener);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const checkMobile = () => setIsMobile(window.innerWidth < 640);
+      checkMobile();
+      window.addEventListener('resize', checkMobile);
+      return () => window.removeEventListener('resize', checkMobile);
     }
   }, []);
 
@@ -347,15 +357,15 @@ export function PeekPhotosRow({
   }, []);
 
   const sizeStyles = {
-    sm: 'w-[76px] xs:w-[88px] sm:w-[100px] md:w-[112px]',
-    md: 'w-[92px] xs:w-[106px] sm:w-[124px] md:w-[138px] lg:w-[148px]',
-    lg: 'w-[108px] xs:w-[124px] sm:w-[142px] md:w-[158px] lg:w-[170px]',
-    about: 'w-[115px] xs:w-[130px] sm:w-[146px] md:w-[162px] lg:w-[172px] xl:w-[178px]',
+    sm: 'w-[44px] min-[375px]:w-[48px] sm:w-[76px] md:w-[100px] lg:w-[112px]',
+    md: 'w-[48px] min-[375px]:w-[52px] sm:w-[92px] md:w-[124px] lg:w-[148px]',
+    lg: 'w-[52px] min-[375px]:w-[56px] sm:w-[108px] md:w-[142px] lg:w-[170px]',
+    about: 'w-[48px] min-[360px]:w-[50px] min-[375px]:w-[54px] min-[414px]:w-[60px] sm:w-[100px] md:w-[136px] lg:w-[166px] xl:w-[178px]',
   }[size];
 
   return (
     <div
-      className={`relative flex items-center justify-start -space-x-3 sm:-space-x-3.5 md:-space-x-4 lg:-space-x-4.5 xl:-space-x-5 select-none overflow-visible pt-6 pb-2 w-full max-w-[1020px] ${className}`}
+      className={`relative flex items-center justify-start -space-x-1.5 min-[375px]:-space-x-2 sm:-space-x-3 md:-space-x-4 lg:-space-x-4.5 xl:-space-x-5 select-none overflow-visible pt-4 sm:pt-6 pb-2 w-full max-w-[1020px] ${className}`}
     >
       {photos.map((photo, index) => {
         const isHovered = hoveredId === photo.id;
@@ -373,9 +383,9 @@ export function PeekPhotosRow({
             }}
             initial={false}
             animate={{
-              y: isHovered ? hoverLift : 0,
+              y: isHovered ? (isMobile ? -36 : hoverLift) : 0,
               rotate: isHovered ? photo.hoverRotate : photo.defaultRotate,
-              scale: isHovered ? 1.1 : 1,
+              scale: isHovered ? (isMobile ? 1.06 : 1.1) : 1,
             }}
             transition={{
               type: 'spring',
@@ -398,13 +408,13 @@ export function PeekPhotosRow({
             }}
           >
             <div
-              className={`bg-white p-2 sm:p-2.5 rounded-[8px] sm:rounded-[10px] border border-black/10 transition-shadow duration-300 ${
+              className={`bg-white p-1 sm:p-2.5 rounded-[5px] sm:rounded-[10px] border border-black/10 transition-shadow duration-300 ${
                 isHovered
                   ? 'shadow-[0_24px_45px_-6px_rgba(0,0,0,0.32),0_12px_20px_-4px_rgba(0,0,0,0.18)] ring-1 ring-black/10'
-                  : 'shadow-[0_6px_20px_-3px_rgba(0,0,0,0.12),0_2px_6px_rgba(0,0,0,0.04)]'
+                  : 'shadow-[0_4px_14px_-2px_rgba(0,0,0,0.12),0_2px_4px_rgba(0,0,0,0.04)]'
               }`}
             >
-              <div className={`${sizeStyles} aspect-[4/5] overflow-hidden rounded-[4px] sm:rounded-[6px] bg-[#F0EDE8]`}>
+              <div className={`${sizeStyles} aspect-[4/5] overflow-hidden rounded-[3px] sm:rounded-[6px] bg-[#F0EDE8]`}>
                 <img
                   src={photo.src}
                   alt={photo.alt}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X, ArrowUpRight, Lock } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import {
   PeekPhotosRow,
@@ -443,58 +443,65 @@ export default function App() {
           </button>
         </nav>
 
-        {/* Mobile Navigation Drawer */}
+        {/* Mobile Navigation Dropdown Drawer - Covers half of screen, not a modal */}
         {mobileMenuOpen && (
-          <div className="lg:hidden mt-3 p-4 bg-white/95 backdrop-blur-2xl border border-black/10 rounded-2xl shadow-2xl space-y-1 animate-in fade-in slide-in-from-top-2 duration-150 pointer-events-auto">
-            <a
-              href="#work"
-              onClick={(e) => handleMobileNavClick('work', e)}
-              className={`block px-3 py-2.5 rounded-lg font-caps text-[12px] tracking-[0.09em] transition-colors ${activeTab === 'work' ? 'bg-black/10 text-black font-bold' : 'text-[#333333] hover:text-black hover:bg-black/5 font-semibold'}`}
-            >
-              WORK
-            </a>
-            <a
-              href="#things-i-built"
-              onClick={(e) => handleMobileNavClick('projects', e)}
-              className={`block px-3 py-2.5 rounded-lg font-caps text-[12px] tracking-[0.09em] transition-colors ${activeTab === 'projects' || activeTab === 'things-i-built' ? 'bg-black/10 text-black font-bold' : 'text-[#333333] hover:text-black hover:bg-black/5 font-semibold'}`}
-            >
-              PROJECTS
-            </a>
-            <a
-              href="#about"
-              onClick={(e) => handleMobileNavClick('about', e)}
-              className={`block px-3 py-2.5 rounded-lg font-caps text-[12px] tracking-[0.09em] transition-colors ${activeTab === 'about' ? 'bg-black/10 text-black font-bold' : 'text-[#333333] hover:text-black hover:bg-black/5 font-semibold'}`}
-            >
-              ABOUT
-            </a>
-            <a
-              href="https://drive.google.com/file/d/1ZJWXJ0DoubaRd7qDoCK57abnknj8BDMq/view?usp=sharing"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between px-3 py-2.5 rounded-lg font-caps text-[12px] tracking-[0.09em] text-[#333333] hover:text-black hover:bg-black/5 transition-colors font-semibold"
-            >
-              <span>RESUME</span>
-              <ArrowUpRight size={15} className="text-black shrink-0 stroke-[2.5]" aria-hidden="true" />
-            </a>
-            {/* PLAY (Opens separate Instagram-style screen) */}
-            <a
-              href="#play"
-              onClick={(e) => handleMobileNavClick('play', e)}
-              className={`block px-3 py-2.5 rounded-lg font-caps text-[12px] tracking-[0.09em] transition-colors ${currentScreen === 'play' || activeTab === 'play' ? 'bg-black/10 text-black font-bold' : 'text-[#333333] hover:text-black hover:bg-black/5 font-semibold'}`}
-            >
-              PLAY
-            </a>
+          <div className="lg:hidden fixed top-[57px] sm:top-[65px] left-0 right-0 w-full h-[50vh] min-h-[300px] max-h-[460px] bg-white border-b border-black/15 shadow-[0_20px_40px_rgba(0,0,0,0.12)] px-6 sm:px-10 py-6 flex flex-col justify-between overflow-y-auto z-50 animate-in slide-in-from-top-3 fade-in duration-200 pointer-events-auto">
+            <div className="space-y-1.5">
+              <a
+                href="#work"
+                onClick={(e) => handleMobileNavClick('work', e)}
+                className={`block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] transition-colors ${activeTab === 'work' ? 'bg-black/10 text-black font-bold' : 'text-[#333333] hover:text-black hover:bg-black/5 font-semibold'}`}
+              >
+                WORK
+              </a>
+              <a
+                href="#things-i-built"
+                onClick={(e) => handleMobileNavClick('projects', e)}
+                className={`block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] transition-colors ${activeTab === 'projects' || activeTab === 'things-i-built' ? 'bg-black/10 text-black font-bold' : 'text-[#333333] hover:text-black hover:bg-black/5 font-semibold'}`}
+              >
+                PROJECTS
+              </a>
+              <a
+                href="#about"
+                onClick={(e) => handleMobileNavClick('about', e)}
+                className={`block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] transition-colors ${activeTab === 'about' ? 'bg-black/10 text-black font-bold' : 'text-[#333333] hover:text-black hover:bg-black/5 font-semibold'}`}
+              >
+                ABOUT
+              </a>
+              <a
+                href="https://drive.google.com/file/d/1ZJWXJ0DoubaRd7qDoCK57abnknj8BDMq/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] text-[#333333] hover:text-black hover:bg-black/5 transition-colors font-semibold"
+              >
+                <span>RESUME</span>
+                <ArrowUpRight size={15} className="text-black shrink-0 stroke-[2.5]" aria-hidden="true" />
+              </a>
+              {/* PLAY (Opens separate Instagram-style screen) */}
+              <a
+                href="#play"
+                onClick={(e) => handleMobileNavClick('play', e)}
+                className={`block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] transition-colors ${currentScreen === 'play' || activeTab === 'play' ? 'bg-black/10 text-black font-bold' : 'text-[#333333] hover:text-black hover:bg-black/5 font-semibold'}`}
+              >
+                PLAY
+              </a>
+            </div>
+
+            <div className="pt-4 border-t border-black/[0.08] flex items-center justify-between text-[#86868B] font-caps text-[11px] tracking-[0.12em]">
+              <span>KAY RAVICHANDRAN</span>
+              <a href="mailto:itskeerthanaravichandran@gmail.com" className="hover:text-black transition-colors font-medium">GET IN TOUCH</a>
+            </div>
           </div>
         )}
       </motion.header>
 
-      {/* Backdrop overlay for mobile menu */}
+      {/* Outside click area for mobile menu (below half screen, no modal dark backdrop) */}
       {mobileMenuOpen && (
         <div
           id="mobile-menu-backdrop"
           onClick={() => setMobileMenuOpen(false)}
-          className="fixed inset-0 top-0 bg-black/30 z-40 lg:hidden backdrop-blur-[2px] animate-in fade-in duration-150 cursor-pointer"
+          className="fixed top-[calc(57px+50vh)] sm:top-[calc(65px+50vh)] inset-x-0 bottom-0 z-40 lg:hidden cursor-pointer"
           aria-hidden="true"
         />
       )}
@@ -508,9 +515,9 @@ export default function App() {
         {/* HERO SECTION: Fills 100vw on desktop */}
         <section 
           id="top" 
-          className="relative w-full lg:w-screen lg:min-w-[100vw] h-auto min-h-[90vh] lg:h-screen flex flex-col justify-between pt-28 sm:pt-32 lg:pt-20 pb-0 px-6 sm:px-10 lg:px-20 xl:px-28 shrink-0"
+          className="relative w-full lg:w-screen lg:min-w-[100vw] h-auto min-h-[90vh] lg:h-screen flex flex-col justify-between pt-28 sm:pt-32 md:pt-36 lg:pt-20 pb-12 sm:pb-16 md:pb-20 lg:pb-0 px-6 sm:px-10 lg:px-20 xl:px-24 shrink-0"
         >
-          <div className="flex-1 flex flex-col lg:flex-row lg:items-end justify-between gap-8 lg:gap-16 w-full max-w-[1380px] mx-auto lg:mx-0">
+          <div className="flex-1 flex flex-col lg:flex-row lg:items-end justify-between gap-8 lg:gap-16 w-full max-w-[1340px] mx-auto lg:mx-0">
             {/* Typographic Headline */}
             <div className="relative z-20 pointer-events-none max-w-[580px] lg:max-w-[640px] pb-6 lg:pb-16 flex flex-col justify-end">
               {/* 1. Hi, I'm Kay */}
@@ -555,36 +562,36 @@ export default function App() {
               </motion.p>
             </div>
 
-            {/* Cutout portrait with Hover Mask Reveal - aligned to bottom */}
+            {/* Cutout portrait with Hover Mask Reveal - aligned to right on mobile and desktop */}
             <motion.div
               initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.46, ease: EASE_EDITORIAL }}
-              className="flex items-end justify-center lg:justify-end shrink-0 lg:self-end leading-none"
+              className="flex items-end justify-end shrink-0 lg:self-end leading-none overflow-hidden w-full lg:w-auto"
             >
               <HoverMaskCutout />
             </motion.div>
           </div>
         </section>
 
-        {/* 1. SELECTED WORK: Spaced with generous padding and negative buffers */}
+        {/* 1. SELECTED WORK */}
         <section 
           id="work" 
-          className="relative z-10 py-20 sm:py-28 lg:py-0 lg:h-screen lg:flex lg:flex-row lg:items-center lg:gap-12 xl:gap-14 lg:pl-24 xl:pl-32 lg:pr-36 xl:pr-48 px-6 sm:px-10 shrink-0 w-full lg:w-auto max-w-[1340px] lg:max-w-none mx-auto lg:mx-0"
+          className="relative z-10 py-12 sm:py-16 md:py-20 lg:py-0 lg:h-screen lg:flex lg:flex-row lg:items-center lg:gap-12 xl:gap-14 px-6 sm:px-10 lg:px-20 xl:px-24 shrink-0 w-full lg:w-auto max-w-[1340px] lg:max-w-none mx-auto lg:mx-0"
         >
           {/* Header */}
-          <div className="mb-10 lg:mb-0 lg:w-[320px] xl:w-[360px] lg:shrink-0 flex flex-col justify-center">
+          <div className="mb-8 sm:mb-10 lg:mb-0 lg:w-[320px] xl:w-[360px] lg:shrink-0 flex flex-col justify-center">
             <h2 className="font-ugly-dave text-[38px] sm:text-[46px] lg:text-[50px] font-normal leading-[1.05] text-black tracking-[0.015em]">
               Selected Work
             </h2>
           </div>
 
-          {/* Cards: 3D Perspective Horizontal Carousel on desktop, responsive standard layout on tablet/mobile */}
+          {/* Cards: 3D Perspective Horizontal Carousel on desktop, 2-per-row on tablet, full-width on mobile */}
           <div 
-            className="flex flex-col gap-12 sm:gap-16 lg:flex-row lg:items-center lg:gap-10 xl:gap-14 w-full lg:w-auto lg:shrink-0 overflow-visible py-4"
+            className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row lg:items-center gap-8 sm:gap-10 lg:gap-10 xl:gap-14 w-full lg:w-auto lg:shrink-0 overflow-visible py-4"
           >
             {/* PROJECT 1: YOUTOPIA */}
-            <div className="w-full max-w-xl mx-auto lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
+            <div className="w-full lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
               <ThreeDCarouselCard
                 scrollContainerRef={horizontalScrollRef}
                 onClick={(e) => handleCardClick(e, 'youtopia')}
@@ -635,7 +642,7 @@ export default function App() {
             </div>
 
             {/* PROJECT 2: JUSTICKETS */}
-            <div className="w-full max-w-xl mx-auto lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
+            <div className="w-full lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
               <ThreeDCarouselCard
                 scrollContainerRef={horizontalScrollRef}
                 onClick={(e) => handleCardClick(e, 'justickets')}
@@ -683,7 +690,7 @@ export default function App() {
             </div>
 
             {/* PROJECT 3: REVLR */}
-            <div className="w-full max-w-xl mx-auto lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
+            <div className="w-full lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
               <ThreeDCarouselCard
                 scrollContainerRef={horizontalScrollRef}
                 onClick={(e) => handleCardClick(e, 'revlr')}
@@ -733,7 +740,7 @@ export default function App() {
             </div>
 
             {/* PROJECT 4: MY BLOCK COUNTS */}
-            <div className="w-full max-w-xl mx-auto lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
+            <div className="w-full lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
               <ThreeDCarouselCard
                 scrollContainerRef={horizontalScrollRef}
                 onClick={(e) => handleCardClick(e, 'myblockcounts')}
@@ -782,13 +789,13 @@ export default function App() {
           </div>
         </section>
 
-        {/* 2. THINGS I BUILT: Spaced with generous padding and negative buffers */}
+        {/* 2. THINGS I BUILT */}
         <section 
           id="things-i-built" 
-          className="relative z-10 py-20 sm:py-28 lg:py-0 lg:h-screen lg:flex lg:flex-row lg:items-center lg:gap-12 xl:gap-14 lg:pl-24 xl:pl-32 lg:pr-36 xl:pr-48 px-6 sm:px-10 shrink-0 w-full lg:w-auto max-w-[1340px] lg:max-w-none mx-auto lg:mx-0"
+          className="relative z-10 py-12 sm:py-16 md:py-20 lg:py-0 lg:h-screen lg:flex lg:flex-row lg:items-center lg:gap-12 xl:gap-14 px-6 sm:px-10 lg:px-20 xl:px-24 shrink-0 w-full lg:w-auto max-w-[1340px] lg:max-w-none mx-auto lg:mx-0"
         >
           {/* Header */}
-          <div className="mb-10 lg:mb-0 lg:w-[300px] xl:w-[340px] lg:shrink-0 flex flex-col justify-center">
+          <div className="mb-8 sm:mb-10 lg:mb-0 lg:w-[320px] xl:w-[360px] lg:shrink-0 flex flex-col justify-center">
             <h2 className="font-ugly-dave text-[36px] sm:text-[44px] lg:text-[48px] font-normal leading-[1.05] text-black tracking-[0.015em] mb-3">
               Things I built
             </h2>
@@ -797,10 +804,10 @@ export default function App() {
             </p>
           </div>
 
-          {/* Cards */}
-          <div className="flex flex-col gap-12 sm:gap-16 lg:flex-row lg:items-center lg:gap-10 xl:gap-12 w-full lg:w-auto lg:shrink-0 overflow-visible py-4">
+          {/* Cards: 3D Horizontal Carousel on desktop, 2-per-row on tablet, full-width on mobile */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row lg:items-center gap-8 sm:gap-10 lg:gap-10 xl:gap-14 w-full lg:w-auto lg:shrink-0 overflow-visible py-4">
             {/* BUILD 1: MISE */}
-            <div className="w-full max-w-xl mx-auto lg:max-w-none lg:w-[700px] xl:w-[760px] 2xl:w-[820px] lg:shrink-0 overflow-visible">
+            <div className="w-full lg:max-w-none lg:w-[700px] xl:w-[760px] 2xl:w-[820px] lg:shrink-0 overflow-visible">
               <ThreeDCarouselCard scrollContainerRef={horizontalScrollRef}>
                 <motion.div
                   initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
@@ -842,7 +849,7 @@ export default function App() {
             </div>
 
             {/* BUILD 2: NETFLIX */}
-            <div className="w-full max-w-xl mx-auto lg:max-w-none lg:w-[700px] xl:w-[760px] 2xl:w-[820px] lg:shrink-0 overflow-visible">
+            <div className="w-full lg:max-w-none lg:w-[700px] xl:w-[760px] 2xl:w-[820px] lg:shrink-0 overflow-visible">
               <ThreeDCarouselCard scrollContainerRef={horizontalScrollRef}>
                 <motion.div
                   initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
@@ -885,17 +892,17 @@ export default function App() {
           </div>
         </section>
 
-        {/* 3. MENTORSHIP SECTION: Dedicated 100vw centered stage with pure negative spacing */}
+        {/* 3. MENTORSHIP SECTION */}
         <section 
           id="mentorship" 
-          className="relative z-10 py-20 sm:py-28 lg:py-0 lg:h-screen lg:w-screen lg:min-w-[100vw] lg:flex lg:flex-col lg:items-center lg:justify-center px-6 sm:px-10 lg:px-24 xl:px-32 shrink-0 w-full max-w-[780px] lg:max-w-none mx-auto lg:mx-0"
+          className="relative z-10 py-12 sm:py-16 md:py-20 lg:py-0 lg:h-screen lg:w-screen lg:min-w-[100vw] lg:flex lg:flex-col lg:items-center lg:justify-center px-6 sm:px-10 lg:px-20 xl:px-24 shrink-0 w-full max-w-[1340px] lg:max-w-none mx-auto lg:mx-0"
         >
           <motion.div
             initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.65, ease: EASE_EDITORIAL }}
-            className="w-full max-w-[760px] text-left"
+            className="w-full max-w-none lg:max-w-[760px] text-left"
           >
             <span className="font-caps text-[11px] sm:text-[12px] tracking-[0.14em] text-[#555555] block mb-3 font-bold">
               Mentorship & Teaching
@@ -917,22 +924,22 @@ export default function App() {
           </motion.div>
         </section>
 
-        {/* 4. ABOUT SECTION & PEEK PHOTOS: Dedicated 100vw stage */}
+        {/* 4. ABOUT SECTION & PEEK PHOTOS */}
         <section 
           id="about" 
-          className="relative z-10 py-20 sm:py-28 lg:py-0 lg:h-screen lg:w-screen lg:min-w-[100vw] lg:flex lg:flex-col lg:justify-between lg:pt-24 xl:pt-28 lg:pb-0 px-6 sm:px-10 lg:px-20 xl:px-28 shrink-0 w-full max-w-[1100px] lg:max-w-none mx-auto lg:mx-0 overflow-hidden"
+          className="relative z-10 py-12 sm:py-16 md:py-20 lg:py-0 lg:h-screen lg:w-screen lg:min-w-[100vw] lg:flex lg:flex-col lg:justify-between lg:pt-24 xl:pt-28 lg:pb-0 px-6 sm:px-10 lg:px-20 xl:px-24 shrink-0 w-full max-w-[1340px] lg:max-w-none mx-auto lg:mx-0 overflow-hidden"
         >
-          {/* Portrait + Bio Content (Never cut in height) */}
-          <div className="w-full max-w-[1180px] mx-auto flex flex-col lg:flex-row items-start lg:items-center gap-8 sm:gap-10 lg:gap-14 pt-2">
-            {/* Portrait card on desktop in original aspect ratio */}
+          {/* Portrait + Bio Content: side-by-side on tablet (md:) & desktop (lg:), reordered on mobile */}
+          <div className="w-full max-w-[1240px] mx-auto flex flex-col md:flex-row items-start md:items-center gap-8 sm:gap-10 lg:gap-14 pt-2">
+            {/* Portrait card on tablet & desktop in original aspect ratio (side-by-side) */}
             <motion.div
               initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.96 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.7, ease: EASE_EDITORIAL }}
-              className="shrink-0"
+              className="hidden md:block shrink-0"
             >
-              <div className="card-apple overflow-hidden w-[220px] sm:w-[250px] lg:w-[230px] xl:w-[255px] aspect-[1111/1600] rounded-[10px] shadow-lg border border-black/[0.06] bg-[#FAFAFA]">
+              <div className="card-apple overflow-hidden w-[220px] sm:w-[240px] lg:w-[230px] xl:w-[255px] aspect-[1111/1600] rounded-[10px] shadow-lg border border-black/[0.06] bg-[#FAFAFA]">
                 <picture className="w-full h-full block">
                   <source srcSet="/Home/about.webp" type="image/webp" />
                   <img
@@ -954,11 +961,27 @@ export default function App() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.65, delay: 0.08, ease: EASE_EDITORIAL }}
-              className="flex-1 max-w-[660px]"
+              className="flex-1 max-w-[660px] w-full"
             >
               <h2 className="font-ugly-dave text-[34px] sm:text-[40px] lg:text-[46px] font-normal leading-[1.05] text-black mb-3.5 tracking-[0.015em]">
                 Hi, I'm Kay
               </h2>
+
+              {/* Photo on small screens (<md): placed directly under Hi, I'm Kay */}
+              <div className="block md:hidden my-4 sm:my-5 w-[180px] sm:w-[220px] aspect-[1111/1600] card-apple rounded-[10px] overflow-hidden shadow-lg border border-black/[0.06] bg-[#FAFAFA]">
+                <picture className="w-full h-full block">
+                  <source srcSet="/Home/about.webp" type="image/webp" />
+                  <img
+                    src="/Home/about.webp"
+                    alt="Kay portrait illustration"
+                    className="w-full h-full object-contain"
+                    width={1111}
+                    height={1600}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
+              </div>
 
               <div className="space-y-3.5 sm:space-y-4 text-[14.5px] sm:text-[15.5px] leading-[1.72] text-[#444446] font-normal">
                 <p>
@@ -987,7 +1010,7 @@ export default function App() {
           </div>
 
           {/* Peekaboo Pictures: resting submerged at the bottom, lifting completely on hover */}
-          <div className="w-full max-w-[1180px] mx-auto mt-6 lg:mt-auto pt-2 pb-0 overflow-visible lg:translate-y-12 xl:translate-y-14">
+          <div className="w-full max-w-[1240px] mx-auto mt-6 lg:mt-auto pt-2 pb-0 overflow-visible lg:translate-y-12 xl:translate-y-14">
             <motion.div
               initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1000,10 +1023,10 @@ export default function App() {
           </div>
         </section>
 
-        {/* 5. CONTACT SECTION: Dedicated 100vw centered stage with pure negative spacing */}
+        {/* 5. CONTACT SECTION */}
         <section 
           id="contact" 
-          className="relative z-20 py-20 sm:py-28 lg:py-0 lg:h-screen lg:w-screen lg:min-w-[100vw] lg:flex lg:flex-col lg:items-center lg:justify-center px-6 sm:px-10 lg:px-24 xl:px-32 pb-32 lg:pb-0 shrink-0 w-full max-w-[620px] lg:max-w-none mx-auto lg:mx-0"
+          className="relative z-20 py-12 sm:py-16 md:py-20 lg:py-0 lg:h-screen lg:w-screen lg:min-w-[100vw] lg:flex lg:flex-col lg:items-center lg:justify-center px-6 sm:px-10 lg:px-20 xl:px-24 pb-24 sm:pb-28 md:pb-32 lg:pb-0 shrink-0 w-full max-w-[1340px] lg:max-w-none mx-auto lg:mx-0"
         >
 
           <motion.div
@@ -1011,7 +1034,7 @@ export default function App() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.65, delay: 0.08, ease: EASE_EDITORIAL }}
-            className="relative w-full max-w-[580px]"
+            className="relative w-full max-w-[580px] mx-auto"
           >
             {/* Stack of Cards: Layer 2 (Bottom card of stack) */}
             <div 
