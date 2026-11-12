@@ -146,8 +146,8 @@ export default function App() {
             const left = el.offsetLeft;
             const width = el.offsetWidth;
             if (scrollLeft >= left && scrollLeft < left + width) {
-              if (id === 'things-i-built') current = 'projects';
-              else if (id === 'contact') current = '';
+              if (id === 'things-i-built') current = '';
+              else if (id === 'contact') current = 'contact';
               else current = id;
             }
           }
@@ -162,8 +162,8 @@ export default function App() {
             const top = el.offsetTop;
             const height = el.offsetHeight;
             if (scrollPos >= top && scrollPos < top + height) {
-              if (id === 'things-i-built') current = 'projects';
-              else if (id === 'contact') current = '';
+              if (id === 'things-i-built') current = '';
+              else if (id === 'contact') current = 'contact';
               else current = id;
             }
           }
@@ -340,13 +340,15 @@ export default function App() {
 
   return (
     <div className="w-full h-full min-h-screen bg-[#FFFFFF] text-[#1D1D1F] selection:bg-[#0071E3] selection:text-white flex flex-col font-sans lg:overflow-hidden">
-      {/* Navigation Header - Transparent Nav (No background) */}
+      {/* Navigation Header - White background on mobile / hamburger menu nav, transparent on desktop */}
       <motion.header
         id="main-navigation-header"
         initial={shouldReduceMotion ? false : { y: -16, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: EASE_EDITORIAL }}
-        className="fixed top-0 left-0 right-0 z-50 w-full bg-transparent px-5 sm:px-8 md:px-12 lg:px-16 py-4 transition-colors pointer-events-none"
+        className={`fixed top-0 left-0 right-0 z-50 w-full px-5 sm:px-8 md:px-12 lg:px-16 py-4 transition-all bg-white border-b border-black/[0.08] lg:bg-transparent lg:border-transparent pointer-events-auto lg:pointer-events-none ${
+          mobileMenuOpen ? 'bg-white border-b border-black/[0.08]' : ''
+        }`}
       >
         <nav className="mx-auto max-w-[1340px] w-full flex items-center justify-between pointer-events-auto">
           {/* Logo */}
@@ -389,7 +391,7 @@ export default function App() {
             </svg>
           </a>
 
-          {/* Desktop Navigation Items - distributed across full width without left align */}
+          {/* Desktop Navigation Items: WORK, ABOUT, PLAY, RESUME, CONTACT */}
           <a
             href="#work"
             onClick={(e) => handleNavClick('work', e)}
@@ -399,28 +401,11 @@ export default function App() {
           </a>
 
           <a
-            href="#things-i-built"
-            onClick={(e) => handleNavClick('projects', e)}
-            className={`hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] transition-all whitespace-nowrap ${activeTab === 'projects' || activeTab === 'things-i-built' ? 'text-black font-bold' : 'text-[#1D1D1F]/70 hover:text-black font-semibold'}`}
-          >
-            PROJECTS
-          </a>
-
-          <a
             href="#about"
             onClick={(e) => handleNavClick('about', e)}
             className={`hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] transition-all whitespace-nowrap ${activeTab === 'about' ? 'text-black font-bold' : 'text-[#1D1D1F]/70 hover:text-black font-semibold'}`}
           >
             ABOUT
-          </a>
-
-          <a
-            href="https://drive.google.com/file/d/1ZJWXJ0DoubaRd7qDoCK57abnknj8BDMq/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] text-[#1D1D1F]/70 hover:text-black transition-all whitespace-nowrap font-semibold"
-          >
-            RESUME
           </a>
 
           {/* PLAY (Opens separate Instagram-style screen) */}
@@ -432,10 +417,27 @@ export default function App() {
             PLAY
           </a>
 
+          <a
+            href="https://drive.google.com/file/d/1ZJWXJ0DoubaRd7qDoCK57abnknj8BDMq/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] text-[#1D1D1F]/70 hover:text-black transition-all whitespace-nowrap font-semibold"
+          >
+            RESUME
+          </a>
+
+          <a
+            href="#contact"
+            onClick={(e) => handleNavClick('contact', e)}
+            className={`hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] transition-all whitespace-nowrap ${activeTab === 'contact' ? 'text-black font-bold' : 'text-[#1D1D1F]/70 hover:text-black font-semibold'}`}
+          >
+            CONTACT
+          </a>
+
           {/* Mobile & Tablet Hamburger Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-black hover:text-[#444444] transition-colors rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-black/20 cursor-pointer"
+            className="lg:hidden p-2 text-black bg-white hover:text-[#444444] transition-colors rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-black/20 cursor-pointer"
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={mobileMenuOpen}
           >
@@ -450,41 +452,41 @@ export default function App() {
               <a
                 href="#work"
                 onClick={(e) => handleMobileNavClick('work', e)}
-                className={`block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] transition-colors ${activeTab === 'work' ? 'bg-black/10 text-black font-bold' : 'text-[#333333] hover:text-black hover:bg-black/5 font-semibold'}`}
+                className={`block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] transition-colors ${activeTab === 'work' ? 'text-black font-bold' : 'text-[#6E6E73] hover:text-black font-semibold'}`}
               >
                 WORK
               </a>
               <a
-                href="#things-i-built"
-                onClick={(e) => handleMobileNavClick('projects', e)}
-                className={`block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] transition-colors ${activeTab === 'projects' || activeTab === 'things-i-built' ? 'bg-black/10 text-black font-bold' : 'text-[#333333] hover:text-black hover:bg-black/5 font-semibold'}`}
-              >
-                PROJECTS
-              </a>
-              <a
                 href="#about"
                 onClick={(e) => handleMobileNavClick('about', e)}
-                className={`block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] transition-colors ${activeTab === 'about' ? 'bg-black/10 text-black font-bold' : 'text-[#333333] hover:text-black hover:bg-black/5 font-semibold'}`}
+                className={`block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] transition-colors ${activeTab === 'about' ? 'text-black font-bold' : 'text-[#6E6E73] hover:text-black font-semibold'}`}
               >
                 ABOUT
+              </a>
+              {/* PLAY (Opens separate Instagram-style screen) */}
+              <a
+                href="#play"
+                onClick={(e) => handleMobileNavClick('play', e)}
+                className={`block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] transition-colors ${currentScreen === 'play' || activeTab === 'play' ? 'text-black font-bold' : 'text-[#6E6E73] hover:text-black font-semibold'}`}
+              >
+                PLAY
               </a>
               <a
                 href="https://drive.google.com/file/d/1ZJWXJ0DoubaRd7qDoCK57abnknj8BDMq/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-between px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] text-[#333333] hover:text-black hover:bg-black/5 transition-colors font-semibold"
+                className="flex items-center justify-between px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] text-[#6E6E73] hover:text-black transition-colors font-semibold"
               >
                 <span>RESUME</span>
                 <ArrowUpRight size={15} className="text-black shrink-0 stroke-[2.5]" aria-hidden="true" />
               </a>
-              {/* PLAY (Opens separate Instagram-style screen) */}
               <a
-                href="#play"
-                onClick={(e) => handleMobileNavClick('play', e)}
-                className={`block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] transition-colors ${currentScreen === 'play' || activeTab === 'play' ? 'bg-black/10 text-black font-bold' : 'text-[#333333] hover:text-black hover:bg-black/5 font-semibold'}`}
+                href="#contact"
+                onClick={(e) => handleMobileNavClick('contact', e)}
+                className={`block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] transition-colors ${activeTab === 'contact' ? 'text-black font-bold' : 'text-[#6E6E73] hover:text-black font-semibold'}`}
               >
-                PLAY
+                CONTACT
               </a>
             </div>
 
@@ -1028,117 +1030,121 @@ export default function App() {
           id="contact" 
           className="relative z-20 py-12 sm:py-16 md:py-20 lg:py-0 lg:h-screen lg:w-screen lg:min-w-[100vw] lg:flex lg:flex-col lg:items-center lg:justify-center px-6 sm:px-10 lg:px-20 xl:px-24 pb-24 sm:pb-28 md:pb-32 lg:pb-0 shrink-0 w-full max-w-[1340px] lg:max-w-none mx-auto lg:mx-0"
         >
+          <div className="w-full max-w-[1240px] mx-auto flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10 sm:gap-12 lg:gap-16 xl:gap-20">
+            {/* Left Column: Headline in display header font */}
+            <motion.div
+              initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.65, ease: EASE_EDITORIAL }}
+              className="w-full lg:max-w-[560px] xl:max-w-[620px] text-left shrink-0"
+            >
+              <h2 className="font-ugly-dave text-[34px] sm:text-[44px] md:text-[50px] lg:text-[52px] xl:text-[60px] font-normal leading-[1.04] text-black tracking-[0.015em]">
+                Building something complex?<br />
+                I'd love to help make it simpler.
+              </h2>
+            </motion.div>
 
-          <motion.div
-            initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.65, delay: 0.08, ease: EASE_EDITORIAL }}
-            className="relative w-full max-w-[580px] mx-auto"
-          >
-            {/* Stack of Cards: Layer 2 (Bottom card of stack) */}
-            <div 
-              aria-hidden="true" 
-              className="absolute inset-0 bg-white/70 border border-black/[0.05] rounded-[30px] -rotate-1 translate-x-2.5 translate-y-2.5 pointer-events-none shadow-sm"
-            />
-            {/* Stack of Cards: Layer 1 (Middle card of stack) */}
-            <div 
-              aria-hidden="true" 
-              className="absolute inset-0 bg-white/90 border border-black/[0.05] rounded-[30px] rotate-1 -translate-x-1.5 translate-y-1.5 pointer-events-none shadow-md"
-            />
+            {/* Right Column: Contact Card in current UI style */}
+            <motion.div
+              initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.65, delay: 0.08, ease: EASE_EDITORIAL }}
+              className="w-full max-w-[540px] lg:max-w-[480px] xl:max-w-[520px] shrink-0"
+            >
+              <div className="p-7 sm:p-9 lg:p-9 xl:p-10 bg-white border border-black/[0.09] rounded-[10px] text-black shadow-none">
+                <span className="font-caps text-[11px] sm:text-[12px] tracking-[0.14em] text-[#86868B] block mb-3 font-bold">
+                  Get in Touch
+                </span>
 
-            {/* Top Main Card sitting on top of the stack of cards */}
-            <div className="relative card-apple p-7 sm:p-9 lg:p-10 bg-[#F5F5F7] border border-black/[0.06] rounded-[30px] text-black shadow-xl">
-              <span className="font-caps text-[11px] sm:text-[12px] tracking-[0.14em] text-[#86868B] block mb-3 font-bold">
-                Get in Touch
-              </span>
+                <p className="text-[14px] sm:text-[15px] leading-[1.7] text-[#515154] font-normal mb-6">
+                  Whether you're exploring a new product, improving an existing one, or just want to talk about design, feel free to reach out.
+                </p>
 
-              <p className="text-[14px] sm:text-[15px] leading-[1.7] text-[#515154] font-normal mb-6">
-                Whether you're exploring a new product, improving an existing one, or just want to talk about design, feel free to reach out.
-              </p>
+                <div className="mb-6 max-w-full">
+                  <a
+                    href="mailto:itskeerthanaravichandran@gmail.com"
+                    className="inline-flex items-center gap-1.5 sm:gap-2 text-[14.5px] sm:text-base lg:text-[16.5px] xl:text-lg font-sans text-[#1D1D1F] hover:text-[#0071E3] transition-colors font-semibold tracking-tight max-w-full break-all py-1 group"
+                  >
+                    <span className="break-all">itskeerthanaravichandran@gmail.com</span>
+                    <ArrowUpRight size={18} className="shrink-0 inline-block align-middle select-none stroke-[2.5]" aria-hidden="true" />
+                  </a>
+                </div>
 
-              <div className="mb-6 max-w-full">
-                <a
-                  href="mailto:itskeerthanaravichandran@gmail.com"
-                  className="inline-flex items-center gap-1.5 sm:gap-2 text-[14.5px] sm:text-base lg:text-lg font-sans text-[#1D1D1F] hover:text-[#0071E3] transition-colors font-semibold tracking-tight max-w-full break-all py-1 group"
-                >
-                  <span className="break-all">itskeerthanaravichandran@gmail.com</span>
-                  <ArrowUpRight size={18} className="shrink-0 inline-block align-middle select-none stroke-[2.5]" aria-hidden="true" />
-                </a>
+                {/* SOCIAL LINKS CONNECTED GRID BAR (matching screenshot design) */}
+                <div className="grid grid-cols-4 border border-black/[0.1] rounded-[8px] sm:rounded-[10px] overflow-hidden divide-x divide-black/[0.1] bg-white">
+                  {/* Instagram */}
+                  <a 
+                    href="https://www.instagram.com/summershuttle/?hl=en" 
+                    target="_blank" 
+                    rel="noreferrer"
+                    aria-label="Instagram"
+                    title="Instagram"
+                    className="flex items-center justify-center py-4 sm:py-5 hover:bg-black/[0.04] text-[#1D1D1F] hover:text-black transition-colors group"
+                  >
+                    <svg className="w-5 h-5 sm:w-5.5 sm:h-5.5 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                  </a>
+
+                  {/* Behance */}
+                  <a 
+                    href="https://www.behance.net/keertharavicha1" 
+                    target="_blank" 
+                    rel="noreferrer"
+                    aria-label="Behance"
+                    title="Behance"
+                    className="flex items-center justify-center py-4 sm:py-5 hover:bg-black/[0.04] text-[#1D1D1F] hover:text-black transition-colors group"
+                  >
+                    <svg className="w-5 h-5 sm:w-5.5 sm:h-5.5 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M4.5 5.5v13" />
+                      <path d="M4.5 5.5h4a3 3 0 0 1 0 6h-4" />
+                      <path d="M4.5 11.5h4.5a3.5 3.5 0 0 1 0 7h-4.5" />
+                      <path d="M13.5 7.5h5" />
+                      <path d="M12.5 15h6a3 3 0 1 0-6 0c0 2 1.5 3.5 3.5 3.5 1.3 0 2.4-.6 3-1.6" />
+                    </svg>
+                  </a>
+
+                  {/* Email */}
+                  <a 
+                    href="mailto:itskeerthanaravichandran@gmail.com" 
+                    aria-label="Email"
+                    title="Email"
+                    className="flex items-center justify-center py-4 sm:py-5 hover:bg-black/[0.04] text-[#1D1D1F] hover:text-black transition-colors group"
+                  >
+                    <svg className="w-5 h-5 sm:w-5.5 sm:h-5.5 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                    </svg>
+                  </a>
+
+                  {/* LinkedIn */}
+                  <a 
+                    href="https://www.linkedin.com/in/keerthanaravichandran/" 
+                    target="_blank" 
+                    rel="noreferrer"
+                    aria-label="LinkedIn"
+                    title="LinkedIn"
+                    className="flex items-center justify-center py-4 sm:py-5 hover:bg-black/[0.04] text-[#1D1D1F] hover:text-black transition-colors group"
+                  >
+                    <svg className="w-5 h-5 sm:w-5.5 sm:h-5.5 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                      <rect x="2" y="9" width="4" height="12"></rect>
+                      <circle cx="4" cy="4" r="2"></circle>
+                    </svg>
+                  </a>
+                </div>
+
+                {/* FOOTER */}
+                <footer className="mt-6 pt-3 text-[11px] font-sans tracking-normal text-[#86868B] font-normal border-t border-black/[0.08] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5">
+                  <span>© 2026 Kay Ravichandran</span>
+                </footer>
               </div>
-
-              {/* SOCIAL LINKS GRID STRIP */}
-              <div className="grid grid-cols-4 gap-2.5 pt-1">
-                {/* Instagram */}
-                <a 
-                  href="https://www.instagram.com/summershuttle/?hl=en" 
-                  target="_blank" 
-                  rel="noreferrer"
-                  aria-label="Instagram"
-                  title="Instagram"
-                  className="flex items-center justify-center h-11 rounded-2xl bg-white hover:bg-[#1D1D1F] hover:text-white text-[#1D1D1F] border border-black/[0.06] shadow-sm transition-all hover:scale-[1.03] active:scale-[0.97] group"
-                >
-                  <svg className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                  </svg>
-                </a>
-
-                {/* Behance */}
-                <a 
-                  href="https://www.behance.net/keertharavicha1" 
-                  target="_blank" 
-                  rel="noreferrer"
-                  aria-label="Behance"
-                  title="Behance"
-                  className="flex items-center justify-center h-11 rounded-2xl bg-white hover:bg-[#1D1D1F] hover:text-white text-[#1D1D1F] border border-black/[0.06] shadow-sm transition-all hover:scale-[1.03] active:scale-[0.97] group"
-                >
-                  <svg className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M4.5 5.5v13" />
-                    <path d="M4.5 5.5h4a3 3 0 0 1 0 6h-4" />
-                    <path d="M4.5 11.5h4.5a3.5 3.5 0 0 1 0 7h-4.5" />
-                    <path d="M13.5 7.5h5" />
-                    <path d="M12.5 15h6a3 3 0 1 0-6 0c0 2 1.5 3.5 3.5 3.5 1.3 0 2.4-.6 3-1.6" />
-                  </svg>
-                </a>
-
-                {/* Email */}
-                <a 
-                  href="mailto:itskeerthanaravichandran@gmail.com" 
-                  aria-label="Email"
-                  title="Email"
-                  className="flex items-center justify-center h-11 rounded-2xl bg-white hover:bg-[#1D1D1F] hover:text-white text-[#1D1D1F] border border-black/[0.06] shadow-sm transition-all hover:scale-[1.03] active:scale-[0.97] group"
-                >
-                  <svg className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                  </svg>
-                </a>
-
-                {/* LinkedIn */}
-                <a 
-                  href="https://www.linkedin.com/in/keerthanaravichandran/" 
-                  target="_blank" 
-                  rel="noreferrer"
-                  aria-label="LinkedIn"
-                  title="LinkedIn"
-                  className="flex items-center justify-center h-11 rounded-2xl bg-white hover:bg-[#1D1D1F] hover:text-white text-[#1D1D1F] border border-black/[0.06] shadow-sm transition-all hover:scale-[1.03] active:scale-[0.97] group"
-                >
-                  <svg className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                    <rect x="2" y="9" width="4" height="12"></rect>
-                    <circle cx="4" cy="4" r="2"></circle>
-                  </svg>
-                </a>
-              </div>
-
-              {/* FOOTER */}
-              <footer className="mt-6 pt-3 text-[11px] font-sans tracking-normal text-[#86868B] font-normal border-t border-black/[0.08] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5">
-                <span>© 2026 Keerthana Ravichandran</span>
-              </footer>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </section>
       </div>
 

@@ -211,3 +211,39 @@ body {
   background: rgba(0, 0, 0, 0.05);
   color: #000000;
 }
+
+/* 3D Multi-Plane Z-Space Parallax Stream Animations */
+@keyframes streamUp {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+
+@keyframes streamDown {
+  0% {
+    transform: translate3d(0, -50%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-stream-up {
+  animation: streamUp linear infinite;
+  will-change: transform;
+}
+
+.animate-stream-down {
+  animation: streamDown linear infinite;
+  will-change: transform;
+}
+
+/* 3D Perspective Preservation */
+.preserve-3d {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+

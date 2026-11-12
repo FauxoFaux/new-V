@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { ArrowLeft, X, ChevronLeft, ChevronRight, ArrowDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { EditorialFooter } from './EditorialFooter';
 
 export interface PlayItem {
   id: string;
@@ -195,16 +196,16 @@ const PLAY_ITEMS: PlayItem[] = [
   },
 ];
 
-// Circular hero ring items matching the user's reference mockup
-const HERO_RING_ITEMS = [
-  { item: PLAY_ITEMS[0], angleDeg: -90, tilt: 4, width: 'w-[110px] sm:w-[145px] md:w-[170px]', aspect: 'aspect-[4/3]' },   // 12 o'clock (Puffy)
-  { item: PLAY_ITEMS[1], angleDeg: -45, tilt: 32, width: 'w-[95px] sm:w-[130px] md:w-[155px]', aspect: 'aspect-[3/4]' },    // 1:30 (Boxing)
-  { item: PLAY_ITEMS[12], angleDeg: 0, tilt: 3, width: 'w-[115px] sm:w-[155px] md:w-[185px]', aspect: 'aspect-[16/10]' },   // 3 o'clock (Cards)
-  { item: PLAY_ITEMS[15], angleDeg: 45, tilt: -34, width: 'w-[105px] sm:w-[140px] md:w-[165px]', aspect: 'aspect-[4/3]' },  // 4:30 (Color & Rhythm)
-  { item: PLAY_ITEMS[3], angleDeg: 90, tilt: 5, width: 'w-[95px] sm:w-[130px] md:w-[155px]', aspect: 'aspect-[3/4]' },     // 6 o'clock (Gooey)
-  { item: PLAY_ITEMS[8], angleDeg: 135, tilt: -28, width: 'w-[105px] sm:w-[140px] md:w-[165px]', aspect: 'aspect-[4/3]' }, // 7:30 (Fox)
-  { item: PLAY_ITEMS[2], angleDeg: 180, tilt: -3, width: 'w-[115px] sm:w-[155px] md:w-[180px]', aspect: 'aspect-[16/10]' }, // 9 o'clock (Macarena)
-  { item: PLAY_ITEMS[7], angleDeg: 225, tilt: -38, width: 'w-[100px] sm:w-[135px] md:w-[160px]', aspect: 'aspect-[3/4]' },  // 10:30 (Crock)
+// Curated items rotating in circular orbit around center title
+const HERO_ORBIT_ITEMS: PlayItem[] = [
+  PLAY_ITEMS[0],  // Puffy (Animation GIF)
+  PLAY_ITEMS[7],  // Crock (Character Design)
+  PLAY_ITEMS[13], // Form & Typography 2021 (Graphic Design)
+  PLAY_ITEMS[1],  // Boxing (Animation GIF)
+  PLAY_ITEMS[19], // Billie (Illustration)
+  PLAY_ITEMS[8],  // Fox in Motion (Character Design)
+  PLAY_ITEMS[12], // Card Deck Systems (Graphic Design)
+  PLAY_ITEMS[3],  // Gooey Dynamics (Animation GIF)
 ];
 
 const CATEGORIES = [
@@ -225,6 +226,11 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
   const [activeCategory, setActiveCategory] = useState<Category>('All');
   const [selectedItem, setSelectedItem] = useState<PlayItem | null>(null);
 
+  // Orbit Cards State & Refs
+  const cardElementsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const isOrbitHoveredRef = useRef(false);
+  const orbitAngleRef = useRef(0);
+
   // Filter items based on active category
   const filteredItems = useMemo(() => {
     if (activeCategory === 'All') return PLAY_ITEMS;
@@ -235,6 +241,59 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
     if (!selectedItem) return -1;
     return filteredItems.findIndex((i) => i.id === selectedItem.id);
   }, [selectedItem, filteredItems]);
+
+  // Continuous Smooth Orbit Animation Around "Playground" (Always 100% Upright, never upside-down or sideways)
+  useEffect(() => {
+    let lastTime = performance.now();
+    let animId: number;
+
+    const updateOrbit = (now: number) => {
+      const dt = Math.min((now - lastTime) * 0.001, 0.1);
+      lastTime = now;
+
+      // Advance circular orbit angle smoothly if not hovered (full circle in ~36 seconds)
+      if (!isOrbitHoveredRef.current) {
+        orbitAngleRef.current = (orbitAngleRef.current + dt * (360 / 36)) % 360;
+      }
+
+      const w = typeof window !== 'undefined' ? window.innerWidth : 1200;
+      const h = typeof window !== 'undefined' ? window.innerHeight : 800;
+
+      // Compute ellipse radii that orbit cleanly AROUND "Playground" without overlapping it
+      let rx = Math.min(w * 0.44, 460);
+      let ry = Math.min(h * 0.32, 270);
+
+      if (w < 640) {
+        // Mobile screen clearance: keeps cards orbiting around "Playground" while staying safely inside screen
+        rx = Math.max(130, Math.min(w * 0.38, 160));
+        ry = Math.max(140, Math.min(h * 0.27, 180));
+      } else if (w < 1024) {
+        // Tablet clearance
+        rx = Math.max(220, Math.min(w * 0.42, 340));
+        ry = Math.max(180, Math.min(h * 0.28, 230));
+      }
+
+      const n = HERO_ORBIT_ITEMS.length;
+      for (let i = 0; i < n; i++) {
+        const el = cardElementsRef.current[i];
+        if (!el) continue;
+
+        const angleDeg = (orbitAngleRef.current + (i * 360) / n) % 360;
+        const angleRad = (angleDeg * Math.PI) / 180;
+
+        const x = Math.cos(angleRad) * rx;
+        const y = Math.sin(angleRad) * ry;
+
+        // Strictly translate without any rotation: ALWAYS 100% UPRIGHT!
+        el.style.transform = `translate3d(calc(-50% + ${x.toFixed(1)}px), calc(-50% + ${y.toFixed(1)}px), 0)`;
+      }
+
+      animId = requestAnimationFrame(updateOrbit);
+    };
+
+    animId = requestAnimationFrame(updateOrbit);
+    return () => cancelAnimationFrame(animId);
+  }, []);
 
   // Keyboard navigation for lightbox
   useEffect(() => {
@@ -303,27 +362,38 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
         </div>
       </div>
 
-      {/* 1. HERO SECTION: CIRCULAR WREATH AROUND "PLAYGROUND" TITLE MATCHING USER MOCKUP */}
-      <section className="relative w-full min-h-[92vh] sm:min-h-screen flex items-center justify-center overflow-hidden pt-16 pb-12 [--ring-radius:140px] sm:[--ring-radius:220px] lg:[--ring-radius:310px]">
-        {/* Orbit Ring of Cards radiating around the center */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="relative w-full h-full max-w-[1000px] max-h-[1000px] flex items-center justify-center">
-            {HERO_RING_ITEMS.map(({ item, angleDeg, tilt, width, aspect }) => (
+      {/* 1. HERO SECTION: ORBITING REVOLUTION AROUND "PLAYGROUND" */}
+      <section
+        className="relative w-full h-[90vh] sm:h-screen min-h-[600px] max-h-[1050px] flex items-center justify-center overflow-hidden select-none bg-[#FAFAFA]"
+      >
+        {/* Ambient background depth grid and soft vignette */}
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_45%,rgba(255,255,255,0.7)_0%,#F5F5F7_100%)] z-0" />
+
+        {/* Orbit Cards Container: Absolutely centered, cards translated with 0deg rotation (always 100% upright) */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+          <div className="relative w-full h-full flex items-center justify-center pointer-events-none">
+            {HERO_ORBIT_ITEMS.map((item, idx) => (
               <div
-                key={`ring-${item.id}`}
-                onClick={() => setSelectedItem(item)}
-                style={{
-                  transform: `translate(-50%, -50%) rotate(${angleDeg}deg) translate(var(--ring-radius)) rotate(${-angleDeg + tilt}deg)`,
+                key={`orbit-card-${item.id}-${idx}`}
+                ref={(el) => { cardElementsRef.current[idx] = el; }}
+                onMouseEnter={() => { isOrbitHoveredRef.current = true; }}
+                onMouseLeave={() => { isOrbitHoveredRef.current = false; }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedItem(item);
                 }}
-                className={`absolute left-1/2 top-1/2 pointer-events-auto ${width} ${aspect} bg-white p-1 sm:p-1.5 rounded-[10px] border border-black/[0.1] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer select-none group`}
+                className="absolute top-1/2 left-1/2 pointer-events-auto will-change-transform cursor-pointer"
+                style={{
+                  transform: 'translate3d(-50%, -50%, 0)',
+                }}
               >
-                <div className="w-full h-full rounded-[8px] overflow-hidden bg-[#F5F5F7] relative">
+                <div className="w-[72px] h-[92px] sm:w-[100px] sm:h-[130px] md:w-[125px] md:h-[160px] lg:w-[145px] lg:h-[185px] rounded-[10px] sm:rounded-[14px] overflow-hidden bg-[#F5F5F7] border border-black/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.22)] hover:scale-110 hover:border-black/20 transition-all duration-200 select-none">
                   <img
                     src={item.mediaUrl}
                     alt={item.title}
                     loading="eager"
                     decoding="async"
-                    className="w-full h-full object-cover block group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover block group-hover:scale-105 transition-transform duration-300 pointer-events-none"
                   />
                 </div>
               </div>
@@ -331,30 +401,32 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
           </div>
         </div>
 
-        {/* Center Typographic Focal Point matching Home Page UI */}
-        <div className="relative z-20 flex flex-col items-center text-center px-4 pointer-events-auto select-none">
-          {/* Playground Title in Home Page Ugly Dave Heading */}
-          <h1 className="font-ugly-dave text-[50px] sm:text-[68px] md:text-[80px] lg:text-[88px] font-normal leading-[0.98] text-black tracking-[0.015em]">
-            Playground
-          </h1>
+        {/* Center Typographic Focal Point - "Playground" stays in the center, cards orbit around it */}
+        <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 pointer-events-none select-none">
+          <div className="relative flex flex-col items-center max-w-[280px] sm:max-w-[360px] md:max-w-[440px]">
+            {/* Title in Ugly Dave font */}
+            <h1 className="font-ugly-dave text-[36px] sm:text-[48px] md:text-[60px] lg:text-[72px] xl:text-[80px] font-normal leading-[0.96] text-black tracking-[0.015em] drop-shadow-xs">
+              Playground
+            </h1>
 
-          {/* (2019 – 2026) in Home Page caps typography */}
-          <p className="mt-2.5 font-caps text-[12px] sm:text-[13px] tracking-[0.12em] text-[#86868B] font-semibold">
-            (2019 – 2026)
-          </p>
+            {/* (2019 – 2026) */}
+            <p className="mt-1.5 sm:mt-2 font-caps text-[10.5px] sm:text-[11.5px] md:text-[12.5px] tracking-[0.14em] text-[#555555] font-semibold">
+              (2019 – 2026)
+            </p>
 
-          {/* Scroll ↓ Indicator */}
-          <button
-            onClick={scrollToGallery}
-            className="mt-6 sm:mt-8 group flex flex-col items-center gap-1.5 font-caps text-[11px] tracking-[0.14em] text-[#86868B] hover:text-black transition-colors cursor-pointer"
-            aria-label="Scroll down to gallery"
-          >
-            <span>Scroll</span>
-            <ArrowDown
-              size={15}
-              className="stroke-[2.2] animate-bounce text-[#86868B] group-hover:text-black transition-colors"
-            />
-          </button>
+            {/* Scroll Indicator button */}
+            <button
+              onClick={scrollToGallery}
+              className="pointer-events-auto mt-3 sm:mt-4 md:mt-5 group flex flex-col items-center gap-1 font-caps text-[10px] sm:text-[11px] tracking-[0.14em] text-[#86868B] hover:text-black transition-colors cursor-pointer"
+              aria-label="Scroll down to gallery"
+            >
+              <span>Explore Collection</span>
+              <ArrowDown
+                size={14}
+                className="stroke-[2.2] animate-bounce text-[#86868B] group-hover:text-black transition-colors"
+              />
+            </button>
+          </div>
         </div>
       </section>
 
@@ -392,27 +464,27 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
         </div>
       </div>
 
-      {/* 3. MASONRY GALLERY CANVAS: ONE TAG PER IMAGE, NO DOTTED BG, NO SHADOWS */}
-      <main className="flex-1 max-w-[1500px] w-full mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-10">
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 sm:gap-6 [column-fill:_balance]">
+      {/* 3. MASONRY GALLERY CANVAS: MULTI-COLUMN DUMP GRID MATCHING SCREENSHOT WITH WORKCARD-STYLE TAGS */}
+      <main className="flex-1 max-w-[1600px] w-full mx-auto px-3 sm:px-6 lg:px-8 xl:px-10 py-6 sm:py-8">
+        <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 gap-3 sm:gap-4 lg:gap-4.5 [column-fill:_balance]">
           {filteredItems.map((item, index) => (
             <div
               key={item.id}
               onClick={() => setSelectedItem(item)}
-              className="break-inside-avoid mb-5 sm:mb-6 group relative overflow-hidden rounded-[10px] bg-[#F5F5F7] border border-black/[0.08] cursor-pointer select-none"
+              className="break-inside-avoid mb-3 sm:mb-4 lg:mb-4.5 group relative overflow-hidden rounded-[8px] sm:rounded-[10px] bg-[#F5F5F7] border border-black/[0.08] hover:border-black/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 cursor-pointer select-none"
             >
-              <div className="relative w-full overflow-hidden">
+              <div className="relative w-full overflow-hidden bg-[#F0F0F2]">
                 <img
                   src={item.mediaUrl}
                   alt={item.title}
-                  loading={index < 6 ? 'eager' : 'lazy'}
+                  loading={index < 10 ? 'eager' : 'lazy'}
                   decoding="async"
-                  className="w-full h-auto block object-cover group-hover:scale-[1.015] transition-transform duration-300 ease-out"
+                  className="w-full h-auto block object-cover group-hover:scale-[1.02] transition-transform duration-300 ease-out"
                 />
 
-                {/* Exactly one tag on the image */}
-                <div className="absolute bottom-3 left-3 sm:bottom-3.5 sm:left-3.5 pointer-events-none z-10">
-                  <span className="bg-[#1D1D1F]/80 backdrop-blur-md text-white text-[11.5px] sm:text-[12px] font-sans font-medium px-3.5 py-1.5 rounded-full inline-block">
+                {/* Workcard-style Tag inside the media preview */}
+                <div className="pointer-events-none absolute bottom-2.5 right-2.5 sm:bottom-3 sm:right-3 z-20 flex flex-wrap items-center justify-end gap-1.5 max-w-[88%]">
+                  <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-1 rounded-[6px] bg-black/60 backdrop-blur-md text-white border border-white/20 font-bold shadow-sm">
                     {item.title}
                   </span>
                 </div>
@@ -421,6 +493,9 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
           ))}
         </div>
       </main>
+
+      {/* EDITORIAL FOOTER (matching design screenshot) */}
+      <EditorialFooter />
 
       {/* FULLSCREEN LIGHTBOX DETAIL MODAL */}
       <AnimatePresence>
@@ -447,7 +522,7 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
                   <span className="text-white font-medium text-[14px] sm:text-[15px]">
                     {selectedItem.title}
                   </span>
-                  <span className="bg-white/15 text-white/90 text-[11px] px-2.5 py-0.5 rounded-full font-caps tracking-wide">
+                  <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-1 rounded-[6px] bg-white/10 text-white border border-white/20 font-bold">
                     {selectedItem.category}
                   </span>
                 </div>

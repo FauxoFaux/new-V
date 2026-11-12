@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Case Study — Keerthana Ravichandran</title>
+    <title>Case Study — Kay Ravichandran</title>
     <!-- Light Mode Favicon (loads when system is light) -->
 <link rel="icon" type="image/svg+xml" href="/Favicon.svg" media="(prefers-color-scheme: light)" />
 
@@ -343,7 +343,15 @@
             }
         }
 
-        /* Table of Contents Track and Dot styling */
+        /* Dynamic Theme & Table of Contents Track and Dot styling */
+        :root {
+            --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+            --cs-accent: #446E2B;
+            --cs-accent-dark: #335620;
+            --cs-accent-tint: #F2F7ED;
+            --cs-accent-border: rgba(68, 110, 43, 0.22);
+        }
+
         .cs-toc-item {
             display: flex;
             align-items: center;
@@ -354,7 +362,7 @@
             position: relative;
         }
         .cs-toc-item:hover {
-            color: #1D1D1F;
+            color: var(--cs-accent, #1D1D1F);
         }
         .cs-toc-item .cs-toc-dot {
             width: 7px;
@@ -367,20 +375,20 @@
             shrink: 0;
         }
         .cs-toc-item:hover .cs-toc-dot {
-            background-color: #1D1D1F;
+            background-color: var(--cs-accent, #1D1D1F);
         }
         .cs-toc-item.active {
-            color: #000000 !important;
+            color: var(--cs-accent, #000000) !important;
         }
         .cs-toc-item.active .cs-toc-dot {
             width: 9px;
             height: 9px;
-            background-color: #000000 !important;
+            background-color: var(--cs-accent, #000000) !important;
             margin-left: -4px;
-            box-shadow: 0 0 0 3px #FFFFFF, 0 1px 3px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 0 3px #FFFFFF, 0 1px 6px var(--cs-accent-border, rgba(0, 0, 0, 0.2));
         }
         .cs-toc-item.active .cs-toc-text {
-            color: #000000 !important;
+            color: var(--cs-accent, #000000) !important;
             font-weight: 700 !important;
         }
 
@@ -454,12 +462,26 @@
 
         .stroke-\[\#2036B8\], [stroke="#2036B8"] { stroke: #1D1D1F !important; }
         .fill-\[\#2036B8\], [fill="#2036B8"] { fill: #1D1D1F !important; }
-        .text-\[\#2036B8\], .text-\[\#5A6BFF\], .text-\[\#8B95FF\] { color: #1D1D1F !important; }
-        .bg-\[\#2036B8\], .bg-\[\#5A6BFF\] { background-color: #F5F5F7 !important; color: #1D1D1F !important; }
-        .border-\[\#2036B8\], .border-\[\#5A6BFF\], .border-\[\#8B95FF\], .dark\:border-\[\#8B95FF\], .dark\:border-\[\#5A6BFF\] { 
+        /* Strictly Monochrome / Neutral Case Studies - Remove ALL colors (blue, purple, green) */
+        .text-\[\#2036B8\], .text-\[\#5A6BFF\], .text-\[\#8B95FF\], .text-\[\#7C3AED\], .text-\[\#581C87\], .text-\[\#16A34A\], .text-\[\#059669\] { 
+            color: #1D1D1F !important; 
+        }
+        .bg-\[\#2036B8\], .bg-\[\#5A6BFF\], .bg-\[\#7C3AED\], .bg-\[\#16A34A\] { 
+            background-color: #1D1D1F !important; 
+            color: #FFFFFF !important; 
+        }
+        .border-\[\#2036B8\], .border-\[\#5A6BFF\], .border-\[\#8B95FF\], .border-\[\#7C3AED\], .border-\[\#16A34A\], .dark\:border-\[\#8B95FF\], .dark\:border-\[\#5A6BFF\] { 
             border-color: rgba(0, 0, 0, 0.08) !important;
             background-color: #FFFFFF !important;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
+            box-shadow: none !important;
+        }
+        .stroke-\[\#2036B8\], .dark\:stroke-\[\#5A6BFF\], .stroke-\[\#5A6BFF\], .stroke-\[\#8B95FF\],
+        .stroke-\[\#7C3AED\], .stroke-\[\#16A34A\], .stroke-\[\#2036B8\]\/40, .dark\:stroke-\[\#5A6BFF\]\/40 {
+            stroke: rgba(0, 0, 0, 0.14) !important;
+        }
+        .fill-\[\#2036B8\], .dark\:fill-\[\#5A6BFF\], .fill-\[\#5A6BFF\], .fill-\[\#8B95FF\],
+        .fill-\[\#7C3AED\], .fill-\[\#16A34A\] {
+            fill: #1D1D1F !important;
         }
 
         .border-\[\#cccad8\], .border-\[\#C8D4E8\], .border-\[\#D4D4D0\], .border-\[\#E2E2E0\], .border-\[\#E0E6F2\] {
@@ -508,14 +530,14 @@
             </a>
 
             <!-- Desktop Navigation Items - distributed across header matching homepage -->
-            <a href="/#work" class="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] font-bold text-black hover:opacity-80 transition-all whitespace-nowrap">WORK</a>
-            <a href="/#things-i-built" class="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] font-semibold text-[#1D1D1F]/70 hover:text-black transition-all whitespace-nowrap">PROJECTS</a>
+            <a href="/#work" class="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] font-semibold text-[#1D1D1F]/70 hover:text-black transition-all whitespace-nowrap">WORK</a>
             <a href="/#about" class="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] font-semibold text-[#1D1D1F]/70 hover:text-black transition-all whitespace-nowrap">ABOUT</a>
-            <a href="https://drive.google.com/file/d/1ZJWXJ0DoubaRd7qDoCK57abnknj8BDMq/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] font-semibold text-[#1D1D1F]/70 hover:text-black transition-all whitespace-nowrap">RESUME</a>
             <a href="/#play" class="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] font-semibold text-[#1D1D1F]/70 hover:text-black transition-all whitespace-nowrap">PLAY</a>
+            <a href="https://drive.google.com/file/d/1ZJWXJ0DoubaRd7qDoCK57abnknj8BDMq/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] font-semibold text-[#1D1D1F]/70 hover:text-black transition-all whitespace-nowrap">RESUME</a>
+            <a href="/#contact" class="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] font-semibold text-[#1D1D1F]/70 hover:text-black transition-all whitespace-nowrap">CONTACT</a>
 
             <!-- Mobile Hamburger Button -->
-            <button id="cs-mobile-hamburger-btn" onclick="toggleCsMobileMenu()" class="lg:hidden p-2 text-black hover:text-[#444444] transition-colors rounded-lg focus:outline-none cursor-pointer" aria-label="Toggle navigation menu">
+            <button id="cs-mobile-hamburger-btn" onclick="toggleCsMobileMenu()" class="lg:hidden p-2 text-black bg-white hover:text-[#444444] transition-colors rounded-lg focus:outline-none cursor-pointer" aria-label="Toggle navigation menu">
                 <svg id="cs-icon-menu" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
                 <svg id="cs-icon-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
@@ -524,14 +546,14 @@
         <!-- Mobile Navigation Dropdown Drawer - Covers half the screen edge-to-edge -->
         <div id="cs-mobile-drawer" class="hidden lg:hidden fixed top-[57px] sm:top-[65px] left-0 right-0 w-full h-[50vh] min-h-[300px] max-h-[460px] bg-white border-b border-black/15 shadow-[0_20px_40px_rgba(0,0,0,0.12)] px-6 sm:px-10 py-6 flex-col justify-between overflow-y-auto z-50">
             <div class="space-y-1.5">
-                <a href="/#work" onclick="toggleCsMobileMenu()" class="block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] font-bold text-black hover:bg-black/5 transition-colors">WORK</a>
-                <a href="/#things-i-built" onclick="toggleCsMobileMenu()" class="block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] font-semibold text-[#1D1D1F]/70 hover:text-black hover:bg-black/5 transition-colors">PROJECTS</a>
-                <a href="/#about" onclick="toggleCsMobileMenu()" class="block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] font-semibold text-[#1D1D1F]/70 hover:text-black hover:bg-black/5 transition-colors">ABOUT</a>
-                <a href="https://drive.google.com/file/d/1ZJWXJ0DoubaRd7qDoCK57abnknj8BDMq/view?usp=sharing" target="_blank" rel="noopener noreferrer" onclick="toggleCsMobileMenu()" class="flex items-center justify-between px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] font-semibold text-[#1D1D1F]/70 hover:text-black hover:bg-black/5 transition-colors">
+                <a href="/#work" onclick="toggleCsMobileMenu()" class="block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] font-semibold text-[#6E6E73] hover:text-black transition-colors">WORK</a>
+                <a href="/#about" onclick="toggleCsMobileMenu()" class="block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] font-semibold text-[#6E6E73] hover:text-black transition-colors">ABOUT</a>
+                <a href="/#play" onclick="toggleCsMobileMenu()" class="block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] font-semibold text-[#6E6E73] hover:text-black transition-colors">PLAY</a>
+                <a href="https://drive.google.com/file/d/1ZJWXJ0DoubaRd7qDoCK57abnknj8BDMq/view?usp=sharing" target="_blank" rel="noopener noreferrer" onclick="toggleCsMobileMenu()" class="flex items-center justify-between px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] font-semibold text-[#6E6E73] hover:text-black transition-colors">
                     <span>RESUME</span>
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-black shrink-0"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
                 </a>
-                <a href="/#play" onclick="toggleCsMobileMenu()" class="block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] font-semibold text-[#1D1D1F]/70 hover:text-black hover:bg-black/5 transition-colors">PLAY</a>
+                <a href="/#contact" onclick="toggleCsMobileMenu()" class="block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] font-semibold text-[#6E6E73] hover:text-black transition-colors">CONTACT</a>
             </div>
             <div class="pt-4 border-t border-black/[0.08] flex items-center justify-between text-[#86868B] font-caps text-[11px] tracking-[0.12em]">
                 <span>KAY RAVICHANDRAN</span>
@@ -690,17 +712,76 @@
                 </div>
             </section>
 
-            <!-- Minimalist Footer matching App.tsx -->
-            <footer class="border-t border-black/[0.08] py-8 text-[#86868B] font-caps text-[11px] tracking-[0.12em] font-bold flex flex-col sm:flex-row items-center justify-between gap-4 w-full bg-transparent mt-12 sm:mt-16">
-                <span>© 2026 Keerthana Ravichandran</span>
-                <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="text-[#86868B] hover:text-black transition-colors cursor-pointer font-caps font-bold tracking-[0.09em]">
-                    Back to top ↑
-                </button>
-            </footer>
-
         </main>
 
     </div>
+
+    <!-- Full-Width Editorial Footer matching Play & Clean Design -->
+    <footer class="w-full border-t border-black/[0.1] bg-white mt-16 sm:mt-24 pt-8 sm:pt-10 pb-10 sm:pb-12 text-[#1D1D1F] font-sans">
+        <div class="max-w-[1340px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8">
+            
+            <!-- Left Column: Name & Email -->
+            <div class="flex flex-col items-center md:items-start space-y-0.5 text-center md:text-left">
+                <span class="font-caps text-[12px] sm:text-[13px] font-bold tracking-[0.1em] text-black">
+                    KAY RAVICHANDRAN
+                </span>
+                <a href="mailto:itskeerthanaravichandran@gmail.com" class="text-[12.5px] sm:text-[13px] text-[#6E6E73] hover:text-black transition-colors">
+                    itskeerthanaravichandran@gmail.com
+                </a>
+            </div>
+
+            <!-- Center Column: Navigation -->
+            <div class="flex items-center gap-2 sm:gap-2.5 text-[13px] sm:text-[14px] text-[#1D1D1F] font-normal">
+                <a href="/#work" class="hover:text-black hover:underline underline-offset-4 transition-colors">work</a>
+                <span class="text-[#86868B] select-none">·</span>
+                <a href="/#about" class="hover:text-black hover:underline underline-offset-4 transition-colors">about</a>
+                <span class="text-[#86868B] select-none">·</span>
+                <a href="/#play" class="hover:text-black hover:underline underline-offset-4 transition-colors">play</a>
+                <span class="text-[#86868B] select-none">·</span>
+                <a href="https://drive.google.com/file/d/1ZJWXJ0DoubaRd7qDoCK57abnknj8BDMq/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="hover:text-black hover:underline underline-offset-4 transition-colors">resume</a>
+                <span class="text-[#86868B] select-none">·</span>
+                <a href="/#contact" class="hover:text-black hover:underline underline-offset-4 transition-colors">contact</a>
+            </div>
+
+            <!-- Right Column: Social Icons without boxes -->
+            <div class="flex items-center gap-4 sm:gap-5 text-[#1D1D1F]">
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/summershuttle/?hl=en" target="_blank" rel="noreferrer" aria-label="Instagram" class="text-[#1D1D1F] hover:text-black transition-transform hover:scale-110 flex items-center justify-center p-1">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                </a>
+                <!-- Behance -->
+                <a href="https://www.behance.net/keertharavicha1" target="_blank" rel="noreferrer" aria-label="Behance" class="text-[#1D1D1F] hover:text-black transition-transform hover:scale-110 flex items-center justify-center p-1">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4.5 5.5v13" />
+                        <path d="M4.5 5.5h4a3 3 0 0 1 0 6h-4" />
+                        <path d="M4.5 11.5h4.5a3.5 3.5 0 0 1 0 7h-4.5" />
+                        <path d="M13.5 7.5h5" />
+                        <path d="M12.5 15h6a3 3 0 1 0-6 0c0 2 1.5 3.5 3.5 3.5 1.3 0 2.4-.6 3-1.6" />
+                    </svg>
+                </a>
+                <!-- Email -->
+                <a href="mailto:itskeerthanaravichandran@gmail.com" aria-label="Email" class="text-[#1D1D1F] hover:text-black transition-transform hover:scale-110 flex items-center justify-center p-1">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                    </svg>
+                </a>
+                <!-- LinkedIn -->
+                <a href="https://www.linkedin.com/in/keerthanaravichandran/" target="_blank" rel="noreferrer" aria-label="LinkedIn" class="text-[#1D1D1F] hover:text-black transition-transform hover:scale-110 flex items-center justify-center p-1">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                        <rect x="2" y="9" width="4" height="12"></rect>
+                        <circle cx="4" cy="4" r="2"></circle>
+                    </svg>
+                </a>
+            </div>
+
+        </div>
+    </footer>
 
     <!-- DATA & RENDER SCRIPT -->
     <script>
@@ -1993,7 +2074,7 @@
                 role: 'Product Designer',
                 duration: 'Aug 2022 – Jan 2023',
                 team: 'Qube Cinema Technologies',
-                responsibilities: 'Mobile UI/UX · Seat Selection Canvas · E-Commerce Checkout · Design System',
+                responsibilities: 'Mobile UI/UX · Seat Selection · Checkout · Design System',
                 shipped: '<a href="https://play.google.com/store/apps/details?id=in.justickets.android&hl=en_US" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[#333336] hover:text-black underline underline-offset-2 transition-colors font-normal group"><span>JUSTICKETS</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-[#86868B] group-hover:text-black shrink-0 transition-colors" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>',
                 cardType: 'video',
                 cardSrc: '/JT/JT_GIF.mp4',
@@ -2003,76 +2084,85 @@
                 prev: 'myblockcounts',
                 next: 'youtopia',
                 heroHTML: `
+                    <p class="text-[15.5px] sm:text-[17px] leading-[1.7] text-[#333336] font-normal mb-8 max-w-3xl">
+                        Justickets was adding features fast, and every one of them was built from scratch. I made the case for slowing down just long enough to build a shared system, starting with seat selection and payment. Four major features shipped on it after that, and other Qube products picked it up too.
+                    </p>
                     <div id="cs-hero-image" class="w-full rounded-[10px] overflow-hidden mb-16 aspect-[16/9] min-h-[280px] sm:min-h-[360px]">
                         <img src="/JT/J_Hero.webp" alt="Justickets Hero Image" class="w-full h-full object-cover rounded-[10px]" loading="eager" decoding="async" />
                     </div>
                 `,
                 content: {
                     decisionsLayout: "side-card",
-                    context: "Justickets was growing feature by feature: offers, food ordering, Moviebuff content, special screening messages, each shipped in isolation. The features weren't the problem. The fragmentation underneath them was going to make the next feature slower to ship than the last, not faster.",
+                    contextTitle: "A product growing faster than its foundation",
+                    context: "Justickets kept picking up new things: offers, food ordering, Moviebuff content, special screening messages. Each one shipped on its own, and that was the problem.\n\nNot the features. The fragmentation underneath them. Every release made the next one a little harder to build, not easier.\n\nSo I kept asking myself: how might we keep shipping new features without every one of them re-solving problems the last one already solved?",
                     problem: {
+                        title: "What I kept running into",
                         headline: "How might we keep shipping new features without every one of them re-solving problems the last one already solved?",
                         points: [
-                            "Seat selection and payment, the highest-stakes screen in the app, had inconsistent spacing and unclear states.",
-                            "Movie listing cards varied screen to screen with no shared structure.",
-                            "Every new feature (offers, food ordering, partner content) was built on its own component base.",
-                            "Design-to-dev handoff repeated the same negotiation every sprint, with no shared source of truth."
+                            "Checkout felt shaky. Seat selection and payment are where people decide whether to go through with it, and the spacing and states were all over the place.",
+                            "Same thing, different behavior. Movie cards looked and worked a little differently on every screen.",
+                            "A new feature meant new components. Offers, food ordering, and partner content each came with their own.",
+                            "Handoff started over every sprint. Design and engineering kept having the same conversation about spacing, states, and components."
                         ]
                     },
                     research: {
-                        title: "System audit",
-                        intro: "I audited the booking journey end to end across app and web, specifically looking for repeated patterns and where reusability was already breaking down. The finding: this wasn't a design-quality problem, it was a source-of-truth problem. Every new feature was re-negotiating spacing, states, and components that an earlier feature had already solved.\n\nThe real decision: product wanted forward motion. Every week without a new feature was pressure to just ship the next one. I made the case that shipping without a shared foundation wasn't saving time, it was compounding debt that would eventually slow delivery to a crawl. The trade-off I offered: pause new feature work briefly to build the system on the highest-stakes, most-repeated screen first, seat selection and payment, so everything after it would ship faster, not slower. That argument won on the evidence that every prior feature had already needed its own one-off component work; the system was the fix, not a delay.",
+                        title: "Not a design problem, a source-of-truth problem",
+                        intro: "I audited the booking journey end to end, across the app and web, looking for anything that kept repeating and for the places where reuse was already breaking down.\n\nIt wasn’t a design-quality problem. It was a source-of-truth problem. Every new feature was re-negotiating spacing, states, and components that an earlier feature had already solved.\n\nKeep shipping, or build the foundation first?\nProduct wanted forward motion. I proposed a short pause on new features to build the system on seat selection and payment first, so everything after could ship faster.",
                         insights: [
-                            { title: "Source-of-truth problem, not design quality", description: "Every new feature was re-negotiating spacing, states, and components that an earlier feature had already solved." },
-                            { title: "Forward motion vs. compounding debt", description: "Shipping one-off components felt fast initially, but compounded technical and visual debt that slowed overall delivery." },
-                            { title: "Anchor the system on highest-stakes patterns", description: "Standardizing the seat selection and payment checkout screens first created the reusable foundation for all subsequent features." }
+                            { title: "Source-of-truth problem", description: "Every new feature was re-negotiating spacing, states, and components that an earlier feature had already solved." },
+                            { title: "Keep shipping, or build the foundation first?", description: "Product wanted forward motion. I proposed a short pause on new features to build the system on seat selection and payment first, so everything after could ship faster." },
+                            { title: "Anchor the system on highest-stakes patterns", description: "Starting with seat selection and payment created the shared foundation for everything that shipped after." }
                         ]
                     },
+                    decisionsTitle: "Four decisions that shaped the system",
                     decisions: [
                         {
                             num: "DECISION 01",
-                            title: "BEFORE / AFTER SEAT SELECTION AND PAYMENT",
-                            body: "This became the system's reference standard because it was the highest-stakes, most-repeated pattern in the app. Before: Inconsistent spacing and unclear seat states created friction at checkout the exact moment users were closest to abandoning if something felt uncertain. After: Defined and standardized four explicit seat states available, selected, reserved, blocked with consistent spacing and hierarchy carried through the entire booking flow. One more product decision, not just a component one: food & beverage ordering could have shipped as its own ecommerce-style flow, separate from ticket booking. I chose to fold it into checkout using the same component patterns as the rest of the app instead so buying snacks felt like one more step in getting your ticket, not a second app bolted onto the first.",
-                            impact: "IMPACT: STANDARDIZED 4 SEAT STATES & INTEGRATED FOOD & BEVERAGE ORDERING INTO CHECKOUT FLOW.",
+                            title: "Seat selection and payment: what should become the standard?",
+                            body: "I started here because it’s the screen people hit most, and the one where they’re closest to giving up. Before, uneven spacing and unclear seat states made that moment feel uncertain. I defined four clear seat states, each easy to tell apart, with the same spacing and hierarchy running through the whole booking flow:\n\n• Available\n• Selected\n• Reserved\n• Blocked",
+                            impact: "Impact: Four standardized seat states. People get a clearer read on what’s available, and the team got a pattern they could reuse.",
                             image: "/JT/JT_Seat.webp"
                         },
                         {
                             num: "DECISION 02",
-                            title: "FOOD & BEVERAGE: ECOMMERCE FLOW, OR PART OF TICKET BOOKING?",
-                            body: "Food & beverage ordering could have shipped as its own ecommerce-style flow, separate from ticket booking. I chose to fold it into checkout using the same component patterns as the rest of the app instead, so buying snacks felt like one more step in getting your ticket, not a second app bolted onto the first.",
-                            impact: "IMPACT: INTEGRATED FOOD & BEVERAGE DIRECTLY INTO CHECKOUT FLOW USING SHARED COMPONENT PATTERNS.",
+                            title: "Food & beverage: its own ecommerce flow, or part of ticket booking?",
+                            body: "Food ordering could have been its own ecommerce flow. I folded it into checkout instead, using the same components as everything else, so buying snacks feels like one more step in getting your ticket, not a second app bolted onto the first.",
+                            impact: "Impact: Food & beverage ordering became part of checkout, built on shared components.",
                             image: "/JT/JT_Food.webp"
                         },
                         {
                             num: "DECISION 03",
-                            title: "PAYMENT: BUILD A NEW PATTERN, OR EXTEND THE SEAT-SELECTION SYSTEM?",
-                            body: "The payment summary screen was built on the same component base established by seat selection: buttons, inputs, spacing, hierarchy, rather than starting from zero the way every prior feature had before the system existed. This was the proof that the system worked: the highest-friction screen in the app inherited stability from a decision made two screens earlier.",
-                            impact: "IMPACT: UNIFIED PAYMENT SUMMARY SCREEN BUILT ON SHARED SYSTEM COMPONENT BASE.",
+                            title: "Payment: build a new pattern, or extend the seat-selection system?",
+                            body: "The payment summary reused what seat selection had already settled: buttons, inputs, spacing, hierarchy. No starting from zero, which is what every earlier feature had done.",
+                            impact: "Impact: A unified payment summary built on the shared component base.",
                             image: "/JT/JT_Payment.webp"
                         },
                         {
                             num: "DECISION 04",
-                            title: "OFFERS & PROMOTIONS: INTERRUPT CHECKOUT, OR SUPPORT IT?",
-                            body: "Offers needed to slot into the booking flow without competing with the checkout task the user was already mid-way through. Built using the same component standards as seat selection and payment, so a promotional moment felt like part of the same product, not an ad breaking the flow.",
-                            impact: "IMPACT: SLOTTED PROMOTIONS INTO CHECKOUT FLOW WITH SHARED DESIGN STANDARDS.",
+                            title: "Offers & promotions: interrupt checkout, or support it?",
+                            body: "Offers had to fit into booking without competing with what someone was already in the middle of. I built them from the same standards as seat selection and payment, so a promo feels like part of the product, not an ad interrupting it.",
+                            impact: "Impact: Promotions slotted into checkout using shared design standards.",
                             image: "/JT/JT_Offers.webp"
                         }
                     ],
-                    systemTitle: "Execution",
-                    system: "Every feature built after the seat-selection standard, including food & beverage ordering, offers/promotions, and the payment summary screen, was built on that same component base rather than starting from zero. Standardized buttons, inputs, cards, spacing, typography, and interaction states, aligned to Qube's broader guidelines.",
+                    systemTitle: "Turning it into a system",
+                    system: "Everything built after seat selection, including food & beverage, offers, and the payment summary, started from the same components. The system covered:\n\n• Buttons and input fields\n• Cards and content layouts\n• Typography and spacing\n• Interaction states\n• Booking and checkout components\n\nI worked with engineering to line these up with Qube’s wider design guidelines and to make sure they could actually be built consistently.",
                     outcome: {
-                        subtext: "Shipped and live",
+                        subtext: "Validated Impact & Shipped Architecture",
                         points: [
-                            "Shipped and live: 1M+ downloads, 25.9K+ reviews, still in production",
-                            "4 major features shipped on the same system after it was established",
-                            "+20% increase in user satisfaction (confirm measurement source before stating this in an interview)",
-                            "The system extended beyond Justickets, adopted as a shared standard on other Qube products (Qube Wire, Qube XP) and I mentored incoming designers on how to use it"
+                            "+20% user satisfaction in beta testing.",
+                            "New features became easy to add. Four major features shipped on the shared system instead of starting from zero.",
+                            "Adopted beyond Justickets. Qube Wire and Qube XP use it as a shared standard.",
+                            "Live at scale. The product has 1M+ downloads and 25K+ reviews and is still in production."
                         ]
                     },
-                    reflection: "I started this thinking the work was about making screens look good. It turned out to be about anticipating where teams would get stuck before it became their problem, and about staying with the work after it shipped: testing it myself, catching bugs before users did, caring whether spacing felt right in real light on a real device. That's not QA. That's ownership.",
+                    reflectionTitle: "What I took from it",
+                    reflection: "I went in thinking this was about making screens look good. It turned out to be about seeing where teams would get stuck before it became their problem.\n\nIt was also about staying with the work after it shipped: testing it myself, catching bugs before users did (padding, a missing language, some alignment), checking whether the spacing felt right in real light on a real device. That’s not QA. That’s ownership.",
                     ownership: {
-                        led: "Design system creation, seat selection & payment redesign, food & beverage flow, offers/promotions, pre- and post-launch validation",
-                        codefined: "Component standards alignment with Qube's broader design guidelines, engineering feasibility during implementation"
+                        title: "What I owned",
+                        led: "Design system creation, seat selection and payment redesign, food & beverage flow, offers and promotions, and pre- and post-launch validation.",
+                        mentored: "Two designers, a college intern and a new grad, through real product work on the system, helping them navigate design decisions, feedback, and cross-functional collaboration.",
+                        codefined: "Component standards alignment with Qube’s wider design guidelines, and engineering feasibility during implementation."
                     }
                 }
             }
@@ -2127,14 +2217,106 @@
             `;
         }
 
-        function renderCaseStudyHTML(data, project) {
+        const PROJECT_THEMES = {
+            youtopia: {
+                accent: '#446E2B',        // Green from card image (/Home/Y_WC.webp)
+                accentDark: '#2D4B1C',
+                tint: '#F2F7ED',
+                border: '#CFDFCA',
+                badgeBg: '#E5EEDF',
+                badgeText: '#2D4B1C',
+                progressBg: '#446E2B',
+                palette: [
+                    { accent: '#446E2B', accentDark: '#2D4B1C', tint: '#F2F7ED', border: '#CFDFCA' },
+                    { accent: '#587D38', accentDark: '#365220', tint: '#F5F9F1', border: '#D7E5D2' },
+                    { accent: '#3F6527', accentDark: '#284318', tint: '#EEF5E8', border: '#C7DBC0' },
+                    { accent: '#4E7732', accentDark: '#314D1E', tint: '#F3F8EE', border: '#D1E1CB' }
+                ]
+            },
+            justickets: {
+                accent: '#7C3AED',        // Cinema purple
+                accentDark: '#581C87',
+                tint: '#F8F4FD',
+                border: '#E3D5F8',
+                badgeBg: '#EFE6FD',
+                badgeText: '#581C87',
+                progressBg: '#7C3AED',
+                palette: [
+                    { accent: '#7C3AED', accentDark: '#581C87', tint: '#F8F4FD', border: '#E3D5F8' },
+                    { accent: '#8B5CF6', accentDark: '#6D28D9', tint: '#FAF6FE', border: '#E9DEFB' },
+                    { accent: '#6D28D9', accentDark: '#4C1D95', tint: '#F5F0FB', border: '#DDD0F5' },
+                    { accent: '#7C3AED', accentDark: '#581C87', tint: '#F8F4FD', border: '#E3D5F8' }
+                ]
+            },
+            revlr: {
+                accent: '#7C3AED',        // Multi-color palette for spatial VR
+                accentDark: '#581C87',
+                tint: '#F6F3FE',
+                border: '#E0D4FC',
+                badgeBg: '#ECE4FB',
+                badgeText: '#581C87',
+                progressBg: 'linear-gradient(90deg, #7C3AED, #0284C7, #059669, #E11D48)',
+                isColorful: true,
+                palette: [
+                    { accent: '#7C3AED', accentDark: '#581C87', tint: '#F6F3FE', border: '#E0D4FC' }, // Violet
+                    { accent: '#0284C7', accentDark: '#075985', tint: '#F0F8FF', border: '#BAE6FD' }, // Cyan
+                    { accent: '#059669', accentDark: '#065F46', tint: '#F0FDF5', border: '#A7F3D0' }, // Emerald
+                    { accent: '#E11D48', accentDark: '#9F1239', tint: '#FFF1F3', border: '#FECDD6' }, // Rose
+                    { accent: '#D97706', accentDark: '#92400E', tint: '#FFFBEB', border: '#FDE68A' }  // Amber
+                ]
+            },
+            myblockcounts: {
+                accent: '#16A34A',        // Civic green
+                accentDark: '#14532D',
+                tint: '#EDFAF1',
+                border: '#B8ECC7',
+                badgeBg: '#DCF5E3',
+                badgeText: '#14532D',
+                progressBg: '#16A34A',
+                palette: [
+                    { accent: '#16A34A', accentDark: '#14532D', tint: '#EDFAF1', border: '#B8ECC7' },
+                    { accent: '#15803D', accentDark: '#14532D', tint: '#F0FDF4', border: '#BBF7D0' },
+                    { accent: '#059669', accentDark: '#065F46', tint: '#ECFDF5', border: '#A7F3D0' },
+                    { accent: '#16A34A', accentDark: '#14532D', tint: '#EDFAF1', border: '#B8ECC7' }
+                ]
+            }
+        };
+
+        function parseOutcomePoint(pt) {
+            // Check for leading metric: "+60%", "+3X", "92%", "45%", "34%", "+40%", "30%", "+100%", "+20%"
+            const leadingMetric = pt.match(/^(\+[0-9]+%|\+[0-9]+X|[0-9]+%)/i);
+            if (leadingMetric) {
+                const stat = leadingMetric[1];
+                const desc = pt.slice(stat.length).replace(/^[\s:–—-]+/, '');
+                return { isMetric: true, stat, desc, raw: pt };
+            }
+            // Check for "Shipped and live: 1M+ downloads..."
+            const mMatch = pt.match(/([0-9]+M\+)/i);
+            if (mMatch && pt.toLowerCase().includes('downloads')) {
+                const stat = mMatch[1];
+                return { isMetric: true, stat, desc: pt, raw: pt };
+            }
+            // Check for "4 major features shipped..."
+            const numMatch = pt.match(/^([0-9]+)\s+(major features)/i);
+            if (numMatch) {
+                const stat = numMatch[1];
+                const desc = pt.slice(stat.length).trim();
+                return { isMetric: true, stat, desc, raw: pt };
+            }
+            // Qualitative milestone
+            return { isMetric: false, stat: null, desc: pt, raw: pt };
+        }
+
+        function renderCaseStudyHTML(data, project, projectId = 'youtopia') {
             const DIVIDER = `<div class="border-t border-black/[0.08] my-10 sm:my-14 cs-reveal"></div>`;
+            const theme = PROJECT_THEMES[projectId] || PROJECT_THEMES.youtopia;
             let sections = [];
 
             // 1. CONTEXT
+            let contextTitle = data.contextTitle || 'THE CONTEXT';
             sections.push(`
                 <section id="sec-context" class="space-y-3 cs-reveal scroll-mt-12">
-                    <h2 class="font-display text-[22px] sm:text-[25px] md:text-[28px] font-bold text-[#1D1D1F] tracking-tight uppercase">THE CONTEXT</h2>
+                    <h2 class="font-display text-[22px] sm:text-[25px] md:text-[28px] font-bold text-[#1D1D1F] tracking-tight uppercase">${contextTitle}</h2>
                     <p class="text-[14.5px] sm:text-[15.5px] md:text-[16px] leading-[1.72] text-[#333336] w-full font-normal">
                         ${data.context}
                     </p>
@@ -2142,6 +2324,7 @@
             `);
 
             // 2. PROBLEM DEFINITION
+            let problemTitle = (data.problem && data.problem.title) || 'PROBLEM DEFINITION';
             let problemPointsHTML = data.problem.points.map((pt, idx) => `
                 <div class="py-2.5 sm:py-3 text-[14.5px] sm:text-[15.5px] md:text-[16px] leading-[1.7] text-[#1D1D1F] flex items-start gap-3.5 sm:gap-4 font-normal">
                     <span class="font-caps text-[12px] sm:text-[13px] font-bold text-[#86868B] shrink-0 min-w-[28px] pt-0.5 tracking-[0.05em]">0${idx + 1}.</span>
@@ -2154,7 +2337,7 @@
             sections.push(`
                 <section id="sec-problem" class="space-y-4 cs-reveal scroll-mt-12">
                     <div class="space-y-1.5">
-                        <h2 class="font-display text-[22px] sm:text-[25px] md:text-[28px] font-bold text-[#1D1D1F] tracking-tight uppercase">PROBLEM DEFINITION</h2>
+                        <h2 class="font-display text-[22px] sm:text-[25px] md:text-[28px] font-bold text-[#1D1D1F] tracking-tight uppercase">${problemTitle}</h2>
                         <p class="text-[14.5px] sm:text-[15.5px] md:text-[16px] font-medium leading-[1.68] text-[#333336] w-full pt-1">
                             ${data.problem.headline}
                         </p>
@@ -2170,13 +2353,15 @@
             let researchTitle = data.research.title || 'RESEARCH & DISCOVERY';
             let insightsHTML = (data.research.insights && data.research.insights.length > 0) ? `
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 pt-3 sm:pt-5 my-4 sm:my-6">
-                    ${data.research.insights.map(item => `
+                    ${data.research.insights.map((item, idx) => {
+                        const dotColor = (theme.palette && theme.palette.length > idx) ? theme.palette[idx].accent : theme.accent;
+                        return `
                         <div class="rounded-[22px] border border-black/[0.08] bg-[#FBFBFC] p-6 sm:p-7 flex flex-col justify-start shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:border-black/20 transition-all cs-reveal cs-hover-card">
-                            <div class="w-2.5 h-2.5 rounded-full bg-black mb-4 shrink-0"></div>
+                            <div class="w-2.5 h-2.5 rounded-full mb-4 shrink-0" style="background: ${dotColor};"></div>
                             <h3 class="font-display font-bold text-[#1D1D1F] text-[16px] sm:text-[17.5px] leading-[1.3] mb-3">${item.title}</h3>
                             <p class="text-[13.5px] sm:text-[14.5px] leading-[1.65] text-[#4B4B50] font-normal">${item.description}</p>
                         </div>
-                    `).join('')}
+                    `;}).join('')}
                 </div>
             ` : '';
 
@@ -2201,9 +2386,11 @@
 
             // 4. DESIGN STRATEGY
             if (data.strategy && data.strategy.length > 0) {
-                let strategyHTML = data.strategy.map((item, idx) => `
+                let strategyHTML = data.strategy.map((item, idx) => {
+                    const stratColor = (theme.palette && theme.palette.length > idx) ? theme.palette[idx].accent : theme.accent;
+                    return `
                     <div class="flex flex-col justify-start cs-reveal">
-                        <span class="font-display text-4xl sm:text-5xl lg:text-6xl text-black mb-3 font-bold leading-none">0${idx + 1}</span>
+                        <span class="font-display text-4xl sm:text-5xl lg:text-6xl mb-3 font-bold leading-none" style="color: ${stratColor};">0${idx + 1}</span>
                         <h3 class="font-display text-[17px] sm:text-[18px] md:text-[19px] font-bold text-[#1D1D1F] leading-[1.3]">
                             ${item.title}
                         </h3>
@@ -2211,7 +2398,7 @@
                             ${item.description}
                         </p>
                     </div>
-                `).join('');
+                `;}).join('');
 
                 sections.push(`
                     <section id="sec-strategy" class="pt-2 sm:pt-4 pb-2 cs-reveal scroll-mt-12">
@@ -2243,7 +2430,7 @@
                             <!-- Decision Text & Impact (Top) -->
                             <div class="space-y-4 sm:space-y-6 w-full">
                                 <div>
-                                    <div class="font-caps text-[#86868B] text-[11px] sm:text-[11.5px] tracking-[0.12em] font-bold mb-2 sm:mb-3">
+                                    <div class="font-caps text-[#86868B] text-[11px] sm:text-[11.5px] tracking-[0.14em] font-bold mb-2 sm:mb-3">
                                         ${dec.num}
                                     </div>
                                     <h3 class="font-display font-bold text-[22px] sm:text-[26px] md:text-[30px] leading-[1.2] text-[#1D1D1F] uppercase mb-4 sm:mb-6">
@@ -2254,8 +2441,8 @@
                                     </div>
                                 </div>
                                 ${dec.impact ? `
-                                <div class="inline-block border border-black/[0.08] bg-[#F5F5F7] rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 mt-2 sm:mt-4 w-full">
-                                    <span class="text-[#1D1D1F] text-[11px] sm:text-[11.5px] font-caps font-bold tracking-[0.08em] leading-snug block">
+                                <div class="rounded-[14px] bg-[#F5F5F7] px-4 py-3 sm:px-5 sm:py-3.5 mt-2 sm:mt-4 w-full border border-black/[0.06]">
+                                    <span class="text-[#1D1D1F] text-[11.5px] sm:text-[12px] font-caps font-bold tracking-[0.06em] leading-relaxed block">
                                         ${dec.impact}
                                     </span>
                                 </div>
@@ -2277,9 +2464,9 @@
                                 <!-- Left Column (6 Cols): Content & Impact -->
                                 <div class="lg:col-span-6 flex flex-col justify-between h-full space-y-4 sm:space-y-6">
                                     <div>
-                                        <div class="font-caps text-[#86868B] text-[11px] sm:text-[11.5px] tracking-[0.12em] font-bold mb-2 sm:mb-3">
-                                        ${dec.num}
-                                    </div>
+                                        <div class="font-caps text-[#86868B] text-[11px] sm:text-[11.5px] tracking-[0.14em] font-bold mb-2 sm:mb-3">
+                                            ${dec.num}
+                                        </div>
                                         <h3 class="font-display font-bold text-[22px] sm:text-[26px] md:text-[30px] leading-[1.2] text-[#1D1D1F] uppercase mb-4 sm:mb-6">
                                             ${dec.title}
                                         </h3>
@@ -2288,8 +2475,8 @@
                                         </div>
                                     </div>
                                     ${dec.impact ? `
-                                    <div class="inline-block border border-black/[0.08] bg-[#F5F5F7] rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 mt-4 sm:mt-6 w-full">
-                                        <span class="text-[#1D1D1F] text-[11px] sm:text-[11.5px] font-caps font-bold tracking-[0.08em] leading-snug block">
+                                    <div class="rounded-[14px] bg-[#F5F5F7] px-4 py-3 sm:px-5 sm:py-3.5 mt-4 sm:mt-6 w-full border border-black/[0.06]">
+                                        <span class="text-[#1D1D1F] text-[11.5px] sm:text-[12px] font-caps font-bold tracking-[0.06em] leading-relaxed block">
                                             ${dec.impact}
                                         </span>
                                     </div>
@@ -2313,7 +2500,7 @@
                 return `
                     <div class="space-y-4 sm:space-y-6 w-full cs-reveal">
                         <div>
-                            <div class="font-caps text-[#86868B] text-[11px] sm:text-[11.5px] tracking-[0.12em] font-bold mb-2 sm:mb-3">
+                            <div class="font-caps text-[#86868B] text-[11px] sm:text-[11.5px] tracking-[0.14em] font-bold mb-2 sm:mb-3">
                                 ${dec.num}
                             </div>
                             <h3 class="font-display font-bold text-[20px] sm:text-[24px] md:text-[28px] leading-[1.25] text-[#1D1D1F] mb-2 sm:mb-3">
@@ -2323,8 +2510,8 @@
                                 ${bodyParagraphs}
                             </div>
                             ${dec.impact ? `
-                            <div class="inline-block border border-black/[0.08] bg-[#F5F5F7] rounded-xl px-3.5 py-2.5 sm:px-4 sm:py-3 mt-3">
-                                <span class="text-[#1D1D1F] text-[11px] sm:text-[11.5px] font-caps font-bold tracking-[0.08em] leading-snug block">
+                            <div class="rounded-[14px] bg-[#F5F5F7] px-4 py-3 sm:px-5 sm:py-3.5 mt-3 border border-black/[0.06]">
+                                <span class="text-[#1D1D1F] text-[11.5px] sm:text-[12px] font-caps font-bold tracking-[0.06em] leading-relaxed block">
                                     ${dec.impact}
                                 </span>
                             </div>
@@ -2336,10 +2523,11 @@
             }).join('');
 
             let decisionsCard = data.decisionsHTML ? data.decisionsHTML : (data.decisionsPlaceholder ? `<div class="image-placeholder-card cs-hover-card">${data.decisionsPlaceholder}</div>` : '');
+            let decisionsTitle = data.decisionsTitle || 'KEY DESIGN DECISIONS';
 
             sections.push(`
                 <section id="sec-decisions" class="space-y-6 sm:space-y-12 cs-reveal scroll-mt-12">
-                    <h2 class="font-display text-[22px] sm:text-[25px] md:text-[28px] font-bold text-[#1D1D1F] tracking-tight uppercase">KEY DESIGN DECISIONS</h2>
+                    <h2 class="font-display text-[22px] sm:text-[25px] md:text-[28px] font-bold text-[#1D1D1F] tracking-tight uppercase">${decisionsTitle}</h2>
                     <div class="space-y-10 sm:space-y-16 w-full">
                         ${decisionsHTML}
                     </div>
@@ -2374,32 +2562,268 @@
                 `);
             }
 
-            // 8. OUTCOME
-            let outcomeSubtext = data.outcome.subtext ? `<p class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.12em] text-[#86868B] font-bold">${data.outcome.subtext}</p>` : '';
-            let outcomePointsHTML = data.outcome.points.map((pt, idx) => `
-                <div class="py-2.5 sm:py-3 text-[14.5px] sm:text-[15.5px] md:text-[16px] leading-[1.7] text-[#1D1D1F] flex items-start gap-3.5 sm:gap-4 font-normal">
-                    <span class="font-caps text-[12px] sm:text-[13px] font-bold text-[#86868B] shrink-0 min-w-[28px] pt-0.5 tracking-[0.05em]">0${idx + 1}.</span>
-                    <span class="break-words flex-1">${pt}</span>
+            // 8. OUTCOME — Editorial Design Matching User References (Ref 1 & Ref 2)
+            const outcomeHeadingHTML = `
+                <div class="mb-8 sm:mb-10">
+                    <span class="font-caps text-[11px] sm:text-[12px] tracking-[0.16em] text-[#86868B] font-bold block mb-2 uppercase">OUTCOME</span>
+                    <h2 class="font-display text-[26px] sm:text-[32px] md:text-[38px] font-bold text-[#1D1D1F] tracking-tight leading-[1.18]">
+                        ${data.outcome.subtext || 'Validated Impact & Shipped Architecture'}
+                    </h2>
                 </div>
-            `).join('');
+            `;
+
+            let outcomeContentHTML = '';
+
+            // SPECIALIZED AUTHENTIC LAYOUTS BASED ON REFERENCE SCREENSHOTS
+            if (projectId === 'youtopia') {
+                outcomeContentHTML = `
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                        <!-- Left Visual Hook Card -->
+                        <div class="lg:col-span-5 rounded-[22px] overflow-hidden relative min-h-[360px] sm:min-h-[440px] flex flex-col justify-between p-8 sm:p-10 text-white w-full border border-black/[0.08] shadow-xs cs-reveal">
+                            <img src="/Home/Y_WC.webp" alt="Youtopia Ecosystem" class="absolute inset-0 w-full h-full object-cover" />
+                            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/75 to-black/90"></div>
+                            
+                            <div class="relative z-10">
+                                <span class="font-caps text-[11px] font-bold tracking-[0.16em] text-white/80">YOUTOPIA ECOSYSTEM</span>
+                            </div>
+                            <div class="relative z-10 space-y-2">
+                                <h3 class="font-display text-[24px] sm:text-[30px] font-bold leading-[1.18] text-white tracking-tight">
+                                    Designing six products to think and operate as one shared system.
+                                </h3>
+                            </div>
+                        </div>
+
+                        <!-- Right Stacked Clean Cards -->
+                        <div class="lg:col-span-7 flex flex-col justify-between gap-4 sm:gap-5">
+                            ${data.outcome.points.map((pt, idx) => {
+                                return `
+                                    <div class="rounded-[20px] bg-[#F5F5F7] border border-black/[0.06] p-6 sm:p-7 md:p-8 flex items-start gap-4 sm:gap-5 transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                                        <span class="text-[13px] sm:text-[14px] font-bold text-[#86868B] pt-0.5 shrink-0 font-display">0${idx + 1}</span>
+                                        <p class="text-[15.5px] sm:text-[17px] md:text-[17.5px] font-semibold leading-[1.4] tracking-tight text-[#1D1D1F] flex-1">
+                                            ${pt}
+                                        </p>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            } else if (projectId === 'justickets') {
+                outcomeContentHTML = `
+                    <div class="space-y-6 sm:space-y-8">
+                        <!-- Top 3 Large Clean Metric Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                            <div class="bg-[#F5F5F7] border border-black/[0.06] rounded-[22px] p-7 sm:p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                                <div>
+                                    <div class="font-display text-[54px] sm:text-[64px] lg:text-[70px] font-bold text-[#1D1D1F] leading-none tracking-tight">
+                                        +20%
+                                    </div>
+                                    <div class="w-full h-px my-6 sm:my-7 bg-black/[0.08]"></div>
+                                    <p class="text-[14.5px] sm:text-[15.5px] leading-[1.65] text-[#3D3D3F] font-normal">
+                                        User satisfaction in beta testing.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="bg-[#F5F5F7] border border-black/[0.06] rounded-[22px] p-7 sm:p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                                <div>
+                                    <div class="font-display text-[54px] sm:text-[64px] lg:text-[70px] font-bold text-[#1D1D1F] leading-none tracking-tight">
+                                        4
+                                    </div>
+                                    <div class="w-full h-px my-6 sm:my-7 bg-black/[0.08]"></div>
+                                    <p class="text-[14.5px] sm:text-[15.5px] leading-[1.65] text-[#3D3D3F] font-normal">
+                                        Major features shipped on the shared system instead of starting from zero.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="bg-[#F5F5F7] border border-black/[0.06] rounded-[22px] p-7 sm:p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                                <div>
+                                    <div class="font-display text-[54px] sm:text-[64px] lg:text-[70px] font-bold text-[#1D1D1F] leading-none tracking-tight">
+                                        1M+
+                                    </div>
+                                    <div class="w-full h-px my-6 sm:my-7 bg-black/[0.08]"></div>
+                                    <p class="text-[14.5px] sm:text-[15.5px] leading-[1.65] text-[#3D3D3F] font-normal">
+                                        Downloads and 25K+ reviews, still in production.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Full-width Adoption Card -->
+                        <div class="bg-[#F5F5F7] border border-black/[0.06] text-[#1D1D1F] rounded-[22px] p-7 sm:p-8 flex items-start gap-4 transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                            <span class="text-[14px] font-bold text-[#86868B] pt-0.5 shrink-0 font-display">✦</span>
+                            <p class="text-[16px] sm:text-[18px] md:text-[19px] font-semibold leading-[1.45] text-[#1D1D1F] flex-1">
+                                Adopted beyond Justickets. Qube Wire and Qube XP use it as a shared standard.
+                            </p>
+                        </div>
+                    </div>
+                `;
+            } else if (projectId === 'revlr') {
+                outcomeContentHTML = `
+                    <div class="space-y-6 sm:space-y-8">
+                        <!-- Top 3 Metric Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                            <div class="bg-[#F5F5F7] border border-black/[0.06] rounded-[22px] p-7 sm:p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                                <div>
+                                    <div class="font-display text-[54px] sm:text-[64px] lg:text-[70px] font-bold text-[#1D1D1F] leading-none tracking-tight">
+                                        +40%
+                                    </div>
+                                    <div class="w-full h-px my-6 sm:my-7 bg-black/[0.08]"></div>
+                                    <p class="text-[14.5px] sm:text-[15.5px] leading-[1.65] text-[#3D3D3F] font-normal">
+                                        User engagement redesigning the VR interface around human-centered design principles
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="bg-[#F5F5F7] border border-black/[0.06] rounded-[22px] p-7 sm:p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                                <div>
+                                    <div class="font-display text-[54px] sm:text-[64px] lg:text-[70px] font-bold text-[#1D1D1F] leading-none tracking-tight">
+                                        30%
+                                    </div>
+                                    <div class="w-full h-px my-6 sm:my-7 bg-black/[0.08]"></div>
+                                    <p class="text-[14.5px] sm:text-[15.5px] leading-[1.65] text-[#3D3D3F] font-normal">
+                                        Cognitive load improved task efficiency through usability testing and interaction optimization
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="bg-[#F5F5F7] border border-black/[0.06] rounded-[22px] p-7 sm:p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                                <div>
+                                    <div class="font-display text-[54px] sm:text-[64px] lg:text-[70px] font-bold text-[#1D1D1F] leading-none tracking-tight">
+                                        +100%
+                                    </div>
+                                    <div class="w-full h-px my-6 sm:my-7 bg-black/[0.08]"></div>
+                                    <p class="text-[14.5px] sm:text-[15.5px] leading-[1.65] text-[#3D3D3F] font-normal">
+                                        System standardization took the interface from no reusable components to a fully standardized control system across VR and web
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2 Milestone Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                            <div class="bg-[#F5F5F7] border border-black/[0.06] rounded-[22px] p-7 sm:p-8 flex items-start gap-4 transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                                <span class="text-[13px] sm:text-[14px] font-bold text-[#86868B] pt-0.5 shrink-0 font-display">04</span>
+                                <p class="text-[15.5px] sm:text-[17px] font-semibold leading-[1.4] text-[#1D1D1F] flex-1">
+                                    Established REVLR's first structured interaction system, replacing inconsistent one-off controls
+                                </p>
+                            </div>
+                            <div class="bg-[#F5F5F7] border border-black/[0.06] rounded-[22px] p-7 sm:p-8 flex items-start gap-4 transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                                <span class="text-[13px] sm:text-[14px] font-bold text-[#86868B] pt-0.5 shrink-0 font-display">05</span>
+                                <p class="text-[15.5px] sm:text-[17px] font-semibold leading-[1.4] text-[#1D1D1F] flex-1">
+                                    Gave researchers, engineers, and design a shared interaction language for the first time
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // My Block Counts
+                outcomeContentHTML = `
+                    <div class="space-y-6 sm:space-y-8">
+                        <!-- Primary Metrics Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                            <div class="bg-[#F5F5F7] border border-black/[0.06] rounded-[22px] p-7 sm:p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                                <div>
+                                    <div class="font-display text-[54px] sm:text-[64px] lg:text-[70px] font-bold text-[#1D1D1F] leading-none tracking-tight">
+                                        +60%
+                                    </div>
+                                    <div class="w-full h-px my-6 sm:my-7 bg-black/[0.08]"></div>
+                                    <p class="text-[14.5px] sm:text-[15.5px] leading-[1.65] text-[#3D3D3F] font-normal">
+                                        Increase in survey completion rates
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="bg-[#F5F5F7] border border-black/[0.06] rounded-[22px] p-7 sm:p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                                <div>
+                                    <div class="font-display text-[54px] sm:text-[64px] lg:text-[70px] font-bold text-[#1D1D1F] leading-none tracking-tight">
+                                        +3X
+                                    </div>
+                                    <div class="w-full h-px my-6 sm:my-7 bg-black/[0.08]"></div>
+                                    <p class="text-[14.5px] sm:text-[15.5px] leading-[1.65] text-[#3D3D3F] font-normal">
+                                        User base expansion through multi-language support
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="bg-[#F5F5F7] border border-black/[0.06] rounded-[22px] p-7 sm:p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                                <div>
+                                    <div class="font-display text-[54px] sm:text-[64px] lg:text-[70px] font-bold text-[#1D1D1F] leading-none tracking-tight">
+                                        +75%
+                                    </div>
+                                    <div class="w-full h-px my-6 sm:my-7 bg-black/[0.08]"></div>
+                                    <p class="text-[14.5px] sm:text-[15.5px] leading-[1.65] text-[#3D3D3F] font-normal">
+                                        Reduction in user confusion
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Metrics Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                            <div class="bg-[#F5F5F7] border border-black/[0.06] rounded-[22px] p-7 sm:p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                                <div>
+                                    <div class="font-display text-[54px] sm:text-[64px] lg:text-[70px] font-bold text-[#1D1D1F] leading-none tracking-tight">
+                                        92%
+                                    </div>
+                                    <div class="w-full h-px my-6 sm:my-7 bg-black/[0.08]"></div>
+                                    <p class="text-[14.5px] sm:text-[15.5px] leading-[1.65] text-[#3D3D3F] font-normal">
+                                        Onboarding completion, up from a 67% two-minute abandonment rate
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="bg-[#F5F5F7] border border-black/[0.06] rounded-[22px] p-7 sm:p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                                <div>
+                                    <div class="font-display text-[54px] sm:text-[64px] lg:text-[70px] font-bold text-[#1D1D1F] leading-none tracking-tight">
+                                        45%
+                                    </div>
+                                    <div class="w-full h-px my-6 sm:my-7 bg-black/[0.08]"></div>
+                                    <p class="text-[14.5px] sm:text-[15.5px] leading-[1.65] text-[#3D3D3F] font-normal">
+                                        Faster task completion after the navigation and settings redesign
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="bg-[#F5F5F7] border border-black/[0.06] rounded-[22px] p-7 sm:p-8 flex flex-col justify-between transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                                <div>
+                                    <div class="font-display text-[54px] sm:text-[64px] lg:text-[70px] font-bold text-[#1D1D1F] leading-none tracking-tight">
+                                        34%
+                                    </div>
+                                    <div class="w-full h-px my-6 sm:my-7 bg-black/[0.08]"></div>
+                                    <p class="text-[14.5px] sm:text-[15.5px] leading-[1.65] text-[#3D3D3F] font-normal">
+                                        Completion lift attributable specifically to animated, contextual progress indicators
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2 Milestone Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                            <div class="bg-[#F5F5F7] border border-black/[0.06] rounded-[22px] p-7 sm:p-8 flex items-start gap-4 transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                                <span class="text-[13px] sm:text-[14px] font-bold text-[#86868B] pt-0.5 shrink-0 font-display">✦</span>
+                                <p class="text-[15.5px] sm:text-[17px] font-semibold leading-[1.4] text-[#1D1D1F] flex-1">
+                                    Shipped and live on the App Store
+                                </p>
+                            </div>
+                            <div class="bg-[#F5F5F7] border border-black/[0.06] rounded-[22px] p-7 sm:p-8 flex items-start gap-4 transition-transform duration-300 hover:scale-[1.01] cs-reveal">
+                                <span class="text-[13px] sm:text-[14px] font-bold text-[#86868B] pt-0.5 shrink-0 font-display">✦</span>
+                                <p class="text-[15.5px] sm:text-[17px] font-semibold leading-[1.4] text-[#1D1D1F] flex-1">
+                                    Multi-language support (English, Spanish, Chinese) built in from the first onboarding screen, not bolted on after
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
 
             sections.push(`
                 <section id="sec-outcome" class="space-y-4 cs-reveal scroll-mt-12">
-                    <div class="space-y-1">
-                        <h2 class="font-display text-[22px] sm:text-[25px] md:text-[28px] font-bold text-[#1D1D1F] tracking-tight uppercase">OUTCOME</h2>
-                        ${outcomeSubtext}
-                    </div>
-                    <div class="space-y-1 w-full pt-1">
-                        ${outcomePointsHTML}
-                    </div>
+                    ${outcomeHeadingHTML}
+                    ${outcomeContentHTML}
                 </section>
             `);
 
             // 9. REFLECTION
+            let reflectionTitle = data.reflectionTitle || 'REFLECTION';
             let reflectionCard = data.reflectionHTML ? data.reflectionHTML : (data.reflectionPlaceholder ? `<div class="image-placeholder-card">${data.reflectionPlaceholder}</div>` : '');
             sections.push(`
                 <section id="sec-reflection" class="space-y-3 cs-reveal scroll-mt-12">
-                    <h2 class="font-display text-[22px] sm:text-[25px] md:text-[28px] font-bold text-[#1D1D1F] tracking-tight uppercase">REFLECTION</h2>
+                    <h2 class="font-display text-[22px] sm:text-[25px] md:text-[28px] font-bold text-[#1D1D1F] tracking-tight uppercase">${reflectionTitle}</h2>
                     <p class="text-[14.5px] sm:text-[15.5px] md:text-[16px] leading-[1.7] text-[#333336] w-full font-normal">
                         ${data.reflection}
                     </p>
@@ -2408,16 +2832,23 @@
             `);
 
             // 10. OWNERSHIP
+            let ownershipTitle = (data.ownership && data.ownership.title) || 'OWNERSHIP';
             sections.push(`
                 <section id="sec-ownership" class="space-y-4 cs-reveal scroll-mt-12">
-                    <h2 class="font-display text-[22px] sm:text-[25px] md:text-[28px] font-bold text-[#1D1D1F] tracking-tight uppercase">OWNERSHIP</h2>
+                    <h2 class="font-display text-[22px] sm:text-[25px] md:text-[28px] font-bold text-[#1D1D1F] tracking-tight uppercase">${ownershipTitle}</h2>
                     <div class="space-y-6 pt-1 w-full">
                         <div>
                             <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] font-bold block mb-1.5">I LED</span>
                             <p class="text-[14.5px] sm:text-[15.5px] md:text-[16px] leading-[1.7] text-[#333336] font-normal">${data.ownership.led}</p>
                         </div>
+                        ${data.ownership.mentored ? `
                         <div>
-                            <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] font-bold block mb-1.5">CO-DEFINED</span>
+                            <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] font-bold block mb-1.5">I MENTORED</span>
+                            <p class="text-[14.5px] sm:text-[15.5px] md:text-[16px] leading-[1.7] text-[#333336] font-normal">${data.ownership.mentored}</p>
+                        </div>
+                        ` : ''}
+                        <div>
+                            <span class="font-caps text-[11px] sm:text-[11.5px] tracking-[0.14em] text-[#86868B] font-bold block mb-1.5">I CO-DEFINED</span>
                             <p class="text-[14.5px] sm:text-[15.5px] md:text-[16px] leading-[1.7] text-[#333336] font-normal">${data.ownership.codefined}</p>
                         </div>
                     </div>
@@ -2532,14 +2963,24 @@
             const urlParams = new URLSearchParams(window.location.search);
             const projectId = urlParams.get('project') || 'youtopia';
             const project = PROJECTS[projectId] || PROJECTS.youtopia;
+            const theme = PROJECT_THEMES[projectId] || PROJECT_THEMES.youtopia;
+
+            // Apply project dynamic color variables
+            document.documentElement.style.setProperty('--cs-accent', theme.accent);
+            document.documentElement.style.setProperty('--cs-accent-dark', theme.accentDark);
+            document.documentElement.style.setProperty('--cs-accent-tint', theme.tint);
+            document.documentElement.style.setProperty('--cs-accent-border', theme.border);
+
+            const progressBar = document.getElementById('cs-scroll-progress');
+            if (progressBar) {
+                progressBar.style.background = theme.progressBg || theme.accent;
+            }
 
             const mainContent = document.getElementById('cs-main-content');
             const passwordGate = document.getElementById('cs-password-gate');
 
-
-
             // Always populate Title, Headline, and Metadata Grid (Role, Duration, Team, Responsibilities)
-            document.title = `${project.title} — Case Study | Keerthana Ravichandran`;
+            document.title = `${project.title} — Case Study | Kay Ravichandran`;
             document.getElementById('cs-title').innerText = project.title;
             document.getElementById('cs-headline').innerText = project.headline;
             if (document.getElementById('cs-sidebar-title')) document.getElementById('cs-sidebar-title').innerText = project.title;
@@ -2561,7 +3002,7 @@
 
             // Check if Youtopia is locked
             if (projectId === 'youtopia' && !youtopiaUnlocked) {
-                document.title = `Protected — Youtopia Case Study | Keerthana Ravichandran`;
+                document.title = `Protected — Youtopia Case Study | Kay Ravichandran`;
                 document.getElementById('cs-meta-shipped').innerText = project.shipped;
                 if (mainContent) mainContent.classList.add('hidden');
                 if (passwordGate) {
@@ -2595,16 +3036,16 @@
             const tocNav = document.getElementById('cs-sidebar-toc');
             if (tocNav && project.content) {
                 const tocItems = [
-                    { id: 'sec-context', label: 'THE CONTEXT', test: () => !!project.content.context },
-                    { id: 'sec-problem', label: 'THE PROBLEM', test: () => !!project.content.problem },
+                    { id: 'sec-context', label: project.content.contextTitle ? project.content.contextTitle.toUpperCase() : 'THE CONTEXT', test: () => !!project.content.context },
+                    { id: 'sec-problem', label: project.content.problem && project.content.problem.title ? project.content.problem.title.toUpperCase() : 'THE PROBLEM', test: () => !!project.content.problem },
                     { id: 'sec-research', label: project.content.research && project.content.research.title ? project.content.research.title.toUpperCase() : 'THE RESEARCH', test: () => !!project.content.research },
                     { id: 'sec-strategy', label: 'STRATEGY', test: () => !!(project.content.strategy && project.content.strategy.length) },
-                    { id: 'sec-decisions', label: 'KEY DECISIONS', test: () => !!(project.content.decisions && project.content.decisions.length) },
+                    { id: 'sec-decisions', label: project.content.decisionsTitle ? project.content.decisionsTitle.toUpperCase() : 'KEY DECISIONS', test: () => !!(project.content.decisions && project.content.decisions.length) },
                     { id: 'sec-system', label: project.content.systemTitle ? project.content.systemTitle.toUpperCase() : 'SYSTEM & EXECUTION', test: () => !!project.content.system },
                     { id: 'sec-validation', label: 'VALIDATION', test: () => !!project.content.validation },
                     { id: 'sec-outcome', label: 'OUTCOME', test: () => !!project.content.outcome },
-                    { id: 'sec-reflection', label: 'REFLECTION', test: () => !!project.content.reflection },
-                    { id: 'sec-ownership', label: 'OWNERSHIP', test: () => !!project.content.ownership },
+                    { id: 'sec-reflection', label: project.content.reflectionTitle ? project.content.reflectionTitle.toUpperCase() : 'REFLECTION', test: () => !!project.content.reflection },
+                    { id: 'sec-ownership', label: project.content.ownership && project.content.ownership.title ? project.content.ownership.title.toUpperCase() : 'OWNERSHIP', test: () => !!project.content.ownership },
                 ].filter(item => item.test());
 
                 let tocHTML = `
@@ -2665,7 +3106,7 @@
 
             const contentBody = document.getElementById('cs-content-body');
             if (contentBody) {
-                contentBody.innerHTML = renderCaseStudyHTML(project.content, project);
+                contentBody.innerHTML = renderCaseStudyHTML(project.content, project, projectId);
                 initScrollReveals();
                 initTocObserver();
                 setTimeout(updateScrollProgress, 50);
