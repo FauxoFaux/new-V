@@ -131,9 +131,9 @@ export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = ({
         />
       )}
 
-      {/* Card Tags inside the image - positioned in bottom right corner */}
+      {/* Card Tags inside the image - positioned in bottom right corner (desktop only) */}
       {tags && tags.length > 0 && (
-        <div className="pointer-events-none absolute bottom-3.5 sm:bottom-4 right-3.5 sm:right-4 z-20 flex flex-wrap items-center justify-end gap-1.5 max-w-[85%]">
+        <div className="hidden lg:flex pointer-events-none absolute bottom-3.5 sm:bottom-4 right-3.5 sm:right-4 z-20 flex-wrap items-center justify-end gap-1.5 max-w-[85%]">
           {tags.map((tag) => (
             <span
               key={tag}

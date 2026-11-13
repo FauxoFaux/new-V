@@ -324,7 +324,7 @@ export default function App() {
 
   if (currentScreen === 'play') {
     return (
-      <React.Suspense fallback={<div className="min-h-screen bg-white" />}>
+      <React.Suspense fallback={<div className="min-h-screen bg-[#F6F6F7]" />}>
         <PlayScreen
           onBack={() => {
             setCurrentScreen('home');
@@ -339,15 +339,15 @@ export default function App() {
   }
 
   return (
-    <div className="w-full h-full min-h-screen bg-[#FFFFFF] text-[#1D1D1F] selection:bg-[#0071E3] selection:text-white flex flex-col font-sans lg:overflow-hidden">
-      {/* Navigation Header - White background on mobile / hamburger menu nav, transparent on desktop */}
+    <div className="w-full h-full min-h-screen bg-[#F6F6F7] text-[#1D1D1F] selection:bg-[#0071E3] selection:text-white flex flex-col font-sans lg:overflow-hidden">
+      {/* Navigation Header - Off-white background on mobile / hamburger menu nav, transparent on desktop */}
       <motion.header
         id="main-navigation-header"
         initial={shouldReduceMotion ? false : { y: -16, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: EASE_EDITORIAL }}
-        className={`fixed top-0 left-0 right-0 z-50 w-full px-5 sm:px-8 md:px-12 lg:px-16 py-4 transition-all bg-white border-b border-black/[0.08] lg:bg-transparent lg:border-transparent pointer-events-auto lg:pointer-events-none ${
-          mobileMenuOpen ? 'bg-white border-b border-black/[0.08]' : ''
+        className={`fixed top-0 left-0 right-0 z-50 w-full px-5 sm:px-8 md:px-12 lg:px-16 py-4 transition-all bg-[#F6F6F7]/95 backdrop-blur-md border-b border-black/[0.08] lg:bg-transparent lg:backdrop-blur-none lg:border-transparent pointer-events-auto lg:pointer-events-none ${
+          mobileMenuOpen ? 'bg-[#F6F6F7] border-b border-black/[0.08]' : ''
         }`}
       >
         <nav className="mx-auto max-w-[1340px] w-full flex items-center justify-between pointer-events-auto">
@@ -437,7 +437,7 @@ export default function App() {
           {/* Mobile & Tablet Hamburger Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-black bg-white hover:text-[#444444] transition-colors rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-black/20 cursor-pointer"
+            className="lg:hidden p-2 text-black bg-transparent hover:text-[#444444] transition-colors rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-black/20 cursor-pointer"
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={mobileMenuOpen}
           >
@@ -447,7 +447,7 @@ export default function App() {
 
         {/* Mobile Navigation Dropdown Drawer - Covers half of screen, not a modal */}
         {mobileMenuOpen && (
-          <div className="lg:hidden fixed top-[57px] sm:top-[65px] left-0 right-0 w-full h-[50vh] min-h-[300px] max-h-[460px] bg-white border-b border-black/15 px-6 sm:px-10 py-6 flex flex-col justify-between overflow-y-auto z-50 animate-in slide-in-from-top-3 fade-in duration-200 pointer-events-auto">
+          <div className="lg:hidden fixed top-[57px] sm:top-[65px] left-0 right-0 w-full h-[50vh] min-h-[300px] max-h-[460px] bg-[#F6F6F7] border-b border-black/15 px-6 sm:px-10 py-6 flex flex-col justify-between overflow-y-auto z-50 animate-in slide-in-from-top-3 fade-in duration-200 pointer-events-auto">
             <div className="space-y-1.5">
               <a
                 href="#work"

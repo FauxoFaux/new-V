@@ -42,13 +42,6 @@ const PLAY_ITEMS: PlayItem[] = [
     category: 'Animation',
   },
   {
-    id: 'mandance',
-    fileName: 'MAnDance.gif',
-    mediaUrl: '/PLAY/MAnDance.gif',
-    title: 'Dance Groove',
-    category: 'Animation',
-  },
-  {
     id: 'quicksketch',
     fileName: 'QuickSketch.gif',
     mediaUrl: '/PLAY/QuickSketch.gif',
@@ -64,13 +57,6 @@ const PLAY_ITEMS: PlayItem[] = [
   },
 
   // Character Design
-  {
-    id: 'crock-2020',
-    fileName: '2020 Crock.png',
-    mediaUrl: '/PLAY/2020%20Crock.png',
-    title: 'Crock',
-    category: 'Character Design',
-  },
   {
     id: 'fox-2020',
     fileName: '2020 fox.png',
@@ -130,20 +116,6 @@ const PLAY_ITEMS: PlayItem[] = [
     category: 'Graphic Design',
   },
   {
-    id: 'cash-dollar',
-    fileName: '$.PNG',
-    mediaUrl: '/PLAY/%24.PNG',
-    title: 'Cash Experiment',
-    category: 'Graphic Design',
-  },
-  {
-    id: 'pondy',
-    fileName: 'Pondy.PNG',
-    mediaUrl: '/PLAY/Pondy.PNG',
-    title: 'Pondy Series',
-    category: 'Graphic Design',
-  },
-  {
     id: 'glowil',
     fileName: 'glowil.jpg',
     mediaUrl: '/PLAY/glowil.jpg',
@@ -153,24 +125,10 @@ const PLAY_ITEMS: PlayItem[] = [
 
   // Illustration / Digital Art
   {
-    id: 'billie',
-    fileName: 'Billie E.PNG',
-    mediaUrl: '/PLAY/Billie%20E.PNG',
-    title: 'Billie',
-    category: 'Illustration',
-  },
-  {
     id: 'img-2778',
     fileName: 'IMG_2778.PNG',
     mediaUrl: '/PLAY/IMG_2778.PNG',
     title: 'Sketchbook Study',
-    category: 'Illustration',
-  },
-  {
-    id: 'img-3431',
-    fileName: 'IMG_3431.PNG',
-    mediaUrl: '/PLAY/IMG_3431.PNG',
-    title: 'Freehand Line & Color',
     category: 'Illustration',
   },
   {
@@ -198,15 +156,17 @@ const PLAY_ITEMS: PlayItem[] = [
 
 // Curated items rotating in circular orbit around center title
 const HERO_ORBIT_ITEMS: PlayItem[] = [
-  PLAY_ITEMS[0],  // Puffy (Animation GIF)
-  PLAY_ITEMS[7],  // Crock (Character Design)
-  PLAY_ITEMS[13], // Form & Typography 2021 (Graphic Design)
-  PLAY_ITEMS[1],  // Boxing (Animation GIF)
-  PLAY_ITEMS[19], // Billie (Illustration)
-  PLAY_ITEMS[8],  // Fox in Motion (Character Design)
-  PLAY_ITEMS[12], // Card Deck Systems (Graphic Design)
-  PLAY_ITEMS[3],  // Gooey Dynamics (Animation GIF)
-];
+  'puffy',
+  'elephant',
+  'poster-2021',
+  'boxing',
+  'night',
+  'fox-2020',
+  'cards-2020',
+  'gooey',
+]
+  .map((id) => PLAY_ITEMS.find((item) => item.id === id))
+  .filter((item): item is PlayItem => Boolean(item));
 
 const CATEGORIES = [
   'All',
@@ -347,7 +307,7 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#FFFFFF] text-[#1D1D1F] font-sans selection:bg-[#0071E3] selection:text-white flex flex-col relative overflow-x-hidden">
+    <div className="w-full min-h-screen bg-[#F6F6F7] text-[#1D1D1F] font-sans selection:bg-[#0071E3] selection:text-white flex flex-col relative overflow-x-hidden">
       {/* TOP BAR WITH BORDERLESS BACK BUTTON ON SEAMLESS CANVAS */}
       <div className="fixed top-0 left-0 right-0 z-50 pointer-events-none px-5 sm:px-8 lg:px-12 py-5 sm:py-6">
         <div className="max-w-[1500px] mx-auto flex items-center justify-between">
@@ -481,13 +441,6 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
                   decoding="async"
                   className="w-full h-auto block object-cover group-hover:scale-[1.02] transition-transform duration-300 ease-out"
                 />
-
-                {/* Workcard-style Tag inside the media preview */}
-                <div className="pointer-events-none absolute bottom-2.5 right-2.5 sm:bottom-3 sm:right-3 z-20 flex flex-wrap items-center justify-end gap-1.5 max-w-[88%]">
-                  <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-1 rounded-[6px] bg-black/60 backdrop-blur-md text-white border border-white/20 font-bold shadow-sm">
-                    {item.title}
-                  </span>
-                </div>
               </div>
             </div>
           ))}

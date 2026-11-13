@@ -512,7 +512,7 @@
         </nav>
 
         <!-- Mobile Navigation Dropdown Drawer - Covers half the screen edge-to-edge -->
-        <div id="cs-mobile-drawer" class="hidden lg:hidden fixed top-[57px] sm:top-[65px] left-0 right-0 w-full h-[50vh] min-h-[300px] max-h-[460px] bg-white border-b border-black/15 px-6 sm:px-10 py-6 flex-col justify-between overflow-y-auto z-50">
+        <div id="cs-mobile-drawer" class="hidden lg:hidden fixed top-[57px] sm:top-[65px] left-0 right-0 w-full h-[50vh] min-h-[300px] max-h-[460px] bg-[#F6F6F7] border-b border-black/15 px-6 sm:px-10 py-6 flex-col justify-between overflow-y-auto z-50">
             <div class="space-y-1.5">
                 <a href="/#work" onclick="toggleCsMobileMenu()" class="block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] font-semibold text-[#6E6E73] hover:text-black transition-colors">WORK</a>
                 <a href="/#about" onclick="toggleCsMobileMenu()" class="block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] font-semibold text-[#6E6E73] hover:text-black transition-colors">ABOUT</a>
@@ -663,12 +663,12 @@
                 <div id="cs-nda-notice" class="hidden mb-8 sm:mb-10"></div>
 
                 <!-- Hero Image Placeholder Card -->
-                <div id="cs-hero-image" class="image-placeholder-card min-h-[280px] sm:min-h-[360px] flex items-center justify-center rounded-[24px] mb-10 sm:mb-16 cs-hero-img-animate">
+                <div id="cs-hero-image" class="image-placeholder-card min-h-[280px] sm:min-h-[360px] flex items-center justify-center rounded-[24px] mb-[120px] cs-hero-img-animate">
                     Hero image — 16:9 or full-bleed
                 </div>
 
                 <!-- Dynamic Content Sections Container -->
-                <div id="cs-content-body" class="pt-2 sm:pt-4 pb-0">
+                <div id="cs-content-body" class="pt-0 pb-0">
                     <!-- Dynamic Body Content Rendered via JS -->
                 </div>
             </div>
@@ -677,8 +677,13 @@
 
     </div>
 
+    <!-- Separate Full-Width Portfolio Navigation Band (Outside Case Study Column & TOC) -->
+    <nav id="cs-more-studies" aria-label="View more projects" class="hidden w-full border-t border-black/[0.08] py-16 sm:py-20 cs-reveal">
+        <!-- Rendered dynamically via JS -->
+    </nav>
+
     <!-- Full-Width Editorial Footer matching Play & Clean Design -->
-    <footer class="w-full border-t border-black/[0.08] bg-[#F6F6F7] mt-16 sm:mt-24 pt-8 sm:pt-10 pb-10 sm:pb-12 text-[#1D1D1F] font-sans">
+    <footer class="w-full border-t border-black/[0.08] bg-[#F6F6F7] mt-0 pt-8 sm:pt-10 pb-10 sm:pb-12 text-[#1D1D1F] font-sans">
         <div class="max-w-[1340px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8">
             
             <!-- Left Column: Name & Email -->
@@ -749,7 +754,7 @@
                 prev: 'justickets',
                 next: 'revlr',
                 heroHTML: `
-                    <div id="cs-hero-image" class="w-full mb-16 space-y-8">
+                    <div id="cs-hero-image" class="w-full mb-[120px] space-y-8">
                         <div class="w-full rounded-[10px] overflow-hidden aspect-[16/9] min-h-[280px] sm:min-h-[360px]">
                             <img src="/Home/Y_WC.webp" alt="Youtopia Hero Image" class="w-full h-full object-cover rounded-[10px]" loading="eager" decoding="async" />
                         </div>
@@ -1527,12 +1532,12 @@
                 prev: 'youtopia',
                 next: 'myblockcounts',
                 heroHTML: `
-                    <p class="w-full text-[15.5px] sm:text-[17px] leading-[1.7] text-[#333336] font-normal mb-8">
-                        REVLR puts users inside a 3D model of a complex system. I owned the interaction design: the control framework, the navigation patterns, and the design system, with no VR pattern library to start from. Testing showed 40% higher engagement and 30% lower cognitive load, and REVLR ended up with its first structured interaction system across VR and web.
-                    </p>
-                    <div id="cs-hero-image" class="w-full rounded-[10px] overflow-hidden mb-16 aspect-[16/9] min-h-[280px] sm:min-h-[360px]">
+                    <div id="cs-hero-image" class="w-full rounded-[10px] overflow-hidden mb-8 aspect-[16/9] min-h-[280px] sm:min-h-[360px]">
                         <img src="/REVLR/R_Hero.avif" alt="REVLR Hero Image" class="w-full h-full object-cover rounded-[10px]" loading="eager" decoding="async" />
                     </div>
+                    <p class="w-full text-[15.5px] sm:text-[17px] leading-[1.6] text-[#333336] font-normal mb-[120px]">
+                        REVLR puts users inside a 3D model of a complex system. I owned the interaction design: the control framework, the navigation patterns, and the design system, with no VR pattern library to start from. Testing showed 40% higher engagement and 30% lower cognitive load, and REVLR ended up with its first structured interaction system across VR and web.
+                    </p>
                 `,
                 content: {
                     ndaNotice: "REVLR is still under NDA. The visuals here show an earlier version of the interface, not the current system, and are shown only to explain the interaction patterns and decisions I worked on.",
@@ -1592,15 +1597,20 @@
                         {
                             num: "DECISION 04",
                             title: "How should VR components scale?",
-                            body: "There was no immersive design system to inherit. I turned workflows documented with the developers and researchers into Figma components built to grow without cluttering the interface as features were added, and I brought alternative approaches to our weekly meetings, many of which were adopted.",
+                            body: "There was no immersive design system to inherit. I turned workflows documented with the developers and researchers into Figma components, covering buttons, dropdowns, sliders, checkboxes, numeric inputs, and navigation, built to grow without cluttering the interface as features were added, and I brought alternative approaches to our weekly meetings, many of which were adopted.",
                             impact: "Impact: A standardized component library across VR and web.",
                             placeholder: null
                         }
                     ],
                     decisionsPlaceholder: "Key design decisions — spatial interaction & control framework synthesis",
                     decisionsHTML: `
-                            <div class="w-full rounded-[10px] overflow-hidden my-8">
-                                <img src="/REVLR/R_Decisions.avif" alt="REVLR Key Design Decisions" class="w-full h-auto block rounded-[10px]" loading="lazy" decoding="async" />
+                            <div class="w-full space-y-6 my-8">
+                                <div class="w-full rounded-[10px] overflow-hidden">
+                                    <img src="/REVLR/R_Decisions.avif" alt="REVLR Key Design Decisions" class="w-full h-auto block rounded-[10px]" loading="lazy" decoding="async" />
+                                </div>
+                                <div class="w-full rounded-[10px] overflow-hidden">
+                                    <img src="/REVLR/R_Reflection.webp" alt="REVLR Reflection" class="w-full h-auto block rounded-[10px]" loading="lazy" decoding="async" />
+                                </div>
                             </div>
                         `,
                     systemTitle: "Building and testing it in the headset",
@@ -1611,7 +1621,7 @@
                             <img src="/REVLR/R_testing.png" alt="REVLR Prototype and Meta Quest Testing" class="w-full h-auto block rounded-[10px]" loading="lazy" decoding="async" />
                         </div>
                     `,
-                    validation: "I ran usability and A/B testing with real users in the headset, covering discoverability, navigation, and task flow, and fed each round back into the component system.",
+                    validation: "I ran usability and A/B testing with real users in the headset, covering discoverability, navigation, and task flow. People from a Maryland nonprofit also tried it, and each round of feedback went back into the component system.",
                     validationPlaceholder: "Validation & usability testing — spatial navigation & task flow evaluation in VR headset",
                     validationHTML: `
                         <div class="w-full rounded-[10px] overflow-hidden my-8">
@@ -1626,16 +1636,13 @@
                             "30% lower cognitive load, which improved task efficiency in usability testing.",
                             "REVLR’s first structured interaction system, replacing inconsistent one-off controls across VR and web.",
                             "A shared interaction language for researchers, engineers, and design for the first time."
-                        ]
+                        ],
+                        footnote: "Based on comparing earlier interview and insight data with new feedback from users and researchers."
                     },
                     reflectionTitle: "What I took from it",
                     reflection: "In a traditional product, you organize information on a screen. In spatial computing, you organize attention and movement inside an environment. With no pattern library to lean on, every decision had to be tested in the medium.",
-                    reflectionPlaceholder: "Reflection — spatial computing design learnings & attention mapping retrospective",
-                    reflectionHTML: `
-                        <div class="w-full rounded-[10px] overflow-hidden my-8">
-                            <img src="/REVLR/R_Reflection.webp" alt="REVLR Reflection" class="w-full h-auto block rounded-[10px]" loading="lazy" decoding="async" />
-                        </div>
-                    `,
+                    reflectionPlaceholder: null,
+                    reflectionHTML: null,
                     ownership: {
                         title: "What I owned",
                         led: "Interaction design strategy, control framework and navigation patterns, VR usability testing, and design system development.",
@@ -1648,160 +1655,172 @@
                 title: 'MY BLOCK COUNTS',
                 headline: 'Redesigning an abandoned civic app so that filling out a survey felt like activism, not a form.',
                 projectType: 'Civic Data & Geospatial',
-                role: 'Lead UX/UI Designer, solo',
+                role: 'Lead UX/UI Designer',
                 duration: 'Dec 2024 – Jan 2025',
                 team: 'BlueMeta × T.H.E. EJ Lab',
-                responsibilities: 'UX research · Information architecture · Visual design · Design system · Usability testing · Accessibility audits',
+                responsibilities: 'UX Research · Information Architecture · Visual Design · Design System · Usability & Accessibility Testing',
                 shipped: '<a href="https://play.google.com/store/apps/details?id=com.anonymous.MyBlockCounts&hl=en_US" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 font-sans text-[#1D1D1F] hover:text-black underline decoration-black/25 hover:decoration-black underline-offset-[3px] transition-colors text-[13.5px] sm:text-[14.5px] font-medium leading-[1.55] group"><span>MyBlockCounts</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-[#1D1D1F] group-hover:text-black shrink-0 transition-colors" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>',
                 cardType: 'video',
                 cardSrc: '/MBC/MBC_GIF.mp4',
                 cardPoster: '/MBC/MB_Hero.webp',
                 cardBg: 'bg-[#1bab51]',
-                cardSubtitle: 'Transforming complex environmental justice data into accessible, community-driven block assessments.',
+                cardSubtitle: 'Redesigning an abandoned civic app so that filling out a survey felt like activism, not a form.',
                 prev: 'revlr',
                 next: 'justickets',
                 heroHTML: `
-                    <div id="cs-hero-image" class="w-full rounded-[10px] overflow-hidden mb-16 aspect-[16/9] min-h-[280px] sm:min-h-[360px]">
-                        <img src="/MBC/MB_Hero.webp" alt="My Block Counts Hero Image" class="w-full h-full object-cover rounded-[10px]" loading="eager" decoding="async" />
+                    <div id="cs-hero-image" class="w-full rounded-[10px] overflow-hidden mb-8 aspect-[16/9] min-h-[280px] sm:min-h-[360px] bg-[#1bab51] border border-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.05)] flex items-center justify-center">
+                        <video src="/MBC/MBC_GIF.mp4" poster="/MBC/MB_Hero.webp" autoplay loop muted playsinline class="h-full w-auto max-w-full object-contain block select-none" aria-label="My Block Counts Work Card Preview"></video>
                     </div>
+                    <p class="w-full text-[15.5px] sm:text-[17px] leading-[1.6] text-[#333336] font-normal mb-[120px]">
+                        MyBlockCounts is an environmental justice survey app for Baltimore communities, but people were leaving before they could meaningfully participate. I led the redesign, starting with what would make people trust the app enough to take part. It shipped on the App Store in January 2025.
+                    </p>
                 `,
                 content: {
-                    context: "MyBlockCounts is an environmental justice survey app for Baltimore communities, built with T.H.E. EJ Lab. It existed, but nobody was using it the app was functionally abandoned, and the redesign had to rebuild trust, not just usability.",
+                    contextTitle: "An app people had stopped using",
+                    context: "MyBlockCounts was built with T.H.E. EJ Lab to collect environmental justice data from Baltimore communities. It existed, but it was functionally abandoned, so the redesign had to rebuild trust, not just usability.\n\nThe question I kept coming back to: how might we transform an abandoned civic tool into an engaging community platform?",
+                    contextHTML: `
+                        <div class="w-full rounded-[10px] overflow-hidden aspect-[16/9] min-h-[280px] sm:min-h-[360px]">
+                            <img src="/MBC/MB_Hero.webp" alt="My Block Counts Hero Image" class="w-full h-full object-cover rounded-[10px]" loading="lazy" decoding="async" />
+                        </div>
+                    `,
                     problem: {
+                        title: "What was going wrong",
                         headline: "How might we transform an abandoned civic tool into an engaging community platform?",
                         points: [
-                            "67% of users abandoned the survey within two minutes of opening it.",
-                            "The app dropped users straight into a 45-question survey with zero context or explanation.",
-                            "English-only design excluded an estimated 35% of the target communities.",
-                            "Generic GPS-style branding communicated 'location app,' not environmental justice advocacy."
+                            "People left fast. 67% of users abandoned the survey within two minutes of opening it.",
+                            "No context. The app dropped people straight into a 45-question survey with no explanation.",
+                            "Not everyone could use it. English-only design left out an estimated 35% of the target communities.",
+                            "The branding said the wrong thing. Generic GPS-style design read as “location app,” not environmental justice."
                         ],
                      
                     },
                     research: {
-                        intro: "Worked directly with the T.H.E. EJ Lab team, WYPR hosts, and community partners, alongside a review of app store feedback, support tickets, and a competitive scan of 3–4 other civic engagement apps plus the engineering team, to understand what was actually feasible to rebuild in the timeline.",
+                        title: "A trust problem wearing a usability costume",
+                        intro: "I worked directly with the T.H.E. EJ Lab team, WYPR hosts, and community partners, and ran community workshops. I also reviewed app store feedback and support tickets, scanned three or four other civic apps, ran accessibility audits, and checked with engineering on what was realistic to rebuild in the timeline.\n\nThis wasn’t only a usability problem. It was a trust problem wearing a usability costume.\n\n### Three things stood out:",
                         insights: [
-                            { title: "Cultural representation in illustrations directly affected trust and completion", description: "This wasn't a usability problem alone, it was a trust problem wearing a usability costume." },
-                            { title: "Context before data collection", description: "Surveys without upfront mission context felt like government extraction rather than community empowerment." },
-                            { title: "Multilingual as a primary trust signal", description: "Surfacing language choice upfront communicated community inclusion from the very first screen." }
+                            { title: "Context before data.", description: "A survey with no upfront mission felt like government extraction, not community empowerment." },
+                            { title: "Language as a trust signal.", description: "Offering language choice first said “this is for you” from the first screen." },
+                            { title: "Representation mattered.", description: "The cultural representation in the illustrations affected both trust and completion." }
                         ],
                         researchHTML: `
-                            <div class="w-full border border-[#2036B8] dark:border-[#5A6BFF] rounded-2xl bg-transparent p-5 sm:p-8 md:p-10 my-8 shadow-sm overflow-hidden">
+                            <div class="w-full rounded-[16px] border border-black/[0.06] bg-white p-5 sm:p-8 md:p-10 my-8 shadow-[0_1px_2px_rgba(0,0,0,0.02)] overflow-hidden">
                                 <div class="relative w-full mx-auto">
-                                    <div class="font-caps text-[10px] tracking-[0.1em] text-[#2036B8] dark:text-[#8B95FF] text-center sm:hidden mb-2 font-bold">
+                                    <div class="font-caps text-[10px] tracking-[0.1em] text-[#86868B] text-center sm:hidden mb-3 font-bold">
                                         ← Scroll image to view full diagram →
                                     </div>
                                     <div class="w-full overflow-x-auto pb-2 scrollbar-thin">
                                         <svg viewBox="0 0 920 540" class="w-[760px] sm:w-full min-w-[760px] sm:min-w-0 h-auto flex-shrink-0 overflow-visible" fill="none">
                                             <defs>
-                                                <marker id="mbc-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                                                    <path d="M 0 1 L 8 5 L 0 9 z" class="fill-[#2036B8] dark:fill-[#5A6BFF]" />
+                                                <marker id="mbc-arrow-clean" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+                                                    <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#86868B" />
                                                 </marker>
                                             </defs>
 
-                                            <!-- CONNECTING ARROWS -->
-                                            <line x1="418" y1="228" x2="270" y2="80" class="stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="1.5" marker-end="url(#mbc-arrow)" />
-                                            <line x1="398" y1="270" x2="250" y2="270" class="stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="1.5" marker-end="url(#mbc-arrow)" />
-                                            <line x1="418" y1="312" x2="270" y2="460" class="stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="1.5" marker-end="url(#mbc-arrow)" />
-                                            <line x1="460" y1="332" x2="460" y2="415" class="stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="1.5" marker-end="url(#mbc-arrow)" />
-                                            <line x1="502" y1="312" x2="650" y2="460" class="stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="1.5" marker-end="url(#mbc-arrow)" />
-                                            <line x1="522" y1="270" x2="670" y2="270" class="stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="1.5" marker-end="url(#mbc-arrow)" />
-                                            <line x1="502" y1="228" x2="650" y2="80" class="stroke-[#2036B8] dark:stroke-[#5A6BFF]" stroke-width="1.5" marker-end="url(#mbc-arrow)" />
+                                            <!-- CONNECTING LINES -->
+                                            <line x1="416" y1="226" x2="274" y2="84" stroke="rgba(0,0,0,0.18)" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#mbc-arrow-clean)" />
+                                            <line x1="398" y1="270" x2="254" y2="270" stroke="rgba(0,0,0,0.18)" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#mbc-arrow-clean)" />
+                                            <line x1="416" y1="314" x2="274" y2="456" stroke="rgba(0,0,0,0.18)" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#mbc-arrow-clean)" />
+                                            <line x1="460" y1="332" x2="460" y2="411" stroke="rgba(0,0,0,0.18)" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#mbc-arrow-clean)" />
+                                            <line x1="504" y1="314" x2="646" y2="456" stroke="rgba(0,0,0,0.18)" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#mbc-arrow-clean)" />
+                                            <line x1="522" y1="270" x2="666" y2="270" stroke="rgba(0,0,0,0.18)" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#mbc-arrow-clean)" />
+                                            <line x1="504" y1="226" x2="646" y2="84" stroke="rgba(0,0,0,0.18)" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#mbc-arrow-clean)" />
 
                                             <!-- CENTER CIRCLE -->
                                             <g>
-                                                <circle cx="460" cy="270" r="62" class="fill-[#FFD025] stroke-[#FFD025]" stroke-width="2.5" />
-                                                <text x="460" y="264" text-anchor="middle" class="fill-black font-bold font-caps font-bold text-[13.5px] tracking-wider">KEY</text>
-                                                <text x="460" y="282" text-anchor="middle" class="fill-black font-bold font-caps font-bold text-[13.5px] tracking-wider">INSIGHTS</text>
+                                                <circle cx="460" cy="270" r="68" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="1" />
+                                                <circle cx="460" cy="270" r="62" fill="#1D1D1F" stroke="rgba(0,0,0,0.08)" stroke-width="2" />
+                                                <text x="460" y="264" text-anchor="middle" fill="#FFFFFF" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="700" font-size="13.5" letter-spacing="0.08em">KEY</text>
+                                                <text x="460" y="283" text-anchor="middle" fill="#FFFFFF" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="700" font-size="13.5" letter-spacing="0.08em">INSIGHTS</text>
                                             </g>
 
                                             <!-- CARD 1: COMMUNITY PARTNERS (Top Left) -->
                                             <g>
-                                                <rect x="50" y="30" width="220" height="100" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="66" y="52" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11px] tracking-tight">COMMUNITY PARTNERS</text>
-                                                <text x="66" y="71" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">Community organizations</text>
-                                                <text x="66" y="86" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">working directly with</text>
-                                                <text x="66" y="101" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">Baltimore residents</text>
-                                                <g transform="translate(232, 40)" class="text-[#2036B8] dark:text-[#5A6BFF]">
-                                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-                                                    <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-                                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                                                <rect x="50" y="30" width="220" height="104" rx="14" fill="#F6F6F7" stroke="rgba(0,0,0,0.08)" stroke-width="1.2" />
+                                                <text x="68" y="54" fill="#1D1D1F" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="700" font-size="10.5" letter-spacing="0.05em">COMMUNITY PARTNERS</text>
+                                                <text x="68" y="75" fill="#555558" font-family="'Inter', sans-serif" font-size="11.5">Community organizations</text>
+                                                <text x="68" y="91" fill="#555558" font-family="'Inter', sans-serif" font-size="11.5">working directly with</text>
+                                                <text x="68" y="107" fill="#555558" font-family="'Inter', sans-serif" font-size="11.5">Baltimore residents</text>
+                                                <g transform="translate(234, 39) scale(0.85)" stroke="#86868B">
+                                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+                                                    <circle cx="9" cy="7" r="4" stroke-width="1.6" fill="none"/>
+                                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+                                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke-width="1.6" stroke-linecap="round" fill="none"/>
                                                 </g>
                                             </g>
 
                                             <!-- CARD 2: WYPR INTERVIEWS (Mid Left) -->
                                             <g>
-                                                <rect x="30" y="220" width="220" height="100" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="46" y="242" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11px] tracking-tight">WYPR INTERVIEWS</text>
-                                                <text x="46" y="261" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">Public radio interviews</text>
-                                                <text x="46" y="276" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">with community members</text>
-                                                <text x="46" y="291" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">and organizers</text>
-                                                <g transform="translate(212, 230)" class="text-[#2036B8] dark:text-[#5A6BFF]">
-                                                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-                                                    <line x1="12" y1="19" x2="12" y2="22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                                <rect x="30" y="218" width="220" height="104" rx="14" fill="#F6F6F7" stroke="rgba(0,0,0,0.08)" stroke-width="1.2" />
+                                                <text x="48" y="242" fill="#1D1D1F" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="700" font-size="10.5" letter-spacing="0.05em">WYPR INTERVIEWS</text>
+                                                <text x="48" y="263" fill="#555558" font-family="'Inter', sans-serif" font-size="11.5">Public radio interviews</text>
+                                                <text x="48" y="279" fill="#555558" font-family="'Inter', sans-serif" font-size="11.5">with community members</text>
+                                                <text x="48" y="295" fill="#555558" font-family="'Inter', sans-serif" font-size="11.5">and organizers</text>
+                                                <g transform="translate(214, 227) scale(0.85)" stroke="#86868B">
+                                                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z" stroke-width="1.6" fill="none"/>
+                                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+                                                    <line x1="12" y1="19" x2="12" y2="22" stroke-width="1.6" stroke-linecap="round"/>
                                                 </g>
                                             </g>
 
                                             <!-- CARD 3: COMMUNITY WORKSHOPS (Bottom Left) -->
                                             <g>
-                                                <rect x="50" y="410" width="220" height="100" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="66" y="432" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11px] tracking-tight">COMMUNITY WORKSHOPS</text>
-                                                <text x="66" y="451" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">Feedback sessions with</text>
-                                                <text x="66" y="466" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">residents and community</text>
-                                                <text x="66" y="481" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">advocates</text>
-                                                <g transform="translate(232, 420)" class="text-[#2036B8] dark:text-[#5A6BFF]">
-                                                    <rect x="3" y="11" width="18" height="8" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                                                    <circle cx="7" cy="6" r="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                                                    <circle cx="17" cy="6" r="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                                                <rect x="50" y="406" width="220" height="104" rx="14" fill="#F6F6F7" stroke="rgba(0,0,0,0.08)" stroke-width="1.2" />
+                                                <text x="68" y="430" fill="#1D1D1F" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="700" font-size="10.5" letter-spacing="0.05em">COMMUNITY WORKSHOPS</text>
+                                                <text x="68" y="451" fill="#555558" font-family="'Inter', sans-serif" font-size="11.5">Feedback sessions with</text>
+                                                <text x="68" y="467" fill="#555558" font-family="'Inter', sans-serif" font-size="11.5">residents and community</text>
+                                                <text x="68" y="483" fill="#555558" font-family="'Inter', sans-serif" font-size="11.5">advocates</text>
+                                                <g transform="translate(234, 415) scale(0.85)" stroke="#86868B">
+                                                    <rect x="3" y="11" width="18" height="8" rx="2" stroke-width="1.6" fill="none"/>
+                                                    <circle cx="7" cy="6" r="2" stroke-width="1.6" fill="none"/>
+                                                    <circle cx="17" cy="6" r="2" stroke-width="1.6" fill="none"/>
                                                 </g>
                                             </g>
 
                                             <!-- CARD 4: COMPETITIVE ANALYSIS (Bottom Center) -->
                                             <g>
-                                                <rect x="350" y="415" width="220" height="100" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="366" y="437" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11px] tracking-tight">COMPETITIVE ANALYSIS</text>
-                                                <text x="366" y="460" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">3–4 civic engagement and</text>
-                                                <text x="366" y="478" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">environmental reporting apps</text>
-                                                <g transform="translate(532, 425)" class="text-[#2036B8] dark:text-[#5A6BFF]">
-                                                    <path d="M3 3v18h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-                                                    <path d="M18 9l-5 5-4-4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                                                <rect x="350" y="415" width="220" height="100" rx="14" fill="#F6F6F7" stroke="rgba(0,0,0,0.08)" stroke-width="1.2" />
+                                                <text x="368" y="439" fill="#1D1D1F" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="700" font-size="10.5" letter-spacing="0.05em">COMPETITIVE ANALYSIS</text>
+                                                <text x="368" y="462" fill="#555558" font-family="'Inter', sans-serif" font-size="11.5">3–4 civic engagement and</text>
+                                                <text x="368" y="479" fill="#555558" font-family="'Inter', sans-serif" font-size="11.5">environmental reporting apps</text>
+                                                <g transform="translate(534, 424) scale(0.85)" stroke="#86868B">
+                                                    <path d="M3 3v18h18" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+                                                    <path d="M18 9l-5 5-4-4-4 4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                                                 </g>
                                             </g>
 
                                             <!-- CARD 5: APP STORE REVIEWS (Bottom Right) -->
                                             <g>
-                                                <rect x="650" y="410" width="220" height="100" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="666" y="432" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11px] tracking-tight">APP STORE REVIEWS</text>
-                                                <text x="666" y="455" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">User feedback from</text>
-                                                <text x="666" y="473" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">existing product reviews</text>
-                                                <g transform="translate(832, 420)" class="text-[#2036B8] dark:text-[#5A6BFF]">
-                                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                                                    <path d="M8 9h.01M12 9h.01M16 9h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                <rect x="650" y="406" width="220" height="104" rx="14" fill="#F6F6F7" stroke="rgba(0,0,0,0.08)" stroke-width="1.2" />
+                                                <text x="668" y="430" fill="#1D1D1F" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="700" font-size="10.5" letter-spacing="0.05em">APP STORE REVIEWS</text>
+                                                <text x="668" y="453" fill="#555558" font-family="'Inter', sans-serif" font-size="11.5">User feedback from</text>
+                                                <text x="668" y="470" fill="#555558" font-family="'Inter', sans-serif" font-size="11.5">existing product reviews</text>
+                                                <g transform="translate(834, 415) scale(0.85)" stroke="#86868B">
+                                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="1.6" fill="none"/>
+                                                    <path d="M8 9h.01M12 9h.01M16 9h.01" stroke-width="2" stroke-linecap="round"/>
                                                 </g>
                                             </g>
 
                                             <!-- CARD 6: ACCESSIBILITY AUDIT (Mid Right) -->
                                             <g>
-                                                <rect x="670" y="220" width="220" height="100" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="686" y="242" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11px] tracking-tight">ACCESSIBILITY AUDIT</text>
-                                                <text x="686" y="265" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">WAVE audits and manual</text>
-                                                <text x="686" y="283" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">accessibility reviews</text>
-                                                <g transform="translate(852, 230)" class="text-[#2036B8] dark:text-[#5A6BFF]">
-                                                    <circle cx="12" cy="4" r="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                                                    <path d="M5 9h14M12 9v6m0 0l-3 5m3-5l3 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                                                <rect x="670" y="218" width="220" height="104" rx="14" fill="#F6F6F7" stroke="rgba(0,0,0,0.08)" stroke-width="1.2" />
+                                                <text x="688" y="242" fill="#1D1D1F" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="700" font-size="10.5" letter-spacing="0.05em">ACCESSIBILITY AUDIT</text>
+                                                <text x="688" y="265" fill="#555558" font-family="'Inter', sans-serif" font-size="11.5">WAVE audits and manual</text>
+                                                <text x="688" y="282" fill="#555558" font-family="'Inter', sans-serif" font-size="11.5">accessibility reviews</text>
+                                                <g transform="translate(854, 227) scale(0.85)" stroke="#86868B">
+                                                    <circle cx="12" cy="4" r="2" stroke-width="1.6" fill="none"/>
+                                                    <path d="M5 9h14M12 9v6m0 0l-3 5m3-5l3 5" stroke-width="1.6" stroke-linecap="round" fill="none"/>
                                                 </g>
                                             </g>
 
                                             <!-- CARD 7: ENGINEERING CONSTRAINTS (Top Right) -->
                                             <g>
-                                                <rect x="650" y="30" width="220" height="100" rx="10" class="fill-white dark:fill-[#191924] stroke-[#C8D4E8] dark:stroke-[#2C2C36]" stroke-width="1.5" />
-                                                <text x="666" y="52" class="fill-[#111118] dark:fill-white font-caps font-bold font-bold text-[11px] tracking-tight">ENGINEERING CONSTRAINTS</text>
-                                                <text x="666" y="75" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">Technical feasibility and</text>
-                                                <text x="666" y="93" class="fill-[#475569] dark:fill-[#94A3B8] font-sans text-[11px]">implementation planning</text>
-                                                <g transform="translate(832, 40)" class="text-[#2036B8] dark:text-[#5A6BFF]">
-                                                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                                                <rect x="650" y="30" width="220" height="104" rx="14" fill="#F6F6F7" stroke="rgba(0,0,0,0.08)" stroke-width="1.2" />
+                                                <text x="668" y="54" fill="#1D1D1F" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="700" font-size="10.5" letter-spacing="0.05em">ENGINEERING CONSTRAINTS</text>
+                                                <text x="668" y="77" fill="#555558" font-family="'Inter', sans-serif" font-size="11.5">Technical feasibility and</text>
+                                                <text x="668" y="94" fill="#555558" font-family="'Inter', sans-serif" font-size="11.5">implementation planning</text>
+                                                <g transform="translate(834, 39) scale(0.85)" stroke="#86868B">
+                                                    <circle cx="12" cy="12" r="3" stroke-width="1.6" fill="none"/>
+                                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke-width="1.6" fill="none"/>
                                                 </g>
                                             </g>
                                         </svg>
@@ -1810,17 +1829,19 @@
                             </div>
                         `
                     },
+                    strategyTitle: "What I designed toward",
                     strategy: [
-                        { title: "Signal trust before asking for data", description: "Language and tone had to say 'built for you' before the survey began." },
-                        { title: "Translate civic categories into lived concerns", description: "Abstract survey language doesn't move people; specific ones do." },
-                        { title: "Make completing the survey feel like participation, not paperwork", description: "Frame progress as community impact rather than administrative form completion." }
+                        { title: "Signal trust before asking for data.", description: "Language and tone had to say “built for you” before the survey began." },
+                        { title: "Translate civic categories into lived concerns.", description: "Abstract survey language doesn’t move people. Specific language does." },
+                        { title: "Make it feel like participation, not paperwork.", description: "Progress should read as community impact, not form completion." }
                     ],
+                    decisionsTitle: "Four decisions that shaped the redesign",
                     decisions: [
                         {
                             num: "DECISION 01",
-                            title: "Should onboarding explain the mission or get users into the survey fast?",
-                            body: "Original app skipped onboarding entirely straight into 45 questions with no context, which is exactly why people abandoned it. I built a 4-screen onboarding sequence that turned first-time users into oriented community advocates before asking anything of them.",
-                            impact: "Impact: 92% onboarding completion, a 75% reduction in reported user confusion.",
+                            title: "Should onboarding explain the mission or get people into the survey fast?",
+                            body: "The original app skipped onboarding entirely. I built a four-screen sequence that turns first-time users into oriented community advocates before asking anything of them.",
+                            impact: "Impact: 92% onboarding completion.",
                             decisionHTML: `
                                 <div class="space-y-8 my-6">
                                     <!-- ORIGINAL EXPERIENCE BOX -->
@@ -1875,9 +1896,9 @@
                         },
                         {
                             num: "DECISION 02",
-                            title: "Static progress bar or animated, contextual progress?",
-                            body: "A/B tested both with 50 users. Animated progress with contextual category icons (heart for health, truck for transportation) won not just on completion, but because the icon created an emotional tie to the specific concern being surveyed, not just a generic sense of 'almost done.'",
-                            impact: "Impact: 34% increase in completion from the animated version alone.",
+                            title: "Static progress bar, or animated and contextual?",
+                            body: "I A/B tested both with a small group of 5 to 10 users. Animated progress with category icons (a heart for health, a truck for transportation) won, and not only on completion. The icon tied people to the specific concern they were answering about.",
+                            impact: "Impact: 34% increase in completion from the animated version alone, in early testing.",
                             decisionHTML: `
                                 <div class="w-full my-6">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 justify-items-center">
@@ -1899,86 +1920,84 @@
                         {
                             num: "DECISION 03",
                             title: "Should language selection happen mid-flow or first?",
-                            body: "Research showed language wasn't a functional barrier so much as a trust signal surfacing it as the very first interaction told users the app was built for their community specifically, not translated as an afterthought.",
-                            impact: "Impact: Directly tied to the completion and trust gains above; language selection became the app's first impression, not a settings menu item.",
+                            body: "Research showed language wasn’t only a functional barrier. It was a trust signal. I made it the very first interaction, so the app feels built for the community and not translated as an afterthought.",
+                            impact: "Impact: Language became the app’s first impression, not a settings item, designed for English, Spanish, and Chinese from the first screen.",
                             decisionHTML: `
-                                <div class="w-full rounded-[16px] border border-black/[0.06] bg-white p-5 sm:p-7 my-6 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
-                                    <div class="p-4 sm:p-6 rounded-xl bg-[#F6F6F7] border border-black/[0.06] space-y-6">
-                                        <!-- ROW 1 -->
-                                        <div class="space-y-3">
-                                            <div class="text-[10.5px] font-caps font-bold tracking-[0.09em] text-[#86868B] uppercase">
-                                                IF LANGUAGE IS JUST A FUNCTION
+                                <div class="w-full rounded-[16px] border border-black/[0.06] bg-white p-5 sm:p-8 my-6 shadow-[0_1px_2px_rgba(0,0,0,0.02)] space-y-6">
+                                    <!-- ROW 1 -->
+                                    <div class="space-y-3">
+                                        <div class="text-[11px] font-sans font-medium tracking-[0.06em] text-[#86868B] uppercase">
+                                            IF LANGUAGE IS JUST A FUNCTION
+                                        </div>
+                                        <div class="flex items-center justify-between w-full overflow-x-auto sm:overflow-x-visible pb-2 sm:pb-0 gap-1.5 sm:gap-2">
+                                            <!-- Step 1: Splash -->
+                                            <div class="flex-1 min-w-[74px] sm:min-w-0 py-2.5 px-2 rounded-[10px] border border-black/[0.08] bg-[#F6F6F7] text-[11px] sm:text-[12px] font-sans font-semibold text-[#1D1D1F] text-center">
+                                                Splash
                                             </div>
-                                            <div class="flex items-center justify-between w-full overflow-x-auto sm:overflow-x-visible pb-2 sm:pb-0 gap-1 sm:gap-2">
-                                                <!-- Step 1: Splash -->
-                                                <div class="flex-1 min-w-[70px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-black/[0.08] bg-[#F5F5F7] text-[11px] sm:text-[12px] font-caps font-bold text-[#1D1D1F] text-center tracking-[0.04em] shadow-xs">
-                                                    Splash
-                                                </div>
-                                                <div class="h-0.5 w-2 sm:w-3 md:w-5 bg-black/15 shrink-0"></div>
-                                                <!-- Step 2: Onboarding -->
-                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-black/[0.08] bg-[#F5F5F7] text-[11px] sm:text-[12px] font-caps font-bold text-[#1D1D1F] text-center tracking-[0.04em] shadow-xs">
-                                                    Onboarding
-                                                </div>
-                                                <div class="h-0.5 w-2 sm:w-3 md:w-5 bg-black/15 shrink-0"></div>
-                                                <!-- Step 3: Permissions -->
-                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-black/[0.08] bg-[#F5F5F7] text-[11px] sm:text-[12px] font-caps font-bold text-[#1D1D1F] text-center tracking-[0.04em] shadow-xs">
-                                                    Permissions
-                                                </div>
-                                                <div class="h-0.5 w-2 sm:w-3 md:w-5 bg-black/15 shrink-0"></div>
-                                                <!-- Step 4: Language (buried at step 4) -->
-                                                <div class="flex-1 min-w-[80px] sm:min-w-0 py-1.5 sm:py-2 px-1 sm:px-2 rounded-lg border-2 border-dashed border-red-300 bg-red-50 text-[11px] sm:text-[12px] font-caps font-bold text-red-700 text-center tracking-[0.04em] shadow-xs">
-                                                    <div>Language</div>
-                                                    <div class="text-[9px] sm:text-[9.5px] font-normal text-red-500 mt-0.5">buried at step 4</div>
-                                                </div>
-                                                <div class="h-0.5 w-2 sm:w-3 md:w-5 bg-black/15 shrink-0"></div>
-                                                <!-- Step 5: 45-Q Survey -->
-                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-black/[0.08] bg-[#F5F5F7] text-[11px] sm:text-[12px] font-caps font-bold text-[#1D1D1F] text-center tracking-[0.04em] shadow-xs">
-                                                    45-Q Survey
-                                                </div>
+                                            <svg class="w-3.5 h-3.5 text-black/25 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                            <!-- Step 2: Onboarding -->
+                                            <div class="flex-1 min-w-[80px] sm:min-w-0 py-2.5 px-2 rounded-[10px] border border-black/[0.08] bg-[#F6F6F7] text-[11px] sm:text-[12px] font-sans font-semibold text-[#1D1D1F] text-center">
+                                                Onboarding
+                                            </div>
+                                            <svg class="w-3.5 h-3.5 text-black/25 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                            <!-- Step 3: Permissions -->
+                                            <div class="flex-1 min-w-[80px] sm:min-w-0 py-2.5 px-2 rounded-[10px] border border-black/[0.08] bg-[#F6F6F7] text-[11px] sm:text-[12px] font-sans font-semibold text-[#1D1D1F] text-center">
+                                                Permissions
+                                            </div>
+                                            <svg class="w-3.5 h-3.5 text-black/25 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                            <!-- Step 4: Language (buried at step 4) -->
+                                            <div class="flex-1 min-w-[92px] sm:min-w-0 py-2 px-2 rounded-[10px] border border-dashed border-red-300 bg-red-50/90 text-[11px] sm:text-[12px] font-sans font-semibold text-red-700 text-center">
+                                                <div>Language</div>
+                                                <div class="text-[9.5px] font-medium text-red-500 mt-0.5">buried at step 4</div>
+                                            </div>
+                                            <svg class="w-3.5 h-3.5 text-black/25 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                            <!-- Step 5: 45-Q Survey -->
+                                            <div class="flex-1 min-w-[82px] sm:min-w-0 py-2.5 px-2 rounded-[10px] border border-black/[0.08] bg-[#F6F6F7] text-[11px] sm:text-[12px] font-sans font-semibold text-[#1D1D1F] text-center">
+                                                45-Q Survey
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <!-- DIVIDER -->
-                                        <div class="w-full border-t border-black/[0.08]"></div>
+                                    <!-- DIVIDER -->
+                                    <div class="w-full border-t border-black/[0.06]"></div>
 
-                                        <!-- ROW 2 -->
-                                        <div class="space-y-3">
-                                            <div class="flex items-center justify-between">
-                                                <div class="text-[10.5px] font-caps font-bold tracking-[0.09em] text-[#1D1D1F] uppercase">
-                                                    IF LANGUAGE IS A TRUST SIGNAL
-                                                </div>
-                                                <span class="px-2.5 py-0.5 rounded-full bg-black text-white font-caps font-bold text-[10px] tracking-[0.08em] uppercase">
-                                                    SHIPPED
-                                                </span>
+                                    <!-- ROW 2 -->
+                                    <div class="space-y-3">
+                                        <div class="flex items-center justify-between">
+                                            <div class="text-[11px] font-sans font-medium tracking-[0.06em] text-[#1D1D1F] uppercase">
+                                                IF LANGUAGE IS A TRUST SIGNAL
                                             </div>
-                                            <div class="flex items-center justify-between w-full overflow-x-auto sm:overflow-x-visible pb-2 sm:pb-0 gap-1 sm:gap-2">
-                                                <!-- Step 1: Language (step 1 · first interaction) -->
-                                                <div class="flex-1 min-w-[105px] sm:min-w-0 py-1.5 sm:py-2 px-1 sm:px-2 rounded-lg bg-black text-white text-center shadow-xs">
-                                                    <div class="text-[11.5px] sm:text-[12px] font-caps font-bold text-white uppercase tracking-[0.06em]">Language</div>
-                                                    <div class="mt-1 inline-block px-1.5 py-0.5 rounded bg-white/20 text-white text-[10px] sm:text-[10.5px] font-caps font-bold uppercase tracking-[0.08em] leading-snug">
-                                                        step 1 &middot; first interaction
-                                                    </div>
+                                            <span class="px-2.5 py-0.5 rounded-full bg-[#1D1D1F] text-white font-caps font-bold text-[10px] tracking-[0.08em] uppercase">
+                                                SHIPPED
+                                            </span>
+                                        </div>
+                                        <div class="flex items-center justify-between w-full overflow-x-auto sm:overflow-x-visible pb-2 sm:pb-0 gap-1.5 sm:gap-2">
+                                            <!-- Step 1: Language (step 1 · first interaction) -->
+                                            <div class="flex-1 min-w-[115px] sm:min-w-0 py-2 px-2 rounded-[10px] bg-[#1D1D1F] text-white text-center shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                                                <div class="text-[11.5px] sm:text-[12px] font-sans font-semibold text-white">Language</div>
+                                                <div class="mt-1 inline-block px-2 py-0.5 rounded-full bg-white/15 text-white/95 text-[9.5px] font-sans font-medium leading-snug">
+                                                    step 1 &middot; first interaction
                                                 </div>
-                                                <div class="h-0.5 w-2 sm:w-3 md:w-5 bg-black/15 shrink-0"></div>
-                                                <!-- Step 2: Splash -->
-                                                <div class="flex-1 min-w-[70px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-black/[0.08] bg-[#F5F5F7] text-[11px] sm:text-[12px] font-caps font-bold text-[#1D1D1F] text-center tracking-[0.04em] shadow-xs">
-                                                    Splash
-                                                </div>
-                                                <div class="h-0.5 w-2 sm:w-3 md:w-5 bg-black/15 shrink-0"></div>
-                                                <!-- Step 3: Onboarding -->
-                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-black/[0.08] bg-[#F5F5F7] text-[11px] sm:text-[12px] font-caps font-bold text-[#1D1D1F] text-center tracking-[0.04em] shadow-xs">
-                                                    Onboarding
-                                                </div>
-                                                <div class="h-0.5 w-2 sm:w-3 md:w-5 bg-black/15 shrink-0"></div>
-                                                <!-- Step 4: Permissions -->
-                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-black/[0.08] bg-[#F5F5F7] text-[11px] sm:text-[12px] font-caps font-bold text-[#1D1D1F] text-center tracking-[0.04em] shadow-xs">
-                                                    Permissions
-                                                </div>
-                                                <div class="h-0.5 w-2 sm:w-3 md:w-5 bg-black/15 shrink-0"></div>
-                                                <!-- Step 5: 45-Q Survey -->
-                                                <div class="flex-1 min-w-[75px] sm:min-w-0 py-2 sm:py-2.5 px-1 sm:px-2.5 rounded-lg border border-black/[0.08] bg-[#F5F5F7] text-[11px] sm:text-[12px] font-caps font-bold text-[#1D1D1F] text-center tracking-[0.04em] shadow-xs">
-                                                    45-Q Survey
-                                                </div>
+                                            </div>
+                                            <svg class="w-3.5 h-3.5 text-black/25 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                            <!-- Step 2: Splash -->
+                                            <div class="flex-1 min-w-[74px] sm:min-w-0 py-2.5 px-2 rounded-[10px] border border-black/[0.08] bg-[#F6F6F7] text-[11px] sm:text-[12px] font-sans font-semibold text-[#1D1D1F] text-center">
+                                                Splash
+                                            </div>
+                                            <svg class="w-3.5 h-3.5 text-black/25 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                            <!-- Step 3: Onboarding -->
+                                            <div class="flex-1 min-w-[80px] sm:min-w-0 py-2.5 px-2 rounded-[10px] border border-black/[0.08] bg-[#F6F6F7] text-[11px] sm:text-[12px] font-sans font-semibold text-[#1D1D1F] text-center">
+                                                Onboarding
+                                            </div>
+                                            <svg class="w-3.5 h-3.5 text-black/25 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                            <!-- Step 4: Permissions -->
+                                            <div class="flex-1 min-w-[80px] sm:min-w-0 py-2.5 px-2 rounded-[10px] border border-black/[0.08] bg-[#F6F6F7] text-[11px] sm:text-[12px] font-sans font-semibold text-[#1D1D1F] text-center">
+                                                Permissions
+                                            </div>
+                                            <svg class="w-3.5 h-3.5 text-black/25 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                            <!-- Step 5: 45-Q Survey -->
+                                            <div class="flex-1 min-w-[82px] sm:min-w-0 py-2.5 px-2 rounded-[10px] border border-black/[0.08] bg-[#F6F6F7] text-[11px] sm:text-[12px] font-sans font-semibold text-[#1D1D1F] text-center">
+                                                45-Q Survey
                                             </div>
                                         </div>
                                     </div>
@@ -1987,9 +2006,9 @@
                         },
                         {
                             num: "DECISION 04",
-                            title: "Preserve familiar terminology or improve discoverability visually?",
-                            body: "Changing the category names risked disrupting consistency with the survey data and stakeholder terminology. Instead, I kept the existing labels, introduced custom illustrations, and redesigned the layout so all categories were immediately visible, making them easier to recognize and navigate.",
-                            impact: "Impact: 67% reduction in reported user confusion.",
+                            title: "Keep familiar terminology, or improve discoverability visually?",
+                            body: "Renaming the categories risked breaking consistency with the survey data and stakeholder terminology. So I kept the labels, added custom illustrations, and redesigned the layout so every category is visible at once.",
+                            impact: "Impact: Categories that are easier to recognize and navigate.",
                             decisionHTML: `
                                 <div class="w-full my-6">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 justify-items-center">
@@ -2009,26 +2028,28 @@
                             `
                         }
                     ],
-                    system: "Built a 24-piece component library covering navigation, settings, survey states, and category iconography, applied consistently across 15+ screens. Extended the EJ Lab's green palette into an accessible color spectrum, redesigned the settings from a button-heavy layout into a clean expandable list with flag-based language selection, and rebuilt navigation around an Apple Maps-style location pattern with proper action hierarchy (standard vs. destructive styling).",
-                    validation: "Built interactive Figma prototypes for 5 core flows, then ran 12 moderated usability sessions 4 per supported language, not just English speakers reacting to a translated screen. Paired that with WAVE accessibility audits and manual keyboard testing, and A/B tested 3 different progress-visualization approaches before locking the animated version.",
+                    systemTitle: "Building it as a system",
+                    system: "I built a 24-piece component library for navigation, settings, survey states, and category iconography, applied across 15+ screens. I extended the EJ Lab’s green palette into an accessible color spectrum, rebuilt settings as an expandable list with language selection, and rebuilt navigation around an Apple Maps-style location pattern with clear action hierarchy.\n\nI prototyped five core flows in Figma and ran 12 moderated usability sessions, four per supported language. I paired that with WAVE accessibility audits and manual keyboard testing.",
+                    validation: null,
                     validationPlaceholder: null,
                     outcome: {
+                        title: "Results",
                         subtext: "Shipped & Live on the App Store",
                         points: [
-                            "+60% increase in survey completion rates",
-                            "+3X user base expansion through multi-language support",
-                            "+75% reduction in user confusion",
-                            "Shipped and live on the App Store",
-                            "92% onboarding completion, up from a 67% two-minute abandonment rate",
-                            "45% faster task completion after the navigation and settings redesign",
-                            "34% completion lift attributable specifically to animated, contextual progress indicators",
-                            "Multi-language support (English, Spanish, Chinese) built in from the first onboarding screen, not bolted on after"
+                            "+60% survey completion rate.",
+                            "92% onboarding completion.",
+                            "+34% completion from animated, contextual progress alone, in an early A/B test with 5 to 10 users.",
+                            "3x App Store downloads after the interface redesign.",
+                            "45% faster task completion after the navigation and settings redesign.",
+                            "Shipped on the App Store in January 2025."
                         ]
                     },
-                    reflection: "The biggest shift wasn't visual it was realizing users weren't filling out a form, they were participating in something. That reframing is what justified language selection going first, categories getting rewritten in plain language, and progress feeling celebratory instead of clinical. Designing for civic trust turned out to be a different discipline than designing for task completion, even though the metrics look the same on a dashboard.",
+                    reflectionTitle: "What I took from it",
+                    reflection: "The biggest shift wasn’t visual. People weren’t filling out a form, they were participating in something. That’s why language selection went first and progress felt celebratory instead of clinical.\n\nDesigning for civic trust turned out to be a different discipline than designing for task completion, even though the metrics look the same on a dashboard.",
                     ownership: {
-                        led: "UX research, information architecture, visual design, design system, usability testing, accessibility audits, stakeholder coordination",
-                        codefined: "Technical constraints and feasibility with the development team"
+                        title: "What I owned",
+                        led: "UX research, information architecture, visual design, the design system, usability testing, accessibility audits, and stakeholder coordination.",
+                        codefined: "Technical constraints and feasibility with the development team."
                     }
                 }
             },
@@ -2051,17 +2072,22 @@
                 prev: 'myblockcounts',
                 next: 'youtopia',
                 heroHTML: `
-                    <p class="w-full text-[15.5px] sm:text-[17px] leading-[1.7] text-[#333336] font-normal mb-8">
+                    <div id="cs-hero-image" class="w-full rounded-[10px] overflow-hidden mb-8 aspect-[16/9] min-h-[280px] sm:min-h-[360px] bg-[#3B0F66] border border-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.05)] flex items-center justify-center">
+                        <video src="/JT/JT_GIF.mp4" poster="/JT/J_Hero.webp" autoplay loop muted playsinline class="h-full w-auto max-w-full object-contain block select-none" aria-label="Justickets Work Card Preview"></video>
+                    </div>
+                    <p class="w-full text-[15.5px] sm:text-[17px] leading-[1.6] text-[#333336] font-normal mb-[120px]">
                         Justickets was adding features fast, and every one of them was built from scratch. I made the case for slowing down just long enough to build a shared system, starting with seat selection and payment. Four major features shipped on it after that, and other Qube products picked it up too.
                     </p>
-                    <div id="cs-hero-image" class="w-full rounded-[10px] overflow-hidden mb-16 aspect-[16/9] min-h-[280px] sm:min-h-[360px]">
-                        <img src="/JT/J_Hero.webp" alt="Justickets Hero Image" class="w-full h-full object-cover rounded-[10px]" loading="eager" decoding="async" />
-                    </div>
                 `,
                 content: {
                     decisionsLayout: "side-card",
                     contextTitle: "A product growing faster than its foundation",
-                    context: "Justickets kept picking up new things: offers, food ordering, Moviebuff content, special screening messages. Each one shipped on its own, and that was the problem.\n\nNot the features. The fragmentation underneath them. Every release made the next one a little harder to build, not easier.\n\nSo I kept asking myself: how might we keep shipping new features without every one of them re-solving problems the last one already solved?",
+                    context: "Justickets kept picking up new things: offers, food ordering, Moviebuff content, special screening messages. Each one shipped on its own, and that was the problem.\n\nNot the features. The fragmentation underneath them. Every release made the next one a little harder to build, not easier.\n\nSo I kept asking myself: <strong class=\"font-bold text-[#000000]\">how might we keep shipping new features without every one of them re-solving problems the last one already solved?</strong>",
+                    contextHTML: `
+                        <div class="w-full rounded-[10px] overflow-hidden aspect-[16/9] min-h-[280px] sm:min-h-[360px]">
+                            <img src="/JT/J_Hero.webp" alt="Justickets Hero Image" class="w-full h-full object-cover rounded-[10px]" loading="lazy" decoding="async" />
+                        </div>
+                    `,
                     problem: {
                         title: "What I kept running into",
                         headline: "How might we keep shipping new features without every one of them re-solving problems the last one already solved?",
@@ -2074,7 +2100,7 @@
                     },
                     research: {
                         title: "Not a design problem, a source-of-truth problem",
-                        intro: "I audited the booking journey end to end, across the app and web, looking for anything that kept repeating and for the places where reuse was already breaking down.\n\nIt wasn’t a design-quality problem. It was a source-of-truth problem. Every new feature was re-negotiating spacing, states, and components that an earlier feature had already solved.\n\n### Keep shipping, or build the foundation first?\n\nProduct wanted forward motion. I proposed a short pause on new features to build the system on seat selection and payment first, so everything after could ship faster.",
+                        intro: "I audited the booking journey end to end, across the app and web, looking for anything that kept repeating and for the places where reuse was already breaking down.\n\nIt wasn’t a design-quality problem. It was a source-of-truth problem. Every new feature was re-negotiating spacing, states, and components that an earlier feature had already solved.",
                         insights: [
                             { title: "Source-of-truth problem", description: "Every new feature was re-negotiating spacing, states, and components that an earlier feature had already solved." },
                             { title: "Keep shipping, or build the foundation first?", description: "Product wanted forward motion. I proposed a short pause on new features to build the system on seat selection and payment first, so everything after could ship faster." },
@@ -2115,6 +2141,7 @@
                     systemTitle: "Turning it into a system",
                     system: "Everything built after seat selection, including food & beverage, offers, and the payment summary, started from the same components. The system covered:\n\n• Buttons and input fields\n• Cards and content layouts\n• Typography and spacing\n• Interaction states\n• Booking and checkout components\n\nI worked with engineering to line these up with Qube’s wider design guidelines and to make sure they could actually be built consistently.",
                     outcome: {
+                        title: "Outcome",
                         subtext: "Validated Impact & Shipped Architecture",
                         points: [
                             "+20% user satisfaction in beta testing.",
@@ -2244,7 +2271,7 @@
                         `;
                     }
                     return `
-                        <p class="text-[14.5px] sm:text-[15.5px] leading-[1.7] text-[#333336] font-normal ${extraClass}">
+                        <p class="text-[14.5px] sm:text-[15.5px] leading-[1.6] text-[#333336] font-normal ${extraClass}">
                             ${trimmed.replace(/\n/g, '<br/>')}
                         </p>
                     `;
@@ -2253,19 +2280,23 @@
 
             // 1. CONTEXT (Vertically stacked heading & text)
             let contextTitle = data.contextTitle || 'THE CONTEXT';
+            let contextCard = data.contextHTML ? data.contextHTML : '';
             sections.push(`
-                <section id="sec-context" class="space-y-4 sm:space-y-5 cs-reveal scroll-mt-12">
-                    <h2 class="font-sans-display text-[26px] sm:text-[30px] md:text-[34px] font-semibold text-[#000000] tracking-[-0.03em] leading-[1.15]">${contextTitle}</h2>
-                    <div class="space-y-4">
-                        ${formatParagraphs(data.context)}
+                <section id="sec-context" class="${contextCard ? 'space-y-8' : 'space-y-3 sm:space-y-3.5'} cs-reveal scroll-mt-12">
+                    <div class="space-y-3 sm:space-y-3.5">
+                        <h2 class="font-sans-display text-[26px] sm:text-[30px] md:text-[34px] font-semibold text-[#000000] tracking-[-0.03em] leading-[1.15]">${contextTitle}</h2>
+                        <div class="space-y-2.5">
+                            ${formatParagraphs(data.context)}
+                        </div>
                     </div>
+                    ${contextCard ? `<div class="w-full">${contextCard}</div>` : ''}
                 </section>
             `);
 
-            // 2. PROBLEM DEFINITION
+            // 2. PROBLEM DEFINITION (Top-down stacked layout)
             let problemTitle = (data.problem && data.problem.title) || 'PROBLEM DEFINITION';
             let problemPointsHTML = data.problem.points.map((pt, idx) => `
-                <div class="py-4 first:pt-0 last:pb-0 text-[14.5px] sm:text-[15.5px] leading-[1.65] text-[#1D1D1F] flex items-baseline gap-4 sm:gap-5 font-normal">
+                <div class="py-3.5 first:pt-0 last:pb-0 text-[14.5px] sm:text-[15.5px] leading-[1.58] text-[#1D1D1F] flex items-baseline gap-4 sm:gap-5 font-normal">
                     <span class="font-sans text-[12px] font-medium text-[#86868B] shrink-0 min-w-[22px] tabular-nums">0${idx + 1}</span>
                     <span class="break-words flex-1">${pt}</span>
                 </div>
@@ -2274,17 +2305,15 @@
             let problemCard = data.problem.problemHTML ? data.problem.problemHTML : (data.problem.placeholder ? `<div class="image-placeholder-card">${data.problem.placeholder}</div>` : '');
 
             sections.push(`
-                <section id="sec-problem" class="space-y-8 cs-reveal scroll-mt-12">
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start">
-                        <div class="lg:col-span-4 space-y-2.5">
-                            <div class="font-sans text-[12px] sm:text-[13px] font-medium tracking-[0.04em] text-[#86868B]">${problemTitle}</div>
-                            <h2 class="font-sans-display text-[22px] sm:text-[25px] md:text-[28px] font-semibold text-[#000000] tracking-[-0.025em] leading-[1.2]">
-                                ${data.problem.headline}
-                            </h2>
-                        </div>
-                        <div class="lg:col-span-8 divide-y divide-black/[0.06]">
-                            ${problemPointsHTML}
-                        </div>
+                <section id="sec-problem" class="space-y-6 cs-reveal scroll-mt-12">
+                    <div class="space-y-2">
+                        <div class="font-sans text-[12px] sm:text-[13px] font-medium tracking-[0.04em] text-[#86868B]">${problemTitle}</div>
+                        <h2 class="font-sans-display text-[24px] sm:text-[28px] md:text-[32px] font-semibold text-[#000000] tracking-[-0.03em] leading-[1.18]">
+                            ${data.problem.headline}
+                        </h2>
+                    </div>
+                    <div class="w-full divide-y divide-black/[0.06]">
+                        ${problemPointsHTML}
                     </div>
                     ${problemCard ? `<div class="w-full">${problemCard}</div>` : ''}
                 </section>
@@ -2313,9 +2342,9 @@
 
             sections.push(`
                 <section id="sec-research" class="space-y-8 cs-reveal scroll-mt-12">
-                    <div class="space-y-4 sm:space-y-5">
+                    <div class="space-y-3 sm:space-y-3.5">
                         <h2 class="font-sans-display text-[26px] sm:text-[30px] md:text-[34px] font-semibold text-[#000000] tracking-[-0.03em] leading-[1.15]">${researchTitle}</h2>
-                        <div class="space-y-4">
+                        <div class="space-y-2.5">
                             ${formatParagraphs(data.research.intro)}
                         </div>
                     </div>
@@ -2369,7 +2398,7 @@
                 if (data.decisionsLayout === "stacked" || dec.layout === "stacked") {
                     let imageSrc = dec.image || "/JT_Offer.webp";
                     return `
-                        <div class="w-full py-6 sm:py-8 ${isLast ? 'pb-2' : ''} space-y-6 sm:space-y-8 cs-reveal">
+                        <div class="w-full py-6 sm:py-8 ${isLast ? 'pb-0' : ''} space-y-6 sm:space-y-8 cs-reveal">
                             <div class="space-y-4">
                                 <div class="space-y-2">
                                     <div class="font-sans text-[#86868B] text-[12px] font-medium tracking-[0.04em]">
@@ -2379,7 +2408,7 @@
                                         ${dec.title}
                                     </h3>
                                 </div>
-                                <div class="space-y-3 sm:space-y-4">
+                                <div class="space-y-2 sm:space-y-2.5">
                                     ${bodyParagraphs}
                                 </div>
                                 ${dec.impact ? `
@@ -2400,7 +2429,7 @@
                 if (data.decisionsLayout === "side-card" || dec.layout === "side-card") {
                     let imageSrc = dec.image || "/JT_Offer.webp";
                     return `
-                        <div class="w-full py-6 sm:py-8 ${isLast ? 'pb-2' : ''} cs-reveal">
+                        <div class="w-full py-6 sm:py-8 ${isLast ? 'pb-0' : ''} cs-reveal">
                             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10 lg:gap-12 items-start">
                                 <!-- Left Column (6 Cols): Vertically Stacked Heading, Content & Impact -->
                                 <div class="lg:col-span-6 flex flex-col justify-between space-y-5">
@@ -2411,7 +2440,7 @@
                                         <h3 class="font-sans-display font-semibold text-[22px] sm:text-[26px] md:text-[28px] leading-[1.18] text-[#000000] tracking-[-0.025em] mb-4">
                                             ${dec.title}
                                         </h3>
-                                        <div class="space-y-3 sm:space-y-4">
+                                        <div class="space-y-2 sm:space-y-2.5">
                                             ${bodyParagraphs}
                                         </div>
                                     </div>
@@ -2439,7 +2468,7 @@
                 ` : (dec.placeholder ? `<div class="image-placeholder-card cs-hover-card">${dec.placeholder}</div>` : ''));
 
                 return `
-                    <div class="py-6 sm:py-8 ${isLast ? 'pb-2' : ''} space-y-6 w-full cs-reveal">
+                    <div class="py-6 sm:py-8 ${isLast ? 'pb-0' : ''} space-y-6 w-full cs-reveal">
                         <div class="space-y-4">
                             <div class="space-y-2">
                                 <div class="font-sans text-[#86868B] text-[12px] font-medium tracking-[0.04em]">
@@ -2449,7 +2478,7 @@
                                     ${dec.title}
                                 </h3>
                             </div>
-                            <div class="space-y-3 sm:space-y-4">
+                            <div class="space-y-2 sm:space-y-2.5">
                                 ${bodyParagraphs}
                             </div>
                             ${dec.impact ? `
@@ -2483,9 +2512,9 @@
             let sysCard = data.systemHTML ? data.systemHTML : (data.systemPlaceholder ? `<div class="image-placeholder-card cs-hover-card">${data.systemPlaceholder}</div>` : '');
             sections.push(`
                 <section id="sec-system" class="space-y-8 cs-reveal scroll-mt-12">
-                    <div class="space-y-4 sm:space-y-5">
+                    <div class="space-y-3 sm:space-y-3.5">
                         <h2 class="font-sans-display text-[26px] sm:text-[30px] md:text-[34px] font-semibold text-[#000000] tracking-[-0.03em] leading-[1.15]">${systemTitle}</h2>
-                        <div class="space-y-4">
+                        <div class="space-y-2.5">
                             ${formatParagraphs(data.system)}
                         </div>
                     </div>
@@ -2498,9 +2527,9 @@
                 let valCard = data.validationHTML ? data.validationHTML : (data.validationPlaceholder ? `<div class="image-placeholder-card cs-hover-card">${data.validationPlaceholder}</div>` : '');
                 sections.push(`
                     <section id="sec-validation" class="space-y-8 cs-reveal scroll-mt-12">
-                        <div class="space-y-4 sm:space-y-5">
+                        <div class="space-y-3 sm:space-y-3.5">
                             <h2 class="font-sans-display text-[26px] sm:text-[30px] md:text-[34px] font-semibold text-[#000000] tracking-[-0.03em] leading-[1.15]">VALIDATION</h2>
-                            <div class="space-y-4">
+                            <div class="space-y-2.5">
                                 ${formatParagraphs(data.validation)}
                             </div>
                         </div>
@@ -2520,14 +2549,14 @@
                 </div>
             `;
 
-            const renderMetricTile = (stat, desc, indexLabel) => `
-                <div class="bg-white border border-black/[0.06] rounded-[16px] p-5 sm:p-6 flex flex-col justify-between shadow-[0_1px_2px_rgba(0,0,0,0.02)] hover:border-black/15 transition-colors cs-reveal">
+            const renderMetricTile = (stat, desc, indexLabel, statColorClass = 'text-[#000000]') => `
+                <div class="bg-white border border-black/[0.06] rounded-[16px] p-5 sm:p-6 flex flex-col justify-start shadow-[0_1px_2px_rgba(0,0,0,0.02)] hover:border-black/15 transition-colors cs-reveal">
                     <div class="flex items-center gap-2 mb-5 sm:mb-6">
                         <span class="w-1.5 h-1.5 rounded-full bg-[#86868B] shrink-0"></span>
                         <span class="font-sans text-[11.5px] font-medium text-[#86868B] tabular-nums">${indexLabel}</span>
                     </div>
                     <div>
-                        <div class="font-sans-display text-[34px] sm:text-[40px] md:text-[44px] font-medium text-[#000000] leading-none tracking-[-0.03em] tabular-nums mb-3.5 sm:mb-4">
+                        <div class="font-sans-display text-[34px] sm:text-[40px] md:text-[44px] font-medium ${statColorClass} leading-none tracking-[-0.03em] tabular-nums mb-3.5 sm:mb-4">
                             ${stat}
                         </div>
                         <p class="text-[13px] sm:text-[13.5px] leading-[1.58] text-[#555558] font-normal">
@@ -2561,9 +2590,9 @@
                 outcomeContentHTML = `
                     <div class="space-y-4 sm:space-y-5">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
-                            ${renderMetricTile('<span class="text-[#5B19A3]">+</span>20%', 'User satisfaction in beta testing.', '01')}
-                            ${renderMetricTile('4', 'Major features shipped on the shared system instead of starting from zero.', '02')}
-                            ${renderMetricTile('<span class="text-[#5B19A3]">+</span>1M', 'Downloads and 25K+ reviews, still in production.', '03')}
+                            ${renderMetricTile('+20%', 'User satisfaction in beta testing.', '01', 'text-[#5B19A3]')}
+                            ${renderMetricTile('4', 'Major features shipped on the shared system instead of starting from zero.', '02', 'text-[#5B19A3]')}
+                            ${renderMetricTile('+1M', 'Downloads and 25K+ reviews, still in production.', '03', 'text-[#5B19A3]')}
                         </div>
                         ${renderNoteTile('04', 'Adopted beyond Justickets. Qube Wire and Qube XP use it as a shared standard.')}
                     </div>
@@ -2586,19 +2615,15 @@
                 outcomeContentHTML = `
                     <div class="space-y-4 sm:space-y-5">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
-                            ${renderMetricTile('+60%', 'Increase in survey completion rates', '01')}
-                            ${renderMetricTile('+3X', 'User base expansion through multi-language support', '02')}
-                            ${renderMetricTile('+75%', 'Reduction in user confusion', '03')}
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
-                            ${renderMetricTile('92%', 'Onboarding completion, up from a 67% two-minute abandonment rate', '04')}
-                            ${renderMetricTile('45%', 'Faster task completion after the navigation and settings redesign', '05')}
-                            ${renderMetricTile('34%', 'Completion lift attributable specifically to animated, contextual progress indicators', '06')}
+                            ${renderMetricTile('+60%', 'Survey completion rate.', '01', 'text-[#1bab51]')}
+                            ${renderMetricTile('92%', 'Onboarding completion.', '02', 'text-[#1bab51]')}
+                            ${renderMetricTile('+34%', 'Completion from animated, contextual progress alone, in an early A/B test with 5 to 10 users.', '03', 'text-[#1bab51]')}
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-                            ${renderNoteTile('07', 'Shipped and live on the App Store')}
-                            ${renderNoteTile('08', 'Multi-language support (English, Spanish, Chinese) built in from the first onboarding screen, not bolted on after')}
+                            ${renderMetricTile('3x', 'App Store downloads after the interface redesign.', '04', 'text-[#1bab51]')}
+                            ${renderMetricTile('45%', 'Faster task completion after the navigation and settings redesign.', '05', 'text-[#1bab51]')}
                         </div>
+                        ${renderNoteTile('06', 'Shipped on the App Store in January 2025.')}
                     </div>
                 `;
             }
@@ -2607,6 +2632,7 @@
                 <section id="sec-outcome" class="cs-reveal scroll-mt-12">
                     ${outcomeHeadingHTML}
                     ${outcomeContentHTML}
+                    ${data.outcome.footnote ? `<p class="text-[13.5px] sm:text-[14px] leading-[1.6] text-[#6E6E73] font-normal mt-5">${data.outcome.footnote}</p>` : ''}
                 </section>
             `);
 
@@ -2615,9 +2641,9 @@
             let reflectionCard = data.reflectionHTML ? data.reflectionHTML : (data.reflectionPlaceholder ? `<div class="image-placeholder-card">${data.reflectionPlaceholder}</div>` : '');
             sections.push(`
                 <section id="sec-reflection" class="space-y-8 cs-reveal scroll-mt-12">
-                    <div class="space-y-4 sm:space-y-5">
+                    <div class="space-y-3 sm:space-y-3.5">
                         <h2 class="font-sans-display text-[26px] sm:text-[30px] md:text-[34px] font-semibold text-[#000000] tracking-[-0.03em] leading-[1.15]">${reflectionTitle}</h2>
-                        <div class="space-y-4">
+                        <div class="space-y-2.5">
                             ${formatParagraphs(data.reflection)}
                         </div>
                     </div>
@@ -2653,7 +2679,7 @@
                 </section>
             `);
 
-            return `<div class="space-y-16 sm:space-y-24">${sections.join('\n\n')}</div>`;
+            return `<div class="space-y-[120px]">${sections.join('\n\n')}</div>`;
         }
 
         function toggleCsMobileMenu() {
@@ -2786,6 +2812,8 @@
                 document.title = `Protected — Youtopia Case Study | Kay Ravichandran`;
                 document.getElementById('cs-meta-shipped').innerText = project.shipped;
                 if (mainContent) mainContent.classList.add('hidden');
+                const moreStudiesEl = document.getElementById('cs-more-studies');
+                if (moreStudiesEl) moreStudiesEl.classList.add('hidden');
                 if (passwordGate) {
                     passwordGate.classList.remove('hidden');
                     const input = document.getElementById('cs-password-input');
@@ -2879,7 +2907,7 @@
                 if (project.heroHTML) {
                     heroElem.outerHTML = project.heroHTML;
                 } else {
-                    heroElem.outerHTML = `<div id="cs-hero-image" class="image-placeholder-card min-h-[360px] flex items-center justify-center rounded-[24px] mb-16 cs-hero-img-animate">Hero image — 16:9 or full-bleed</div>`;
+                    heroElem.outerHTML = `<div id="cs-hero-image" class="image-placeholder-card min-h-[360px] flex items-center justify-center rounded-[24px] mb-[120px] cs-hero-img-animate">Hero image — 16:9 or full-bleed</div>`;
                 }
                 const newHero = document.getElementById('cs-hero-image');
                 if (newHero && !newHero.classList.contains('cs-hero-img-animate')) {
@@ -2890,9 +2918,71 @@
             const contentBody = document.getElementById('cs-content-body');
             if (contentBody) {
                 contentBody.innerHTML = renderCaseStudyHTML(project.content, project, projectId);
-                initScrollReveals();
-                initTocObserver();
             }
+
+            const moreStudiesNav = document.getElementById('cs-more-studies');
+            if (moreStudiesNav) {
+                const orderedIds = ['youtopia', 'justickets', 'revlr', 'myblockcounts'].filter(id => id !== projectId && PROJECTS[id]);
+                const cardMeta = {
+                    youtopia: {
+                        displayTitle: 'Youtopia',
+                        bg: 'bg-black/[0.03]'
+                    },
+                    justickets: {
+                        displayTitle: 'Justickets',
+                        bg: 'bg-[#3B0F66]'
+                    },
+                    revlr: {
+                        displayTitle: 'REVLR',
+                        bg: 'bg-black/[0.03]'
+                    },
+                    myblockcounts: {
+                        displayTitle: 'My Block Counts',
+                        bg: 'bg-[#1bab51]'
+                    }
+                };
+
+                const renderWorkStyleCard = (id) => {
+                    const target = PROJECTS[id];
+                    const meta = cardMeta[id] || { displayTitle: target.title, bg: 'bg-black/[0.03]' };
+                    const mediaHTML = target.cardType === 'video'
+                        ? `<video src="${target.cardSrc}" ${target.cardPoster ? `poster="${target.cardPoster}"` : ''} autoplay loop muted playsinline class="h-full w-auto max-w-full object-contain block group-hover:scale-[1.02] transition-transform duration-500 ease-out select-none"></video>`
+                        : `<img src="${target.cardSrc}" alt="${meta.displayTitle} Work Preview" class="w-full h-full object-cover block group-hover:scale-[1.025] transition-transform duration-500 ease-out select-none" loading="lazy" decoding="async" />`;
+
+                    return `
+                        <a href="/case-study.html?project=${id}" class="group block text-black w-full cursor-pointer transition-all">
+                            <div class="relative w-full aspect-[16/10] rounded-[10px] overflow-hidden border border-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.05)] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.1)] group-hover:border-black/20 transition-all duration-300 flex items-center justify-center ${meta.bg}">
+                                ${mediaHTML}
+                            </div>
+                            <div class="pt-4 sm:pt-5 flex flex-col gap-1.5 cursor-pointer">
+                                <h3 class="font-sans text-[19px] sm:text-[20px] font-semibold text-[#1D1D1F] tracking-tight group-hover:text-black transition-colors flex items-center justify-between">
+                                    <span>${meta.displayTitle}</span>
+                                    <svg class="w-4 h-4 text-[#86868B] group-hover:text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all opacity-0 group-hover:opacity-100 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                                </h3>
+                                ${target.cardSubtitle ? `<p class="text-[13px] sm:text-[13.5px] text-[#6E6E73] leading-relaxed mt-0.5">${target.cardSubtitle}</p>` : ''}
+                            </div>
+                        </a>
+                    `;
+                };
+
+                if (orderedIds.length > 0) {
+                    moreStudiesNav.innerHTML = `
+                        <div class="max-w-[1340px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 space-y-8 sm:space-y-10">
+                            <h2 class="font-ugly-dave text-[32px] sm:text-[38px] md:text-[42px] font-normal leading-[1.05] text-black tracking-[0.015em]">View more projects</h2>
+                            <div class="flex flex-col lg:grid lg:grid-cols-3 gap-8 sm:gap-10 w-full">
+                                ${orderedIds.map(id => renderWorkStyleCard(id)).join('')}
+                            </div>
+                        </div>
+                    `;
+                    moreStudiesNav.classList.remove('hidden');
+                } else {
+                    moreStudiesNav.innerHTML = '';
+                    moreStudiesNav.classList.add('hidden');
+                }
+            }
+
+            initScrollReveals();
+            initTocObserver();
         }
 
         window.addEventListener('popstate', renderCaseStudy);

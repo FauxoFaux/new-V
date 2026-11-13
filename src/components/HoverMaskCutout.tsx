@@ -222,7 +222,7 @@ export function HoverMaskCutout() {
         />
       </picture>
 
-      {/* Hover Mask Reveal effect on top in white (#FFFFFF) that reveals the image on hover */}
+      {/* Hover Mask Reveal effect on top in off-white (#F6F6F7) that reveals the image on hover */}
       <svg
         className="absolute -inset-2 w-[calc(100%+16px)] h-[calc(100%+16px)] pointer-events-none z-10"
         aria-hidden="true"
@@ -270,12 +270,12 @@ export function HoverMaskCutout() {
           y="-20"
           width="calc(100% + 40px)"
           height="calc(100% + 40px)"
-          fill="#FFFFFF"
+          fill="#F6F6F7"
           mask="url(#framer-blue-overlay-mask)"
         />
       </svg>
       {/* 2px bottom safety cover to ensure zero exposed edge in vertical layout */}
-      <div className="absolute -bottom-1 -left-2 -right-2 h-3 bg-white pointer-events-none z-20" aria-hidden="true" />
+      <div className="absolute -bottom-1 -left-2 -right-2 h-3 bg-[#F6F6F7] pointer-events-none z-20" aria-hidden="true" />
     </div>
   );
 }
