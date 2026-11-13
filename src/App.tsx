@@ -447,7 +447,7 @@ export default function App() {
 
         {/* Mobile Navigation Dropdown Drawer - Covers half of screen, not a modal */}
         {mobileMenuOpen && (
-          <div className="lg:hidden fixed top-[57px] sm:top-[65px] left-0 right-0 w-full h-[50vh] min-h-[300px] max-h-[460px] bg-white border-b border-black/15 shadow-[0_20px_40px_rgba(0,0,0,0.12)] px-6 sm:px-10 py-6 flex flex-col justify-between overflow-y-auto z-50 animate-in slide-in-from-top-3 fade-in duration-200 pointer-events-auto">
+          <div className="lg:hidden fixed top-[57px] sm:top-[65px] left-0 right-0 w-full h-[50vh] min-h-[300px] max-h-[460px] bg-white border-b border-black/15 px-6 sm:px-10 py-6 flex flex-col justify-between overflow-y-auto z-50 animate-in slide-in-from-top-3 fade-in duration-200 pointer-events-auto">
             <div className="space-y-1.5">
               <a
                 href="#work"
@@ -498,12 +498,12 @@ export default function App() {
         )}
       </motion.header>
 
-      {/* Outside click area for mobile menu (below half screen, no modal dark backdrop) */}
+      {/* Outside click area & subtle darkened background overlay when mobile menu is opened */}
       {mobileMenuOpen && (
         <div
           id="mobile-menu-backdrop"
           onClick={() => setMobileMenuOpen(false)}
-          className="fixed top-[calc(57px+50vh)] sm:top-[calc(65px+50vh)] inset-x-0 bottom-0 z-40 lg:hidden cursor-pointer"
+          className="fixed top-[57px] sm:top-[65px] inset-x-0 bottom-0 bg-black/20 z-40 lg:hidden cursor-pointer"
           aria-hidden="true"
         />
       )}
