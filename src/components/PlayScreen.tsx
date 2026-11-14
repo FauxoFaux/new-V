@@ -7,148 +7,168 @@ export interface PlayItem {
   id: string;
   fileName: string;
   mediaUrl: string;
+  mediaType: 'image' | 'video';
   title: string;
   category: 'Graphic Design' | 'Animation' | 'Character Design' | 'Illustration';
 }
 
 const PLAY_ITEMS: PlayItem[] = [
-  // Animation / GIFs
+  // Animation (H.264 MP4)
   {
     id: 'puffy',
-    fileName: 'Puffy.gif',
-    mediaUrl: '/PLAY/Puffy.gif',
+    fileName: 'Puffy.mp4',
+    mediaUrl: '/PLAY/Puffy.mp4',
+    mediaType: 'video',
     title: 'Puffy',
     category: 'Animation',
   },
   {
     id: 'boxing',
-    fileName: 'Boxing.gif',
-    mediaUrl: '/PLAY/Boxing.gif',
+    fileName: 'Boxing.mp4',
+    mediaUrl: '/PLAY/Boxing.mp4',
+    mediaType: 'video',
     title: 'Boxing',
     category: 'Animation',
   },
   {
     id: 'macarena',
-    fileName: 'MAcarena.gif',
-    mediaUrl: '/PLAY/MAcarena.gif',
+    fileName: 'MAcarena.mp4',
+    mediaUrl: '/PLAY/MAcarena.mp4',
+    mediaType: 'video',
     title: 'Macarena',
     category: 'Animation',
   },
   {
     id: 'gooey',
-    fileName: 'Gooey.gif',
-    mediaUrl: '/PLAY/Gooey.gif',
+    fileName: 'Gooey.mp4',
+    mediaUrl: '/PLAY/Gooey.mp4',
+    mediaType: 'video',
     title: 'Gooey Dynamics',
     category: 'Animation',
   },
   {
     id: 'quicksketch',
-    fileName: 'QuickSketch.gif',
-    mediaUrl: '/PLAY/QuickSketch.gif',
+    fileName: 'QuickSketch.mp4',
+    mediaUrl: '/PLAY/QuickSketch.mp4',
+    mediaType: 'video',
     title: 'Quick Motion Study',
     category: 'Animation',
   },
   {
     id: 'sangi',
-    fileName: 'Sangi.gif',
-    mediaUrl: '/PLAY/Sangi.gif',
+    fileName: 'Sangi.mp4',
+    mediaUrl: '/PLAY/Sangi.mp4',
+    mediaType: 'video',
     title: 'Sangi',
     category: 'Animation',
   },
 
-  // Character Design
+  // Character Design (WebP)
   {
     id: 'fox-2020',
-    fileName: '2020 fox.png',
-    mediaUrl: '/PLAY/2020%20fox.png',
+    fileName: '2020 fox.webp',
+    mediaUrl: '/PLAY/2020%20fox.webp',
+    mediaType: 'image',
     title: 'Fox in Motion',
     category: 'Character Design',
   },
   {
     id: 'elephant',
-    fileName: 'Elephant.PNG',
-    mediaUrl: '/PLAY/Elephant.PNG',
+    fileName: 'Elephant.webp',
+    mediaUrl: '/PLAY/Elephant.webp',
+    mediaType: 'image',
     title: 'Elephant',
     category: 'Character Design',
   },
   {
     id: 'purple-villain',
-    fileName: 'Purple Villian.PNG',
-    mediaUrl: '/PLAY/Purple%20Villian.PNG',
+    fileName: 'Purple Villian.webp',
+    mediaUrl: '/PLAY/Purple%20Villian.webp',
+    mediaType: 'image',
     title: 'Purple Villain',
     category: 'Character Design',
   },
   {
     id: 'sushi-bug',
-    fileName: 'sushi bug.PNG',
-    mediaUrl: '/PLAY/sushi%20bug.PNG',
+    fileName: 'sushi bug.webp',
+    mediaUrl: '/PLAY/sushi%20bug.webp',
+    mediaType: 'image',
     title: 'Sushi Bug',
     category: 'Character Design',
   },
 
-  // Graphic Design / Posters / Visual Studies
+  // Graphic Design / Posters / Visual Studies (WebP)
   {
     id: 'cards-2020',
-    fileName: '2020 cards.png',
-    mediaUrl: '/PLAY/2020%20cards.png',
+    fileName: '2020 cards.webp',
+    mediaUrl: '/PLAY/2020%20cards.webp',
+    mediaType: 'image',
     title: 'Card Deck Systems',
     category: 'Graphic Design',
   },
   {
     id: 'poster-2021',
-    fileName: '2021.png',
-    mediaUrl: '/PLAY/2021.png',
+    fileName: '2021.webp',
+    mediaUrl: '/PLAY/2021.webp',
+    mediaType: 'image',
     title: 'Form & Typography',
     category: 'Graphic Design',
   },
   {
     id: 'graphic-2022',
-    fileName: '2022.png',
-    mediaUrl: '/PLAY/2022.png',
+    fileName: '2022.webp',
+    mediaUrl: '/PLAY/2022.webp',
+    mediaType: 'image',
     title: 'Visual Synthesis',
     category: 'Graphic Design',
   },
   {
     id: 'color-2023',
-    fileName: '2023.png',
-    mediaUrl: '/PLAY/2023.png',
+    fileName: '2023.webp',
+    mediaUrl: '/PLAY/2023.webp',
+    mediaType: 'image',
     title: 'Color & Rhythm',
     category: 'Graphic Design',
   },
   {
     id: 'glowil',
-    fileName: 'glowil.jpg',
-    mediaUrl: '/PLAY/glowil.jpg',
+    fileName: 'glowil.webp',
+    mediaUrl: '/PLAY/glowil.webp',
+    mediaType: 'image',
     title: 'Glow & Light',
     category: 'Graphic Design',
   },
 
-  // Illustration / Digital Art
+  // Illustration / Digital Art (WebP)
   {
     id: 'img-2778',
-    fileName: 'IMG_2778.PNG',
-    mediaUrl: '/PLAY/IMG_2778.PNG',
+    fileName: 'IMG_2778.webp',
+    mediaUrl: '/PLAY/IMG_2778.webp',
+    mediaType: 'image',
     title: 'Sketchbook Study',
     category: 'Illustration',
   },
   {
     id: 'night',
-    fileName: 'Night.PNG',
-    mediaUrl: '/PLAY/Night.PNG',
+    fileName: 'Night.webp',
+    mediaUrl: '/PLAY/Night.webp',
+    mediaType: 'image',
     title: 'Night Atmosphere',
     category: 'Illustration',
   },
   {
     id: 'portrait',
-    fileName: 'Potrait.png',
-    mediaUrl: '/PLAY/Potrait.png',
+    fileName: 'Potrait.webp',
+    mediaUrl: '/PLAY/Potrait.webp',
+    mediaType: 'image',
     title: 'Portrait Study',
     category: 'Illustration',
   },
   {
     id: 'stay',
-    fileName: 'Stay.jpg',
-    mediaUrl: '/PLAY/Stay.jpg',
+    fileName: 'Stay.webp',
+    mediaUrl: '/PLAY/Stay.webp',
+    mediaType: 'image',
     title: 'Stay',
     category: 'Illustration',
   },
@@ -187,8 +207,11 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
   const [selectedItem, setSelectedItem] = useState<PlayItem | null>(null);
 
   // Orbit Cards State & Refs
+  const heroSectionRef = useRef<HTMLElement | null>(null);
+  const galleryRootRef = useRef<HTMLElement | null>(null);
   const cardElementsRef = useRef<(HTMLDivElement | null)[]>([]);
   const isOrbitHoveredRef = useRef(false);
+  const isHeroVisibleRef = useRef(true);
   const orbitAngleRef = useRef(0);
 
   // Filter items based on active category
@@ -202,12 +225,18 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
     return filteredItems.findIndex((i) => i.id === selectedItem.id);
   }, [selectedItem, filteredItems]);
 
-  // Continuous Smooth Orbit Animation Around "Playground" (Always 100% Upright, never upside-down or sideways)
+  // Continuous Smooth Orbit Animation Around "Playground" (pauses when scrolled out of viewport)
   useEffect(() => {
     let lastTime = performance.now();
-    let animId: number;
+    let animId = 0;
+    let disposed = false;
 
     const updateOrbit = (now: number) => {
+      if (disposed || !isHeroVisibleRef.current) {
+        animId = 0;
+        return;
+      }
+
       const dt = Math.min((now - lastTime) * 0.001, 0.1);
       lastTime = now;
 
@@ -219,16 +248,13 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
       const w = typeof window !== 'undefined' ? window.innerWidth : 1200;
       const h = typeof window !== 'undefined' ? window.innerHeight : 800;
 
-      // Compute ellipse radii that orbit cleanly AROUND "Playground" without overlapping it
       let rx = Math.min(w * 0.44, 460);
       let ry = Math.min(h * 0.32, 270);
 
       if (w < 640) {
-        // Mobile screen clearance: keeps cards orbiting around "Playground" while staying safely inside screen
         rx = Math.max(130, Math.min(w * 0.38, 160));
         ry = Math.max(140, Math.min(h * 0.27, 180));
       } else if (w < 1024) {
-        // Tablet clearance
         rx = Math.max(220, Math.min(w * 0.42, 340));
         ry = Math.max(180, Math.min(h * 0.28, 230));
       }
@@ -244,16 +270,80 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
         const x = Math.cos(angleRad) * rx;
         const y = Math.sin(angleRad) * ry;
 
-        // Strictly translate without any rotation: ALWAYS 100% UPRIGHT!
         el.style.transform = `translate3d(calc(-50% + ${x.toFixed(1)}px), calc(-50% + ${y.toFixed(1)}px), 0)`;
       }
 
       animId = requestAnimationFrame(updateOrbit);
     };
 
-    animId = requestAnimationFrame(updateOrbit);
-    return () => cancelAnimationFrame(animId);
+    const startOrbit = () => {
+      if (!animId && !disposed && isHeroVisibleRef.current) {
+        lastTime = performance.now();
+        animId = requestAnimationFrame(updateOrbit);
+      }
+    };
+
+    const heroEl = heroSectionRef.current;
+    let observer: IntersectionObserver | null = null;
+    if (heroEl && 'IntersectionObserver' in window) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries.some((e) => e.isIntersecting);
+          isHeroVisibleRef.current = visible;
+          if (visible) {
+            startOrbit();
+          } else if (animId) {
+            cancelAnimationFrame(animId);
+            animId = 0;
+          }
+          heroEl.querySelectorAll('video').forEach((v) => {
+            if (visible) {
+              v.play().catch(() => {});
+            } else {
+              v.pause();
+            }
+          });
+        },
+        { threshold: 0.02 }
+      );
+      observer.observe(heroEl);
+    }
+
+    startOrbit();
+    return () => {
+      disposed = true;
+      if (animId) cancelAnimationFrame(animId);
+      if (observer) observer.disconnect();
+    };
   }, []);
+
+  // Pause offscreen masonry videos to keep scrolling smooth
+  useEffect(() => {
+    const root = galleryRootRef.current;
+    if (!root || !('IntersectionObserver' in window)) return;
+
+    const videos: HTMLVideoElement[] = Array.prototype.slice.call(
+      root.querySelectorAll('video')
+    );
+    if (videos.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { rootMargin: '250px 0px', threshold: 0.01 }
+    );
+
+    videos.forEach((v) => observer.observe(v));
+    return () => observer.disconnect();
+  }, [filteredItems]);
 
   // Keyboard navigation for lightbox
   useEffect(() => {
@@ -308,12 +398,12 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
 
   return (
     <div className="w-full min-h-screen bg-[#F6F6F7] text-[#1D1D1F] font-sans selection:bg-[#0071E3] selection:text-white flex flex-col relative overflow-x-hidden">
-      {/* TOP BAR WITH BORDERLESS BACK BUTTON ON SEAMLESS CANVAS */}
-      <div className="fixed top-0 left-0 right-0 z-50 pointer-events-none px-5 sm:px-8 lg:px-12 py-5 sm:py-6">
+      {/* TOP BAR WITH SOLID #F6F6F7 BACKGROUND */}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-[#F6F6F7] border-b border-black/[0.06] px-5 sm:px-8 lg:px-12 py-4 sm:py-5">
         <div className="max-w-[1500px] mx-auto flex items-center justify-between">
           <button
             onClick={onBack}
-            className="pointer-events-auto group inline-flex items-center gap-1.5 text-[#1D1D1F] hover:text-black transition-colors font-caps text-[12px] tracking-[0.09em] font-semibold cursor-pointer py-1"
+            className="group inline-flex items-center gap-1.5 text-[#1D1D1F] hover:text-black transition-colors font-caps text-[12px] tracking-[0.09em] font-semibold cursor-pointer py-1"
             aria-label="Back to portfolio"
           >
             <ArrowLeft size={15} className="stroke-[2.5] transition-transform group-hover:-translate-x-0.5" />
@@ -324,10 +414,11 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
 
       {/* 1. HERO SECTION: ORBITING REVOLUTION AROUND "PLAYGROUND" */}
       <section
-        className="relative w-full h-[90vh] sm:h-screen min-h-[600px] max-h-[1050px] flex items-center justify-center overflow-hidden select-none bg-[#FAFAFA]"
+        ref={heroSectionRef}
+        className="relative w-full h-[90vh] sm:h-screen min-h-[600px] max-h-[1050px] flex items-center justify-center overflow-hidden select-none bg-[#F6F6F7]"
       >
-        {/* Ambient background depth grid and soft vignette */}
-        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_45%,rgba(255,255,255,0.7)_0%,#F5F5F7_100%)] z-0" />
+        {/* Ambient soft radial highlight */}
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_45%,rgba(255,255,255,0.65)_0%,#F6F6F7_100%)] z-0" />
 
         {/* Orbit Cards Container: Absolutely centered, cards translated with 0deg rotation (always 100% upright) */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
@@ -348,13 +439,26 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
                 }}
               >
                 <div className="w-[72px] h-[92px] sm:w-[100px] sm:h-[130px] md:w-[125px] md:h-[160px] lg:w-[145px] lg:h-[185px] rounded-[10px] sm:rounded-[14px] overflow-hidden bg-[#F5F5F7] border border-black/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.22)] hover:scale-110 hover:border-black/20 transition-all duration-200 select-none">
-                  <img
-                    src={item.mediaUrl}
-                    alt={item.title}
-                    loading="eager"
-                    decoding="async"
-                    className="w-full h-full object-cover block group-hover:scale-105 transition-transform duration-300 pointer-events-none"
-                  />
+                  {item.mediaType === 'video' ? (
+                    <video
+                      src={item.mediaUrl}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="metadata"
+                      aria-label={item.title}
+                      className="w-full h-full object-cover block pointer-events-none"
+                    />
+                  ) : (
+                    <img
+                      src={item.mediaUrl}
+                      alt={item.title}
+                      loading="eager"
+                      decoding="async"
+                      className="w-full h-full object-cover block group-hover:scale-105 transition-transform duration-300 pointer-events-none"
+                    />
+                  )}
                 </div>
               </div>
             ))}
@@ -390,10 +494,10 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
         </div>
       </section>
 
-      {/* 2. STICKY CATEGORY FILTER BAR */}
+      {/* 2. STICKY CATEGORY FILTER BAR (SOLID #F6F6F7) */}
       <div
         id="gallery"
-        className="sticky top-14 z-40 w-full bg-white/90 backdrop-blur-xl border-b border-black/[0.08] py-2"
+        className="sticky top-[56px] sm:top-[64px] z-40 w-full bg-[#F6F6F7] border-b border-black/[0.08] py-2"
       >
         <div className="max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-center">
           <div className="flex items-center gap-6 sm:gap-8 lg:gap-10 overflow-x-auto max-w-full py-1 scrollbar-none">
@@ -424,8 +528,8 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
         </div>
       </div>
 
-      {/* 3. MASONRY GALLERY CANVAS: MULTI-COLUMN DUMP GRID MATCHING SCREENSHOT WITH WORKCARD-STYLE TAGS */}
-      <main className="flex-1 max-w-[1600px] w-full mx-auto px-3 sm:px-6 lg:px-8 xl:px-10 py-6 sm:py-8">
+      {/* 3. MASONRY GALLERY CANVAS */}
+      <main ref={galleryRootRef} className="flex-1 max-w-[1600px] w-full mx-auto px-3 sm:px-6 lg:px-8 xl:px-10 py-6 sm:py-8">
         <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 gap-3 sm:gap-4 lg:gap-4.5 [column-fill:_balance]">
           {filteredItems.map((item, index) => (
             <div
@@ -434,20 +538,33 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
               className="break-inside-avoid mb-3 sm:mb-4 lg:mb-4.5 group relative overflow-hidden rounded-[8px] sm:rounded-[10px] bg-[#F5F5F7] border border-black/[0.08] hover:border-black/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 cursor-pointer select-none"
             >
               <div className="relative w-full overflow-hidden bg-[#F0F0F2]">
-                <img
-                  src={item.mediaUrl}
-                  alt={item.title}
-                  loading={index < 10 ? 'eager' : 'lazy'}
-                  decoding="async"
-                  className="w-full h-auto block object-cover group-hover:scale-[1.02] transition-transform duration-300 ease-out"
-                />
+                {item.mediaType === 'video' ? (
+                  <video
+                    src={item.mediaUrl}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="metadata"
+                    aria-label={item.title}
+                    className="w-full h-auto block object-cover group-hover:scale-[1.02] transition-transform duration-300 ease-out"
+                  />
+                ) : (
+                  <img
+                    src={item.mediaUrl}
+                    alt={item.title}
+                    loading={index < 8 ? 'eager' : 'lazy'}
+                    decoding="async"
+                    className="w-full h-auto block object-cover group-hover:scale-[1.02] transition-transform duration-300 ease-out"
+                  />
+                )}
               </div>
             </div>
           ))}
         </div>
       </main>
 
-      {/* EDITORIAL FOOTER (matching design screenshot) */}
+      {/* EDITORIAL FOOTER */}
       <EditorialFooter />
 
       {/* FULLSCREEN LIGHTBOX DETAIL MODAL */}
@@ -493,11 +610,25 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
 
               {/* Modal Media Content */}
               <div className="relative flex-1 bg-black flex items-center justify-center overflow-hidden p-2 sm:p-6 min-h-[320px] max-h-[78vh]">
-                <img
-                  src={selectedItem.mediaUrl}
-                  alt={selectedItem.title}
-                  className="max-h-[74vh] max-w-full w-auto h-auto object-contain select-none"
-                />
+                {selectedItem.mediaType === 'video' ? (
+                  <video
+                    key={selectedItem.id}
+                    src={selectedItem.mediaUrl}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="auto"
+                    aria-label={selectedItem.title}
+                    className="max-h-[74vh] max-w-full w-auto h-auto object-contain select-none"
+                  />
+                ) : (
+                  <img
+                    src={selectedItem.mediaUrl}
+                    alt={selectedItem.title}
+                    className="max-h-[74vh] max-w-full w-auto h-auto object-contain select-none"
+                  />
+                )}
 
                 {/* Left navigation arrow */}
                 {filteredItems.length > 1 && (

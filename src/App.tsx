@@ -100,8 +100,8 @@ export default function App() {
       if (!container) return;
       if (mobileMenuOpen) return;
 
-      // If vertical wheel movement is dominant or present, translate to horizontal scroll
-      if (Math.abs(e.deltaY) > 0) {
+      // Translate vertical wheel movement to horizontal scroll while letting native trackpad deltaX pass through
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
         e.preventDefault();
         container.scrollLeft += e.deltaY;
       }
@@ -340,13 +340,13 @@ export default function App() {
 
   return (
     <div className="w-full h-full min-h-screen bg-[#F6F6F7] text-[#1D1D1F] selection:bg-[#0071E3] selection:text-white flex flex-col font-sans lg:overflow-hidden">
-      {/* Navigation Header - Off-white background on mobile / hamburger menu nav, transparent on desktop */}
+      {/* Navigation Header - Solid #F6F6F7 background */}
       <motion.header
         id="main-navigation-header"
         initial={shouldReduceMotion ? false : { y: -16, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: EASE_EDITORIAL }}
-        className={`fixed top-0 left-0 right-0 z-50 w-full px-5 sm:px-8 md:px-12 lg:px-16 py-4 transition-all bg-[#F6F6F7]/95 backdrop-blur-md border-b border-black/[0.08] lg:bg-transparent lg:backdrop-blur-none lg:border-transparent pointer-events-auto lg:pointer-events-none ${
+        className={`fixed top-0 left-0 right-0 z-50 w-full px-5 sm:px-8 md:px-12 lg:px-16 py-4 transition-colors bg-[#F6F6F7] border-b border-black/[0.08] lg:bg-[#F6F6F7] lg:border-transparent pointer-events-auto lg:pointer-events-none ${
           mobileMenuOpen ? 'bg-[#F6F6F7] border-b border-black/[0.08]' : ''
         }`}
       >

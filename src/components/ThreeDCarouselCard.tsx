@@ -130,7 +130,7 @@ export const ThreeDCarouselCard: React.FC<ThreeDCarouselCardProps> = ({
     >
       <div
         ref={innerRef}
-        className="w-full h-full overflow-visible transition-[opacity,transform] duration-75 ease-out"
+        className="w-full h-full overflow-visible"
         style={{
           transformOrigin: '50% 50%',
           backfaceVisibility: 'hidden',

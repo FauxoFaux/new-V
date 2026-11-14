@@ -78,7 +78,7 @@ export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = ({
           }
         });
       },
-      { rootMargin: '350px 350px 350px 350px', threshold: 0.05 }
+      { rootMargin: '550px 550px 550px 550px', threshold: 0.01 }
     );
 
     observer.observe(container);

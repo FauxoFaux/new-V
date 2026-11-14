@@ -289,13 +289,9 @@
             transform: translateY(0);
         }
 
-        /* Interactive card hover elevation */
+        /* Card transition base (no hover elevation on static case study cards) */
         .cs-hover-card {
-            transition: transform 0.3s var(--ease-editorial), box-shadow 0.3s var(--ease-editorial), border-color 0.3s var(--ease-editorial);
-        }
-        .cs-hover-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.06);
+            transition: none;
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -478,16 +474,8 @@
 </head>
 <body class="selection:bg-black selection:text-white min-h-screen w-full bg-[#F6F6F7] text-[#1D1D1F] relative overflow-x-clip">
 
-    <!-- Tactile Grain Layer -->
-    <div 
-        id="page-noise-layer"
-        class="fixed inset-0 pointer-events-none z-[60] opacity-[0.02] mix-blend-multiply select-none"
-        style="background-image: url('/noise.png'); background-repeat: repeat;"
-        aria-hidden="true"
-    ></div>
-
     <!-- Unified Top Navigation Header matching Homepage UI -->
-    <header id="cs-main-header" class="fixed top-0 left-0 right-0 z-50 w-full bg-[#F6F6F7]/95 backdrop-blur-md border-b border-black/[0.08] px-5 sm:px-8 md:px-12 lg:px-16 py-4 transition-all">
+    <header id="cs-main-header" class="fixed top-0 left-0 right-0 z-50 w-full bg-[#F6F6F7] border-b border-black/[0.08] px-5 sm:px-8 md:px-12 lg:px-16 py-4 transition-colors">
         <nav class="mx-auto max-w-[1340px] w-full flex items-center justify-between pointer-events-auto">
             <!-- Logo -->
             <a href="/#top" class="flex items-center text-[#1D1D1F] hover:text-black transition-colors shrink-0" aria-label="Kay Ravichandran Home">
@@ -606,54 +594,60 @@
             </section>
 
             <!-- Password Protection Gate (Shown when Youtopia is locked) -->
-            <div id="cs-password-gate" class="hidden py-8 sm:py-12 max-w-[480px] mx-auto text-center border border-black/[0.08] bg-white rounded-[24px] p-6 sm:p-10 mb-12 shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
-                <div class="text-black flex justify-center mb-3">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div id="cs-password-gate" class="hidden w-full rounded-[16px] border border-black/[0.06] bg-white px-6 sm:px-10 py-14 sm:py-20 mt-4 mb-16 shadow-[0_1px_2px_rgba(0,0,0,0.02)] text-center">
+                <div class="w-14 h-14 mx-auto mb-5 rounded-full bg-[#ECECEE] border border-black/[0.08] flex items-center justify-center text-[#86868B]">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                         <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                     </svg>
                 </div>
-                
-                <span class="inline-block font-caps text-[11px] tracking-[0.14em] text-[#86868B] font-bold mb-2">RESTRICTED ACCESS</span>
-                <h2 class="font-display text-[26px] sm:text-[32px] font-bold leading-tight text-black uppercase tracking-tight mb-6">PROTECTED CASE STUDY</h2>
 
-                <form id="cs-password-form" class="space-y-4" onsubmit="handlePasswordSubmit(event)">
-                    <div class="relative flex items-center">
-                        <input
-                            type="password"
-                            id="cs-password-input"
-                            placeholder="Enter password"
-                            autocomplete="current-password"
-                            class="w-full pl-4 pr-11 py-3 rounded-xl border border-black/15 bg-[#F5F5F7] text-black placeholder:text-black/40 text-sm focus:outline-none focus:border-black transition-colors font-medium"
-                        />
+                <h2 class="font-sans-display font-semibold text-[22px] sm:text-[26px] leading-[1.2] text-[#1D1D1F] tracking-[-0.025em] mb-2.5">
+                    This work is confidential
+                </h2>
+                <p class="font-sans text-[14px] sm:text-[15px] text-[#6E6E73] leading-[1.6] max-w-[460px] mx-auto mb-7">
+                    Please <a href="mailto:itskeerthanaravichandran@gmail.com?subject=Password%20request%20for%20Youtopia%20Case%20Study" class="text-[#1D1D1F] underline underline-offset-4 hover:text-black transition-colors font-medium">email me</a> or enter the password below to view the full case study.
+                </p>
+
+                <form id="cs-password-form" class="max-w-[380px] mx-auto space-y-3" onsubmit="handlePasswordSubmit(event)">
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5">
+                        <div class="relative flex-1 flex items-center">
+                            <input
+                                type="password"
+                                id="cs-password-input"
+                                placeholder="Enter password"
+                                autocomplete="current-password"
+                                class="w-full px-9 py-2.5 rounded-full border border-black/[0.1] bg-[#ECECEE]/80 text-[#1D1D1F] placeholder:text-[#86868B] text-[13.5px] text-center focus:outline-none focus:border-black/30 focus:bg-white transition-colors font-sans font-medium"
+                            />
+                            <button
+                                type="button"
+                                onclick="toggleCsPasswordVisibility()"
+                                class="absolute right-3 p-1 text-[#86868B] hover:text-black transition-colors cursor-pointer focus:outline-none"
+                                aria-label="Toggle password visibility"
+                                title="Toggle password visibility"
+                            >
+                                <svg id="cs-eye-show" class="w-4 h-4 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <svg id="cs-eye-hide" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                </svg>
+                            </button>
+                        </div>
+
                         <button
-                            type="button"
-                            onclick="toggleCsPasswordVisibility()"
-                            class="absolute right-3.5 p-1 text-[#86868B] hover:text-black transition-colors cursor-pointer focus:outline-none"
-                            aria-label="Toggle password visibility"
-                            title="Toggle password visibility"
+                            type="submit"
+                            class="shrink-0 inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-[#1D1D1F] hover:bg-black text-white font-sans text-[13.5px] font-medium active:scale-[0.99] transition-all cursor-pointer"
                         >
-                            <svg id="cs-eye-show" class="w-5 h-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                <circle cx="12" cy="12" r="3"></circle>
-                            </svg>
-                            <svg id="cs-eye-hide" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                                <line x1="1" y1="1" x2="23" y2="23"></line>
-                            </svg>
+                            Submit
                         </button>
                     </div>
-                    
-                    <div id="cs-password-error" class="hidden text-red-600 bg-red-50 border border-red-200 px-3 py-1.5 rounded-lg text-xs font-sans font-medium">
+
+                    <div id="cs-password-error" class="hidden text-red-600 bg-red-50 border border-red-200 px-3.5 py-2 rounded-full text-[12.5px] font-sans font-medium">
                         Incorrect password. Please try again.
                     </div>
-
-                    <button
-                        type="submit"
-                        class="w-full py-3 px-6 rounded-xl bg-black text-white font-caps text-[12px] tracking-[0.12em] font-bold hover:bg-neutral-800 active:scale-[0.99] transition-all cursor-pointer shadow-sm"
-                    >
-                        Unlock Case Study
-                    </button>
                 </form>
             </div>
 
@@ -957,7 +951,7 @@
                                     <span class="text-[11.5px] sm:text-[12px] font-bold text-[#86868B] font-caps tracking-[0.12em] uppercase">Website &amp; Educational Acquisition Funnel</span>
                                 </div>
                                 <div class="w-full flex justify-center items-center overflow-hidden rounded-[10px]">
-                                    <img src="/YT/Website_Board.webp" alt="Youtopia Website Board — Educational Acquisition Funnel" class="w-full h-auto object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                                    <img src="/YT/Website_Board.webp" alt="Youtopia Website Board — Educational Acquisition Funnel" class="w-full h-auto object-contain rounded-[10px]" loading="lazy" decoding="async" />
                                 </div>
                             </div>
                         `
@@ -1066,7 +1060,7 @@
                                         <span class="text-[11.5px] sm:text-[12px] font-bold text-[#86868B] font-caps tracking-[0.12em] uppercase">Consumer Mobile App Screens</span>
                                     </div>
                                     <div class="w-full flex justify-center items-center overflow-hidden rounded-[10px]">
-                                        <img src="/YT/App_board.webp" alt="Youtopia Mobile App Board — Onboarding, Household Setup &amp; Ordering" class="w-full h-auto object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                                        <img src="/YT/App_board.webp" alt="Youtopia Mobile App Board — Onboarding, Household Setup &amp; Ordering" class="w-full h-auto object-contain rounded-[10px]" loading="lazy" decoding="async" />
                                     </div>
                                 </div>
                             `
@@ -1268,7 +1262,7 @@
                                 <span class="text-[11.5px] sm:text-[12px] font-bold text-[#86868B] font-caps tracking-[0.12em] uppercase">Producer App &amp; Admin Operations Web Platform</span>
                             </div>
                             <div class="w-full flex justify-center items-center overflow-hidden rounded-[10px]">
-                                <img src="/YT/Webappboard.webp" alt="Youtopia Web App Board — Producer Recipe Builder &amp; Admin Tools" class="w-full h-auto object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                                <img src="/YT/Webappboard.webp" alt="Youtopia Web App Board — Producer Recipe Builder &amp; Admin Tools" class="w-full h-auto object-contain rounded-[10px]" loading="lazy" decoding="async" />
                             </div>
                         </div>
                     `,
@@ -1381,7 +1375,7 @@
                                     <span class="text-[11.5px] sm:text-[12px] font-bold text-[#86868B] font-caps tracking-[0.12em] uppercase">Previous Packaging &amp; Dynamic Thermal Meal Label</span>
                                 </div>
                                 <div class="w-full overflow-hidden rounded-[10px]">
-                                    <img src="/YT/Collage_Previous_Packaging.webp" alt="Previous Physical Packaging &amp; Dynamic Thermal Meal Label" class="w-full h-auto object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                                    <img src="/YT/Collage_Previous_Packaging.webp" alt="Previous Physical Packaging &amp; Dynamic Thermal Meal Label" class="w-full h-auto object-contain rounded-[10px]" loading="lazy" decoding="async" />
                                     <div class="grid grid-cols-2 text-center py-2.5 px-3 text-[11px] sm:text-[11.5px] font-caps text-[#86868B] uppercase tracking-[0.09em] font-semibold">
                                         <span class="truncate px-1">Previous Physical Packaging</span>
                                         <span class="truncate px-1">Dynamic Thermal Meal Label</span>
@@ -1395,7 +1389,7 @@
                                     <span class="text-[11.5px] sm:text-[12px] font-bold text-[#86868B] font-caps tracking-[0.12em] uppercase">Redesigned Packaging System &amp; Packaging Form Factor &amp; Seal</span>
                                 </div>
                                 <div class="w-full overflow-hidden rounded-[10px]">
-                                    <img src="/YT/Collage_Redesigned_Packaging.webp" alt="Redesigned Packaging Delivery Bag &amp; Packaging Form Factor &amp; Seal Detail" class="w-full h-auto object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                                    <img src="/YT/Collage_Redesigned_Packaging.webp" alt="Redesigned Packaging Delivery Bag &amp; Packaging Form Factor &amp; Seal Detail" class="w-full h-auto object-contain rounded-[10px]" loading="lazy" decoding="async" />
                                     <div class="grid grid-cols-2 text-center py-2.5 px-3 text-[11px] sm:text-[11.5px] font-caps text-[#86868B] uppercase tracking-[0.09em] font-semibold">
                                         <span class="truncate px-1">Redesigned Packaging Delivery Bag</span>
                                         <span class="truncate px-1">Packaging Form Factor &amp; Seal Detail</span>
@@ -1543,6 +1537,11 @@
                     ndaNotice: "REVLR is still under NDA. The visuals here show an earlier version of the interface, not the current system, and are shown only to explain the interaction patterns and decisions I worked on.",
                     contextTitle: "Designing for a space with no rulebook",
                     context: "REVLR is built for researchers, government agencies, NGOs, and community-focused nonprofits working on problems too interconnected for slide decks and spreadsheets to hold. Instead of forcing a system into a linear report, they work in a spatial model where quantitative data, qualitative insight, and early hypotheses all sit in the same space. One live study used it to map the full range of factors shaping elementary education outcomes.\n\nMy job was to make that dense model something researchers could actually move through and work with, without losing their focus inside it.\n\nThe question I kept coming back to: how might we help researchers confidently navigate and manipulate a complex system model in a spatial environment, without the interface competing with the data itself?",
+                    contextHTML: `
+                        <div class="w-full rounded-[10px] overflow-hidden">
+                            <img src="/REVLR/R_Reflection.webp" alt="REVLR Reflection" class="w-full h-auto block rounded-[10px]" loading="lazy" decoding="async" />
+                        </div>
+                    `,
                     problem: {
                         title: "What I kept running into",
                         headline: "How might we help researchers confidently navigate and manipulate a complex system model in a spatial environment, without the interface competing with the data itself?",
@@ -1604,15 +1603,10 @@
                     ],
                     decisionsPlaceholder: "Key design decisions — spatial interaction & control framework synthesis",
                     decisionsHTML: `
-                            <div class="w-full space-y-6 my-8">
-                                <div class="w-full rounded-[10px] overflow-hidden">
-                                    <img src="/REVLR/R_Decisions.avif" alt="REVLR Key Design Decisions" class="w-full h-auto block rounded-[10px]" loading="lazy" decoding="async" />
-                                </div>
-                                <div class="w-full rounded-[10px] overflow-hidden">
-                                    <img src="/REVLR/R_Reflection.webp" alt="REVLR Reflection" class="w-full h-auto block rounded-[10px]" loading="lazy" decoding="async" />
-                                </div>
-                            </div>
-                        `,
+                        <div class="w-full rounded-[10px] overflow-hidden my-8">
+                            <img src="/REVLR/R_Decisions.avif" alt="REVLR Key Design Decisions" class="w-full h-auto block rounded-[10px]" loading="lazy" decoding="async" />
+                        </div>
+                    `,
                     systemTitle: "Building and testing it in the headset",
                     system: "I designed in Figma, prototyped for VR with Layerbeam, and tested directly on Meta Quest, since spatial interaction can’t be judged from a flat screen. Layerbeam couldn’t reuse interactive components, so I organized the prototype around separate states to keep every path testable.",
                     systemPlaceholder: null,
@@ -1845,48 +1839,48 @@
                             decisionHTML: `
                                 <div class="space-y-8 my-6">
                                     <!-- ORIGINAL EXPERIENCE BOX -->
-                                    <div class="w-full space-y-3">
+                                    <div class="w-full rounded-[16px] bg-[#ECECEE] border border-black/[0.06] p-5 sm:p-8 space-y-4">
                                         <div class="flex items-center gap-2">
                                             <span class="text-[11.5px] sm:text-[12px] font-caps font-bold text-[#86868B] tracking-[0.12em] uppercase">Original Experience</span>
                                         </div>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 justify-items-center">
                                             <!-- Old Screen 1 -->
                                             <div class="flex flex-col justify-center items-center text-center space-y-2 w-full">
-                                                <img src="/MBC/O_OB.webp" alt="My Block Counts Old Screen 1" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                                                <img src="/MBC/O_OB.webp" alt="My Block Counts Old Screen 1" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain rounded-[10px]" loading="lazy" decoding="async" />
                                                 <span class="text-[11.5px] sm:text-[12px] text-[#636366] font-sans font-medium leading-tight">Login Before Survey</span>
                                             </div>
                                             <!-- Old Screen 2 -->
                                             <div class="flex flex-col justify-center items-center text-center space-y-2 w-full">
-                                                <img src="/MBC/O_Survey.webp" alt="My Block Counts Old Screen 2" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                                                <img src="/MBC/O_Survey.webp" alt="My Block Counts Old Screen 2" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain rounded-[10px]" loading="lazy" decoding="async" />
                                                 <span class="text-[11.5px] sm:text-[12px] text-[#636366] font-sans font-medium leading-tight">Category Selection Without Context</span>
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- NEW ONBOARDING SEQUENCE BOX -->
-                                    <div class="w-full space-y-3">
+                                    <div class="w-full rounded-[16px] bg-[#ECECEE] border border-black/[0.06] p-5 sm:p-8 space-y-4">
                                         <div class="flex items-center gap-2">
                                             <span class="text-[11.5px] sm:text-[12px] font-caps font-bold text-[#86868B] tracking-[0.12em] uppercase">New Onboarding Sequence</span>
                                         </div>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 justify-items-center">
                                             <!-- New Screen 1 -->
                                             <div class="flex flex-col justify-center items-center text-center space-y-2 w-full">
-                                                <img src="/MBC/OB1.webp" alt="My Block Counts New Screen 1" class="max-h-[340px] sm:max-h-[380px] w-auto object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                                                <img src="/MBC/OB1.webp" alt="My Block Counts New Screen 1" class="max-h-[340px] sm:max-h-[380px] w-auto object-contain rounded-[10px]" loading="lazy" decoding="async" />
                                                 <span class="text-[11.5px] sm:text-[12px] text-[#636366] font-sans font-medium leading-tight">Mission Introduction</span>
                                             </div>
                                             <!-- New Screen 2 -->
                                             <div class="flex flex-col justify-center items-center text-center space-y-2 w-full">
-                                                <img src="/MBC/OB2.webp" alt="My Block Counts New Screen 2" class="max-h-[340px] sm:max-h-[380px] w-auto object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                                                <img src="/MBC/OB2.webp" alt="My Block Counts New Screen 2" class="max-h-[340px] sm:max-h-[380px] w-auto object-contain rounded-[10px]" loading="lazy" decoding="async" />
                                                 <span class="text-[11.5px] sm:text-[12px] text-[#636366] font-sans font-medium leading-tight">Community Observation</span>
                                             </div>
                                             <!-- New Screen 3 -->
                                             <div class="flex flex-col justify-center items-center text-center space-y-2 w-full">
-                                                <img src="/MBC/OB3.webp" alt="My Block Counts New Screen 3" class="max-h-[340px] sm:max-h-[380px] w-auto object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                                                <img src="/MBC/OB3.webp" alt="My Block Counts New Screen 3" class="max-h-[340px] sm:max-h-[380px] w-auto object-contain rounded-[10px]" loading="lazy" decoding="async" />
                                                 <span class="text-[11.5px] sm:text-[12px] text-[#636366] font-sans font-medium leading-tight">Impact Framing</span>
                                             </div>
                                             <!-- New Screen 4 -->
                                             <div class="flex flex-col justify-center items-center text-center space-y-2 w-full">
-                                                <img src="/MBC/OB4.webp" alt="My Block Counts New Screen 4" class="max-h-[340px] sm:max-h-[380px] w-auto object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                                                <img src="/MBC/OB4.webp" alt="My Block Counts New Screen 4" class="max-h-[340px] sm:max-h-[380px] w-auto object-contain rounded-[10px]" loading="lazy" decoding="async" />
                                                 <span class="text-[11.5px] sm:text-[12px] text-[#636366] font-sans font-medium leading-tight">Oriented Entry</span>
                                             </div>
                                         </div>
@@ -1900,17 +1894,17 @@
                             body: "I A/B tested both with a small group of 5 to 10 users. Animated progress with category icons (a heart for health, a truck for transportation) won, and not only on completion. The icon tied people to the specific concern they were answering about.",
                             impact: "Impact: 34% increase in completion from the animated version alone, in early testing.",
                             decisionHTML: `
-                                <div class="w-full my-6">
+                                <div class="w-full rounded-[16px] bg-[#ECECEE] border border-black/[0.06] p-5 sm:p-8 my-6">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 justify-items-center">
                                         <!-- BEFORE BLOCK -->
                                         <div class="flex flex-col justify-center items-center text-center space-y-2 w-full">
-                                            <img src="/MBC/O_Questions.webp" alt="My Block Counts Old Screen" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                                            <img src="/MBC/O_Questions.webp" alt="My Block Counts Old Screen" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain rounded-[10px]" loading="lazy" decoding="async" />
                                             <span class="text-[11.5px] sm:text-[12px] text-[#636366] font-sans font-medium leading-tight">Question-First Survey Layout</span>
                                         </div>
 
                                         <!-- AFTER BLOCK -->
                                         <div class="flex flex-col justify-center items-center text-center space-y-2 w-full">
-                                            <img src="/MBC/New_Questions.webp" alt="My Block Counts New Screen" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                                            <img src="/MBC/New_Questions.webp" alt="My Block Counts New Screen" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain rounded-[10px]" loading="lazy" decoding="async" />
                                             <span class="text-[11.5px] sm:text-[12px] text-[#636366] font-sans font-medium leading-tight">Contextual Progress &amp; Visual Feedback</span>
                                         </div>
                                     </div>
@@ -2010,17 +2004,17 @@
                             body: "Renaming the categories risked breaking consistency with the survey data and stakeholder terminology. So I kept the labels, added custom illustrations, and redesigned the layout so every category is visible at once.",
                             impact: "Impact: Categories that are easier to recognize and navigate.",
                             decisionHTML: `
-                                <div class="w-full my-6">
+                                <div class="w-full rounded-[16px] bg-[#ECECEE] border border-black/[0.06] p-5 sm:p-8 my-6">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 justify-items-center">
                                         <!-- OLD SCREEN 1 BLOCK -->
                                         <div class="flex flex-col justify-center items-center text-center space-y-2 w-full">
-                                            <img src="/MBC/O_Survey.webp" alt="My Block Counts Old Screen 1" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                                            <img src="/MBC/O_Survey.webp" alt="My Block Counts Old Screen 1" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain rounded-[10px]" loading="lazy" decoding="async" />
                                             <span class="text-[11.5px] sm:text-[12px] text-[#636366] font-sans font-medium leading-tight">Text-Only Category Grid</span>
                                         </div>
 
                                         <!-- NEW SCREEN 1 BLOCK -->
                                         <div class="flex flex-col justify-center items-center text-center space-y-2 w-full">
-                                            <img src="/MBC/New_Survey.webp" alt="My Block Counts New Screen 1" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                                            <img src="/MBC/New_Survey.webp" alt="My Block Counts New Screen 1" class="max-h-[360px] sm:max-h-[420px] w-auto object-contain rounded-[10px]" loading="lazy" decoding="async" />
                                             <span class="text-[11.5px] sm:text-[12px] text-[#636366] font-sans font-medium leading-tight">Illustrated Category Grid</span>
                                         </div>
                                     </div>
@@ -2040,8 +2034,7 @@
                             "92% onboarding completion.",
                             "+34% completion from animated, contextual progress alone, in an early A/B test with 5 to 10 users.",
                             "3x App Store downloads after the interface redesign.",
-                            "45% faster task completion after the navigation and settings redesign.",
-                            "Shipped on the App Store in January 2025."
+                            "45% faster task completion after the navigation and settings redesign."
                         ]
                     },
                     reflectionTitle: "What I took from it",
@@ -2082,7 +2075,7 @@
                 content: {
                     decisionsLayout: "side-card",
                     contextTitle: "A product growing faster than its foundation",
-                    context: "Justickets kept picking up new things: offers, food ordering, Moviebuff content, special screening messages. Each one shipped on its own, and that was the problem.\n\nNot the features. The fragmentation underneath them. Every release made the next one a little harder to build, not easier.\n\nSo I kept asking myself: <strong class=\"font-bold text-[#000000]\">how might we keep shipping new features without every one of them re-solving problems the last one already solved?</strong>",
+                    context: "Justickets kept picking up new things: offers, food ordering, Moviebuff content, special screening messages. Each one shipped on its own, and that was the problem.\n\nNot the features. The fragmentation underneath them. Every release made the next one a little harder to build, not easier.\n\nSo I kept asking myself: <strong class=\"font-normal text-[#333336]\">how might we keep shipping new features without every one of them re-solving problems the last one already solved?</strong>",
                     contextHTML: `
                         <div class="w-full rounded-[10px] overflow-hidden aspect-[16/9] min-h-[280px] sm:min-h-[360px]">
                             <img src="/JT/J_Hero.webp" alt="Justickets Hero Image" class="w-full h-full object-cover rounded-[10px]" loading="lazy" decoding="async" />
@@ -2324,7 +2317,7 @@
             let insightsHTML = (data.research.insights && data.research.insights.length > 0) ? `
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 pt-2">
                     ${data.research.insights.map((item, idx) => `
-                        <div class="rounded-[14px] border border-black/[0.06] bg-white p-5 sm:p-6 flex flex-col justify-between shadow-[0_1px_2px_rgba(0,0,0,0.02)] hover:border-black/15 transition-colors cs-reveal">
+                        <div class="rounded-[14px] border border-black/[0.06] bg-white p-5 sm:p-6 flex flex-col justify-between shadow-[0_1px_2px_rgba(0,0,0,0.02)] cs-reveal">
                             <div>
                                 <div class="flex items-center gap-2 mb-3.5">
                                     <span class="w-1.5 h-1.5 rounded-full ${dotBgClass} shrink-0"></span>
@@ -2420,7 +2413,7 @@
                                 ` : ''}
                             </div>
                             <div class="w-full ${decisionMediaClass}" ${decisionMediaStyle}>
-                                <img src="${imageSrc}" alt="${dec.title}" class="w-auto max-h-[400px] sm:max-h-[480px] md:max-h-[540px] object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                                <img src="${imageSrc}" alt="${dec.title}" class="w-auto max-h-[400px] sm:max-h-[480px] md:max-h-[540px] object-contain rounded-[10px]" loading="lazy" decoding="async" />
                             </div>
                         </div>
                     `;
@@ -2454,7 +2447,7 @@
                                 </div>
                                 <!-- Right Column (6 Cols): Image Mockup inside clean frame -->
                                 <div class="lg:col-span-6 ${decisionSideMediaClass}" ${decisionMediaStyle}>
-                                    <img src="${imageSrc}" alt="${dec.title}" class="w-auto max-h-[320px] sm:max-h-[380px] lg:max-h-[min(440px,58vh)] object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                                    <img src="${imageSrc}" alt="${dec.title}" class="w-auto max-h-[320px] sm:max-h-[380px] lg:max-h-[min(440px,58vh)] object-contain rounded-[10px]" loading="lazy" decoding="async" />
                                 </div>
                             </div>
                         </div>
@@ -2463,7 +2456,7 @@
 
                 let card = dec.decisionHTML ? dec.decisionHTML : (dec.image ? `
                     <div class="w-full ${decisionMediaClass}" ${decisionMediaStyle}>
-                        <img src="${dec.image}" alt="${dec.title}" class="w-auto max-h-[400px] sm:max-h-[480px] md:max-h-[540px] object-contain rounded-[10px] transition-transform duration-300 hover:scale-[1.01]" loading="lazy" decoding="async" />
+                        <img src="${dec.image}" alt="${dec.title}" class="w-auto max-h-[400px] sm:max-h-[480px] md:max-h-[540px] object-contain rounded-[10px]" loading="lazy" decoding="async" />
                     </div>
                 ` : (dec.placeholder ? `<div class="image-placeholder-card cs-hover-card">${dec.placeholder}</div>` : ''));
 
@@ -2550,7 +2543,7 @@
             `;
 
             const renderMetricTile = (stat, desc, indexLabel, statColorClass = 'text-[#000000]') => `
-                <div class="bg-white border border-black/[0.06] rounded-[16px] p-5 sm:p-6 flex flex-col justify-start shadow-[0_1px_2px_rgba(0,0,0,0.02)] hover:border-black/15 transition-colors cs-reveal">
+                <div class="bg-white border border-black/[0.06] rounded-[16px] p-5 sm:p-6 flex flex-col justify-start shadow-[0_1px_2px_rgba(0,0,0,0.02)] cs-reveal">
                     <div class="flex items-center gap-2 mb-5 sm:mb-6">
                         <span class="w-1.5 h-1.5 rounded-full bg-[#86868B] shrink-0"></span>
                         <span class="font-sans text-[11.5px] font-medium text-[#86868B] tabular-nums">${indexLabel}</span>
@@ -2567,7 +2560,7 @@
             `;
 
             const renderNoteTile = (indexLabel, text) => `
-                <div class="bg-white border border-black/[0.06] rounded-[14px] p-5 flex items-baseline gap-3.5 shadow-[0_1px_2px_rgba(0,0,0,0.02)] hover:border-black/15 transition-colors cs-reveal">
+                <div class="bg-white border border-black/[0.06] rounded-[14px] p-5 flex items-baseline gap-3.5 shadow-[0_1px_2px_rgba(0,0,0,0.02)] cs-reveal">
                     <span class="flex items-center gap-2 shrink-0">
                         <span class="w-1.5 h-1.5 rounded-full bg-[#86868B] shrink-0"></span>
                         <span class="font-sans text-[11.5px] font-medium text-[#86868B] tabular-nums">${indexLabel}</span>
@@ -2590,9 +2583,9 @@
                 outcomeContentHTML = `
                     <div class="space-y-4 sm:space-y-5">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
-                            ${renderMetricTile('+20%', 'User satisfaction in beta testing.', '01', 'text-[#5B19A3]')}
-                            ${renderMetricTile('4', 'Major features shipped on the shared system instead of starting from zero.', '02', 'text-[#5B19A3]')}
-                            ${renderMetricTile('+1M', 'Downloads and 25K+ reviews, still in production.', '03', 'text-[#5B19A3]')}
+                            ${renderMetricTile('+20%', 'User satisfaction in beta testing.', '01')}
+                            ${renderMetricTile('4', 'Major features shipped on the shared system instead of starting from zero.', '02')}
+                            ${renderMetricTile('+1M', 'Downloads and 25K+ reviews, still in production.', '03')}
                         </div>
                         ${renderNoteTile('04', 'Adopted beyond Justickets. Qube Wire and Qube XP use it as a shared standard.')}
                     </div>
@@ -2615,15 +2608,14 @@
                 outcomeContentHTML = `
                     <div class="space-y-4 sm:space-y-5">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
-                            ${renderMetricTile('+60%', 'Survey completion rate.', '01', 'text-[#1bab51]')}
-                            ${renderMetricTile('92%', 'Onboarding completion.', '02', 'text-[#1bab51]')}
-                            ${renderMetricTile('+34%', 'Completion from animated, contextual progress alone, in an early A/B test with 5 to 10 users.', '03', 'text-[#1bab51]')}
+                            ${renderMetricTile('+60%', 'Survey completion rate.', '01')}
+                            ${renderMetricTile('92%', 'Onboarding completion.', '02')}
+                            ${renderMetricTile('+34%', 'Completion from animated, contextual progress alone, in an early A/B test with 5 to 10 users.', '03')}
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-                            ${renderMetricTile('3x', 'App Store downloads after the interface redesign.', '04', 'text-[#1bab51]')}
-                            ${renderMetricTile('45%', 'Faster task completion after the navigation and settings redesign.', '05', 'text-[#1bab51]')}
+                            ${renderMetricTile('3x', 'App Store downloads after the interface redesign.', '04')}
+                            ${renderMetricTile('45%', 'Faster task completion after the navigation and settings redesign.', '05')}
                         </div>
-                        ${renderNoteTile('06', 'Shipped on the App Store in January 2025.')}
                     </div>
                 `;
             }
@@ -2946,7 +2938,7 @@
                     const target = PROJECTS[id];
                     const meta = cardMeta[id] || { displayTitle: target.title, bg: 'bg-black/[0.03]' };
                     const mediaHTML = target.cardType === 'video'
-                        ? `<video src="${target.cardSrc}" ${target.cardPoster ? `poster="${target.cardPoster}"` : ''} autoplay loop muted playsinline class="h-full w-auto max-w-full object-contain block group-hover:scale-[1.02] transition-transform duration-500 ease-out select-none"></video>`
+                        ? `<video data-src="${target.cardSrc}" ${target.cardPoster ? `poster="${target.cardPoster}"` : ''} preload="none" loop muted playsinline class="cs-lazy-video h-full w-auto max-w-full object-contain block group-hover:scale-[1.02] transition-transform duration-500 ease-out select-none"></video>`
                         : `<img src="${target.cardSrc}" alt="${meta.displayTitle} Work Preview" class="w-full h-full object-cover block group-hover:scale-[1.025] transition-transform duration-500 ease-out select-none" loading="lazy" decoding="async" />`;
 
                     return `
@@ -2981,8 +2973,31 @@
                 }
             }
 
+            initLazyVideos();
             initScrollReveals();
             initTocObserver();
+        }
+
+        let lazyVideoObserver = null;
+        function initLazyVideos() {
+            if (lazyVideoObserver) lazyVideoObserver.disconnect();
+            const videos = document.querySelectorAll('video.cs-lazy-video');
+            if (!videos.length) return;
+            lazyVideoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target;
+                    if (entry.isIntersecting) {
+                        if (!video.src && video.dataset.src) {
+                            video.src = video.dataset.src;
+                            video.preload = 'metadata';
+                        }
+                        video.play().catch(() => {});
+                    } else {
+                        video.pause();
+                    }
+                });
+            }, { rootMargin: '400px 0px', threshold: 0.01 });
+            videos.forEach(v => lazyVideoObserver.observe(v));
         }
 
         window.addEventListener('popstate', renderCaseStudy);
