@@ -6,15 +6,11 @@ interface TvCurvedMediaProps {
   src: string;
   alt?: string;
   bg?: string;
-  poster?: string;
   width?: number;
   height?: number;
   loading?: 'eager' | 'lazy';
   fetchPriority?: 'high' | 'low' | 'auto';
-  scrollContainerRef?: React.RefObject<HTMLDivElement | null>;
-  className?: string;
   tags?: string[];
-  onClick?: (e: React.MouseEvent) => void;
 }
 
 /**
@@ -28,14 +24,11 @@ export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = React.memo(({
   src,
   alt = '',
   bg = 'bg-black/[0.03]',
-  poster,
   width,
   height,
   loading = 'lazy',
   fetchPriority = 'auto',
-  className = '',
   tags,
-  onClick,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -43,8 +36,7 @@ export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = React.memo(({
 
   // Default lightweight posters for video cards to display immediately
   const resolvedPoster =
-    poster ||
-    (id === 'justickets'
+    id === 'justickets'
       ? '/JT/J_Hero.webp'
       : id === 'myblockcounts'
       ? '/MBC/MB_Hero.webp'
@@ -52,7 +44,7 @@ export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = React.memo(({
       ? '/Home/Mise_poster.webp'
       : id === 'netflix'
       ? '/Home/Netflix_poster.webp'
-      : undefined);
+      : undefined;
 
   // Stage 1: attach video src/metadata near viewport; Stage 2: play only when actually visible
   useEffect(() => {
@@ -68,7 +60,7 @@ export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = React.memo(({
           preloadObserver.disconnect();
         }
       },
-      { rootMargin: '420px 420px 420px 420px', threshold: 0.01 }
+      { rootMargin: '640px 640px 640px 640px', threshold: 0.01 }
     );
 
     const playObserver = new IntersectionObserver(
@@ -83,7 +75,7 @@ export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = React.memo(({
           }
         });
       },
-      { rootMargin: '40px 40px 40px 40px', threshold: 0.05 }
+      { rootMargin: '60px 60px 60px 60px', threshold: 0.05 }
     );
 
     preloadObserver.observe(container);
@@ -97,15 +89,7 @@ export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = React.memo(({
   return (
     <div
       ref={containerRef}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          onClick?.(e as unknown as React.MouseEvent);
-        }
-      }}
-      className={`relative w-full aspect-[16/10] md:aspect-[16/10] lg:aspect-auto lg:h-[480px] xl:h-[530px] 2xl:h-[570px] rounded-[10px] overflow-hidden border border-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.05)] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.1)] group-hover:border-black/20 transition-[box-shadow,border-color] duration-300 flex items-center justify-center cursor-pointer [contain:layout_style_paint] ${bg} ${className}`}
+      className={`relative w-full aspect-[16/10] md:aspect-[16/10] lg:aspect-auto lg:h-[480px] xl:h-[530px] 2xl:h-[570px] rounded-[10px] overflow-hidden border border-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.05)] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.1)] group-hover:border-black/20 transition-[box-shadow,border-color] duration-300 flex items-center justify-center cursor-pointer [contain:layout_style_paint] ${bg}`}
     >
       {type === 'image' ? (
         <img
@@ -123,11 +107,11 @@ export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = React.memo(({
         <video
           ref={videoRef}
           src={isNearViewport ? src : undefined}
-          poster={resolvedPoster}
+          poster={isNearViewport || loading === 'eager' ? resolvedPoster : undefined}
           loop
           muted
           playsInline
-          preload={isNearViewport ? 'metadata' : 'none'}
+          preload={isNearViewport ? 'auto' : 'none'}
           aria-label={alt}
           onLoadedData={(e) => {
             const rect = containerRef.current?.getBoundingClientRect();

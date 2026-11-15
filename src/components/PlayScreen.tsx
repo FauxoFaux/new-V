@@ -3,9 +3,8 @@ import { ArrowLeft, X, ChevronLeft, ChevronRight, ArrowDown, ArrowUpRight } from
 import { motion, AnimatePresence } from 'motion/react';
 import { EditorialFooter } from './EditorialFooter';
 
-export interface PlayItem {
+interface PlayItem {
   id: string;
-  fileName: string;
   mediaUrl: string;
   posterUrl?: string;
   mediaType: 'image' | 'video';
@@ -20,7 +19,6 @@ const PLAY_ITEMS: PlayItem[] = [
   // Animation (H.264 MP4)
   {
     id: 'puffy',
-    fileName: 'Puffy.mp4',
     mediaUrl: '/PLAY/Puffy.mp4',
     posterUrl: '/PLAY/Puffy_poster.webp',
     mediaType: 'video',
@@ -31,7 +29,6 @@ const PLAY_ITEMS: PlayItem[] = [
   },
   {
     id: 'boxing',
-    fileName: 'Boxing.mp4',
     mediaUrl: '/PLAY/Boxing.mp4',
     posterUrl: '/PLAY/Boxing_poster.webp',
     mediaType: 'video',
@@ -42,7 +39,6 @@ const PLAY_ITEMS: PlayItem[] = [
   },
   {
     id: 'macarena',
-    fileName: 'MAcarena.mp4',
     mediaUrl: '/PLAY/MAcarena.mp4',
     posterUrl: '/PLAY/MAcarena_poster.webp',
     mediaType: 'video',
@@ -53,7 +49,6 @@ const PLAY_ITEMS: PlayItem[] = [
   },
   {
     id: 'gooey',
-    fileName: 'Gooley Gum.mp4',
     mediaUrl: '/PLAY/Gooley%20Gum.mp4',
     posterUrl: '/PLAY/Gooley_Gum_poster.webp',
     mediaType: 'video',
@@ -64,7 +59,6 @@ const PLAY_ITEMS: PlayItem[] = [
   },
   {
     id: 'quicksketch',
-    fileName: 'Quick Sketch.mp4',
     mediaUrl: '/PLAY/Quick%20Sketch.mp4',
     posterUrl: '/PLAY/Quick_Sketch_poster.webp',
     mediaType: 'video',
@@ -75,7 +69,6 @@ const PLAY_ITEMS: PlayItem[] = [
   },
   {
     id: 'sangi',
-    fileName: 'Sangi.mp4',
     mediaUrl: '/PLAY/Sangi.mp4',
     posterUrl: '/PLAY/Sangi_poster.webp',
     mediaType: 'video',
@@ -88,7 +81,6 @@ const PLAY_ITEMS: PlayItem[] = [
   // Illustration - Character Design (WebP)
   {
     id: 'eggosonic',
-    fileName: 'Eggosonic.webp',
     mediaUrl: '/PLAY/Eggosonic.webp',
     mediaType: 'image',
     title: 'Eggosonic',
@@ -98,7 +90,6 @@ const PLAY_ITEMS: PlayItem[] = [
   },
   {
     id: 'elephant',
-    fileName: 'Elephant Character Illustration.webp',
     mediaUrl: '/PLAY/Elephant%20Character%20Illustration.webp',
     mediaType: 'image',
     title: 'Elephant Character Illustration',
@@ -108,7 +99,6 @@ const PLAY_ITEMS: PlayItem[] = [
   },
   {
     id: 'purple-villain',
-    fileName: 'Purple Villian.webp',
     mediaUrl: '/PLAY/Purple%20Villian.webp',
     mediaType: 'image',
     title: 'Purple Villain',
@@ -118,7 +108,6 @@ const PLAY_ITEMS: PlayItem[] = [
   },
   {
     id: 'sushi-bug',
-    fileName: 'Sushi Bug.webp',
     mediaUrl: '/PLAY/Sushi%20Bug.webp',
     mediaType: 'image',
     title: 'Sushi Bug',
@@ -130,7 +119,6 @@ const PLAY_ITEMS: PlayItem[] = [
   // Graphic Design / Posters / Visual Studies (WebP)
   {
     id: 'cards-2021',
-    fileName: '2021 cards.webp',
     mediaUrl: '/PLAY/2021%20cards.webp',
     mediaType: 'image',
     title: '2021 Cards',
@@ -140,7 +128,6 @@ const PLAY_ITEMS: PlayItem[] = [
   },
   {
     id: 'calendar-2021',
-    fileName: '2021 Calendar.webp',
     mediaUrl: '/PLAY/2021%20Calendar.webp',
     mediaType: 'image',
     title: '2021 Calendar',
@@ -151,7 +138,6 @@ const PLAY_ITEMS: PlayItem[] = [
   },
   {
     id: 'calendar-2022',
-    fileName: '2022 Calendar.webp',
     mediaUrl: '/PLAY/2022%20Calendar.webp',
     mediaType: 'image',
     title: '2022 Calendar',
@@ -162,7 +148,6 @@ const PLAY_ITEMS: PlayItem[] = [
   },
   {
     id: 'calendar-2023',
-    fileName: '2023 Calendar.webp',
     mediaUrl: '/PLAY/2023%20Calendar.webp',
     mediaType: 'image',
     title: '2023 Calendar',
@@ -173,7 +158,6 @@ const PLAY_ITEMS: PlayItem[] = [
   },
   {
     id: 'calendar-2024',
-    fileName: '2024 Calendar.webp',
     mediaUrl: '/PLAY/2024%20Calendar.webp',
     mediaType: 'image',
     title: '2024 Calendar',
@@ -186,7 +170,6 @@ const PLAY_ITEMS: PlayItem[] = [
   // Illustration / Digital Art (WebP)
   {
     id: 'character-luminescence',
-    fileName: 'Character Luminescence.webp',
     mediaUrl: '/PLAY/Character%20Luminescence.webp',
     mediaType: 'image',
     title: 'Character Luminescence',
@@ -196,7 +179,6 @@ const PLAY_ITEMS: PlayItem[] = [
   },
   {
     id: 'night',
-    fileName: 'Night.webp',
     mediaUrl: '/PLAY/Night.webp',
     mediaType: 'image',
     title: 'Night',
@@ -206,7 +188,6 @@ const PLAY_ITEMS: PlayItem[] = [
   },
   {
     id: 'portrait',
-    fileName: 'Potrait.webp',
     mediaUrl: '/PLAY/Potrait.webp',
     mediaType: 'image',
     title: 'Portrait',
@@ -216,7 +197,6 @@ const PLAY_ITEMS: PlayItem[] = [
   },
   {
     id: 'stay',
-    fileName: 'Stay Typography.webp',
     mediaUrl: '/PLAY/Stay%20Typography.webp',
     mediaType: 'image',
     title: 'Stay Typography',
@@ -292,10 +272,17 @@ function PlayMedia({
   const [loaded, setLoaded] = useState(false);
   const imgRef = useRef<HTMLImageElement | null>(null);
 
+  const setImgNode = (node: HTMLImageElement | null) => {
+    imgRef.current = node;
+    if (node && node.complete && node.naturalWidth > 0 && !loaded) {
+      setLoaded(true);
+    }
+  };
+
   useEffect(() => {
     if (item.mediaType === 'image' && imgRef.current?.complete && imgRef.current.naturalWidth > 0) {
       setLoaded(true);
-    } else {
+    } else if (item.mediaType === 'image') {
       setLoaded(false);
     }
   }, [item.id, item.mediaType]);
@@ -324,7 +311,7 @@ function PlayMedia({
 
   return (
     <img
-      ref={imgRef}
+      ref={setImgNode}
       src={item.mediaUrl}
       alt={item.title}
       width={item.width}
@@ -338,7 +325,7 @@ function PlayMedia({
           ? 'h-full pointer-events-none group-hover:scale-105'
           : 'h-auto group-hover:scale-[1.02]'
       } block object-cover transition-[transform,opacity] duration-200 ease-out ${
-        loaded ? 'opacity-100' : 'opacity-0'
+        loaded || eager ? 'opacity-100' : 'opacity-0'
       }`}
     />
   );
@@ -374,6 +361,53 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
     let lastTime = performance.now();
     let animId = 0;
     let disposed = false;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let cachedRx = 400;
+    let cachedRy = 240;
+
+    const computeRadii = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      if (w < 640) {
+        cachedRx = Math.max(130, Math.min(w * 0.38, 160));
+        cachedRy = Math.max(140, Math.min(h * 0.27, 180));
+      } else if (w < 1024) {
+        cachedRx = Math.max(220, Math.min(w * 0.42, 340));
+        cachedRy = Math.max(180, Math.min(h * 0.28, 230));
+      } else {
+        cachedRx = Math.min(w * 0.44, 460);
+        cachedRy = Math.min(h * 0.32, 270);
+      }
+    };
+
+    const positionOrbitCards = () => {
+      const n = HERO_ORBIT_ITEMS.length;
+      for (let i = 0; i < n; i++) {
+        const el = cardElementsRef.current[i];
+        if (!el) continue;
+
+        const angleDeg = (orbitAngleRef.current + (i * 360) / n) % 360;
+        const angleRad = (angleDeg * Math.PI) / 180;
+
+        const x = Math.cos(angleRad) * cachedRx;
+        const y = Math.sin(angleRad) * cachedRy;
+
+        el.style.transform = `translate3d(calc(-50% + ${x.toFixed(1)}px), calc(-50% + ${y.toFixed(1)}px), 0)`;
+      }
+    };
+
+    computeRadii();
+    positionOrbitCards();
+
+    if (reduceMotion) {
+      const onResizeStatic = () => {
+        computeRadii();
+        positionOrbitCards();
+      };
+      window.addEventListener('resize', onResizeStatic, { passive: true });
+      return () => window.removeEventListener('resize', onResizeStatic);
+    }
 
     const updateOrbit = (now: number) => {
       if (disposed || !isHeroVisibleRef.current) {
@@ -389,34 +423,7 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
         orbitAngleRef.current = (orbitAngleRef.current + dt * (360 / 36)) % 360;
       }
 
-      const w = typeof window !== 'undefined' ? window.innerWidth : 1200;
-      const h = typeof window !== 'undefined' ? window.innerHeight : 800;
-
-      let rx = Math.min(w * 0.44, 460);
-      let ry = Math.min(h * 0.32, 270);
-
-      if (w < 640) {
-        rx = Math.max(130, Math.min(w * 0.38, 160));
-        ry = Math.max(140, Math.min(h * 0.27, 180));
-      } else if (w < 1024) {
-        rx = Math.max(220, Math.min(w * 0.42, 340));
-        ry = Math.max(180, Math.min(h * 0.28, 230));
-      }
-
-      const n = HERO_ORBIT_ITEMS.length;
-      for (let i = 0; i < n; i++) {
-        const el = cardElementsRef.current[i];
-        if (!el) continue;
-
-        const angleDeg = (orbitAngleRef.current + (i * 360) / n) % 360;
-        const angleRad = (angleDeg * Math.PI) / 180;
-
-        const x = Math.cos(angleRad) * rx;
-        const y = Math.sin(angleRad) * ry;
-
-        el.style.transform = `translate3d(calc(-50% + ${x.toFixed(1)}px), calc(-50% + ${y.toFixed(1)}px), 0)`;
-      }
-
+      positionOrbitCards();
       animId = requestAnimationFrame(updateOrbit);
     };
 
@@ -425,6 +432,11 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
         lastTime = performance.now();
         animId = requestAnimationFrame(updateOrbit);
       }
+    };
+
+    const onResize = () => {
+      computeRadii();
+      positionOrbitCards();
     };
 
     const heroEl = heroSectionRef.current;
@@ -466,10 +478,12 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
       }
     };
 
+    window.addEventListener('resize', onResize, { passive: true });
     document.addEventListener('visibilitychange', handleVisibility);
     startOrbit();
     return () => {
       disposed = true;
+      window.removeEventListener('resize', onResize);
       document.removeEventListener('visibilitychange', handleVisibility);
       if (animId) cancelAnimationFrame(animId);
       if (observer) observer.disconnect();
@@ -589,8 +603,10 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedIndex, filteredItems]);
 
-  // Ensure normal vertical scrolling is fully enabled on all screens when PlayScreen is active
+  // Ensure normal vertical scrolling is fully enabled and anchored at top when PlayScreen opens
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+
     const rootEl = document.getElementById('root');
     const prevHtmlOverflowY = document.documentElement.style.overflowY;
     const prevBodyOverflowY = document.body.style.overflowY;
@@ -622,7 +638,12 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#F6F6F7] text-[#1D1D1F] font-sans selection:bg-[#0071E3] selection:text-white flex flex-col relative overflow-x-hidden">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+      className="w-full min-h-screen bg-[#F6F6F7] text-[#1D1D1F] font-sans selection:bg-[#0071E3] selection:text-white flex flex-col relative overflow-x-hidden"
+    >
       {/* TOP BAR WITH NO BACKGROUND */}
       <div className="fixed top-0 left-0 right-0 z-50 pointer-events-none px-5 sm:px-8 lg:px-12 py-4 sm:py-5">
         <div className="max-w-[1500px] mx-auto flex items-center justify-between">
@@ -864,6 +885,6 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }

@@ -4,12 +4,13 @@ interface ThreeDCarouselCardProps {
   children: React.ReactNode;
   scrollContainerRef?: React.RefObject<HTMLDivElement | null>;
   className?: string;
-  onClick?: (e: React.MouseEvent) => void;
 }
 
 interface RegisteredCard {
   outer: HTMLDivElement;
   inner: HTMLDivElement;
+  centerInContent: number;
+  width: number;
   lastTransform: string;
   lastOpacity: string;
   lastZIndex: string;
@@ -19,10 +20,24 @@ const registeredCards = new Set<RegisteredCard>();
 let rafPending = false;
 let attachedScrollEl: HTMLElement | null = null;
 let listenersAttached = false;
+let cachedVw = typeof window !== 'undefined' ? window.innerWidth : 1200;
+let resizeObserver: ResizeObserver | null = null;
+
+function measureAllCards() {
+  cachedVw = window.innerWidth;
+  if (cachedVw < 1024 || registeredCards.size === 0) return;
+
+  const scrollLeft = attachedScrollEl ? attachedScrollEl.scrollLeft : 0;
+  registeredCards.forEach((entry) => {
+    const rect = entry.outer.getBoundingClientRect();
+    entry.width = rect.width;
+    entry.centerInContent = rect.left + scrollLeft + rect.width / 2;
+  });
+}
 
 function runBatchUpdate() {
   rafPending = false;
-  const vw = window.innerWidth;
+  const vw = cachedVw;
 
   if (vw < 1024) {
     registeredCards.forEach((entry) => {
@@ -41,33 +56,37 @@ function runBatchUpdate() {
     return;
   }
 
-  // Phase 1: Batch all layout reads before any style mutations (prevents layout thrashing)
+  let needsMeasure = false;
+  registeredCards.forEach((entry) => {
+    if (entry.width <= 0) needsMeasure = true;
+  });
+  if (needsMeasure) {
+    measureAllCards();
+  }
+
+  // Single read of scrollLeft — zero per-card DOM layout reads during scroll
+  const scrollLeft = attachedScrollEl ? attachedScrollEl.scrollLeft : 0;
   const screenCenter = vw / 2;
   const maxDist = Math.max(680, vw * 0.52);
-  const snapshots: { entry: RegisteredCard; left: number; right: number; width: number }[] = [];
 
   registeredCards.forEach((entry) => {
-    const rect = entry.outer.getBoundingClientRect();
-    snapshots.push({ entry, left: rect.left, right: rect.right, width: rect.width });
-  });
-
-  // Phase 2: Batch all style writes
-  for (let i = 0; i < snapshots.length; i++) {
-    const { entry, left, right, width } = snapshots[i];
+    const halfWidth = entry.width / 2;
+    const cardCenter = entry.centerInContent - scrollLeft;
+    const left = cardCenter - halfWidth;
+    const right = cardCenter + halfWidth;
     const inRange = right >= -320 && left <= vw + 320;
 
     if (!inRange) {
       if (entry.inner.style.willChange === 'transform, opacity') {
         entry.inner.style.willChange = 'auto';
       }
-      continue;
+      return;
     }
 
     if (entry.inner.style.willChange !== 'transform, opacity') {
       entry.inner.style.willChange = 'transform, opacity';
     }
 
-    const cardCenter = left + width / 2;
     const dist = cardCenter - screenCenter;
     const factor = Math.max(-1, Math.min(1, dist / maxDist));
     const rotateY = -factor * 14;
@@ -92,7 +111,7 @@ function runBatchUpdate() {
       entry.outer.style.zIndex = nextZIndex;
       entry.lastZIndex = nextZIndex;
     }
-  }
+  });
 }
 
 function scheduleBatchUpdate() {
@@ -102,9 +121,14 @@ function scheduleBatchUpdate() {
   }
 }
 
+function handleResize() {
+  measureAllCards();
+  scheduleBatchUpdate();
+}
+
 export function flushCarouselCards() {
   if (registeredCards.size === 0) return;
-  runBatchUpdate();
+  scheduleBatchUpdate();
 }
 
 function ensureGlobalListeners(scrollEl: HTMLElement | null) {
@@ -118,7 +142,14 @@ function ensureGlobalListeners(scrollEl: HTMLElement | null) {
   if (!listenersAttached && typeof window !== 'undefined') {
     listenersAttached = true;
     window.addEventListener('scroll', scheduleBatchUpdate, { passive: true });
-    window.addEventListener('resize', scheduleBatchUpdate, { passive: true });
+    window.addEventListener('resize', handleResize, { passive: true });
+  }
+  if (!resizeObserver && typeof ResizeObserver !== 'undefined' && scrollEl) {
+    resizeObserver = new ResizeObserver(() => {
+      measureAllCards();
+      scheduleBatchUpdate();
+    });
+    resizeObserver.observe(scrollEl);
   }
 }
 
@@ -130,21 +161,24 @@ function teardownGlobalListenersIfEmpty() {
   }
   if (listenersAttached && typeof window !== 'undefined') {
     window.removeEventListener('scroll', scheduleBatchUpdate);
-    window.removeEventListener('resize', scheduleBatchUpdate);
+    window.removeEventListener('resize', handleResize);
     listenersAttached = false;
+  }
+  if (resizeObserver) {
+    resizeObserver.disconnect();
+    resizeObserver = null;
   }
 }
 
 /**
  * ThreeDCarouselCard - Positions work cards in a true 3D Perspective Horizontal Carousel.
  * Active strictly on desktop screens (>= 1024px) with horizontal scroll.
- * Uses a shared RAF read-then-write coordinator to eliminate scroll layout thrashing.
+ * Uses cached card positions and a single RAF coordinator for zero scroll layout thrashing.
  */
 export const ThreeDCarouselCard: React.FC<ThreeDCarouselCardProps> = React.memo(({
   children,
   scrollContainerRef,
   className = '',
-  onClick,
 }) => {
   const outerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
@@ -153,11 +187,11 @@ export const ThreeDCarouselCard: React.FC<ThreeDCarouselCardProps> = React.memo(
   );
 
   useEffect(() => {
-    const handleResize = () => {
+    const onResize = () => {
       setIsDesktop(window.innerWidth >= 1024);
     };
-    window.addEventListener('resize', handleResize, { passive: true });
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener('resize', onResize, { passive: true });
+    return () => window.removeEventListener('resize', onResize);
   }, []);
 
   useEffect(() => {
@@ -168,6 +202,8 @@ export const ThreeDCarouselCard: React.FC<ThreeDCarouselCardProps> = React.memo(
     const entry: RegisteredCard = {
       outer,
       inner,
+      centerInContent: 0,
+      width: 0,
       lastTransform: '',
       lastOpacity: '',
       lastZIndex: '',
@@ -176,6 +212,7 @@ export const ThreeDCarouselCard: React.FC<ThreeDCarouselCardProps> = React.memo(
     registeredCards.add(entry);
     const scrollEl = scrollContainerRef?.current || document.getElementById('main-horizontal-container');
     ensureGlobalListeners(scrollEl);
+    measureAllCards();
     scheduleBatchUpdate();
 
     return () => {
@@ -186,7 +223,7 @@ export const ThreeDCarouselCard: React.FC<ThreeDCarouselCardProps> = React.memo(
 
   if (!isDesktop) {
     return (
-      <div ref={outerRef} onClick={onClick} className={`w-full ${className}`}>
+      <div ref={outerRef} className={`w-full ${className}`}>
         <div ref={innerRef} className="w-full h-full">
           {children}
         </div>
@@ -197,8 +234,7 @@ export const ThreeDCarouselCard: React.FC<ThreeDCarouselCardProps> = React.memo(
   return (
     <div
       ref={outerRef}
-      onClick={onClick}
-      className={`relative shrink-0 overflow-visible cursor-pointer ${className}`}
+      className={`relative shrink-0 overflow-visible ${className}`}
       style={{
         perspective: '1200px',
       }}

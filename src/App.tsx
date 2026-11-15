@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Menu, X, ArrowUpRight, Lock } from 'lucide-react';
+import { Menu, X, ArrowUpRight } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import {
   PeekPhotosRow,
@@ -113,7 +113,7 @@ export default function App() {
     let active = true;
     const fallbackTimer = window.setTimeout(() => {
       if (active) setFontsReady(true);
-    }, 80);
+    }, 50);
 
     if (document.fonts && typeof document.fonts.load === 'function') {
       if (document.fonts.check('1em "Ugly Dave"')) {
@@ -224,13 +224,17 @@ export default function App() {
 
     let targetScrollLeft: number | null = null;
     let wheelRaf = 0;
+    let lastTime = 0;
 
-    const stepScroll = () => {
+    const stepScroll = (now: number) => {
       const container = horizontalScrollRef.current;
       if (!container || targetScrollLeft === null) {
         wheelRaf = 0;
         return;
       }
+      const dt = lastTime ? Math.min((now - lastTime) * 0.001, 0.05) : 1 / 60;
+      lastTime = now;
+
       const diff = targetScrollLeft - container.scrollLeft;
       if (Math.abs(diff) < 1) {
         container.scrollLeft = targetScrollLeft;
@@ -239,13 +243,15 @@ export default function App() {
         flushCarouselCards();
         return;
       }
-      container.scrollLeft += diff * 0.38;
+      const alpha = 1 - Math.exp(-22 * dt);
+      container.scrollLeft += diff * alpha;
       flushCarouselCards();
       wheelRaf = requestAnimationFrame(stepScroll);
     };
 
     const cancelSmoothWheel = () => {
       targetScrollLeft = null;
+      lastTime = 0;
       if (wheelRaf) {
         cancelAnimationFrame(wheelRaf);
         wheelRaf = 0;
@@ -270,10 +276,11 @@ export default function App() {
           return;
         }
 
-        // Discrete mouse wheel notches -> crisp eased horizontal glide
+        // Discrete mouse wheel notches -> frame-rate independent eased horizontal glide
         const base = targetScrollLeft ?? container.scrollLeft;
         targetScrollLeft = Math.max(0, Math.min(maxScroll, base + delta));
         if (!wheelRaf) {
+          lastTime = 0;
           wheelRaf = requestAnimationFrame(stepScroll);
         }
       } else if (Math.abs(e.deltaX) > 0) {
@@ -383,7 +390,7 @@ export default function App() {
         if (hash === 'play') {
           setCurrentScreen('play');
           setActiveTab('play');
-          window.scrollTo(0, 0);
+          window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
           return;
         }
         if (hash) {
@@ -393,7 +400,7 @@ export default function App() {
         if (container && window.innerWidth >= 1024) {
           container.scrollTo(0, 0);
         } else {
-          window.scrollTo(0, 0);
+          window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
         }
         return;
       }
@@ -403,7 +410,7 @@ export default function App() {
       } else if (hash === 'play') {
         setCurrentScreen('play');
         setActiveTab('play');
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
       } else if (hash) {
         setCurrentScreen('home');
         const mappedTab = (hash === 'things-i-built') ? 'projects' : (hash === 'contact') ? 'contact' : hash;
@@ -427,7 +434,7 @@ export default function App() {
         if (container && window.innerWidth >= 1024) {
           container.scrollTo(0, 0);
         } else {
-          window.scrollTo(0, 0);
+          window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
         }
       }
     };
@@ -447,7 +454,7 @@ export default function App() {
     if (tab === 'play') {
       setCurrentScreen('play');
       setActiveTab('play');
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
       window.history.pushState(null, '', '#play');
       return;
     }
@@ -508,6 +515,7 @@ export default function App() {
             onBack={() => {
               setCurrentScreen('home');
               setActiveTab('');
+              window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
               if (window.location.hash === '#play') {
                 window.history.pushState('', document.title, window.location.pathname);
               }
@@ -587,7 +595,7 @@ export default function App() {
             onClick={(e) => handleNavClick('work', e)}
             initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
             animate={homeLandingStarted || shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
-            transition={{ duration: 0.55, delay: 0.24, ease: EASE_EDITORIAL }}
+            transition={{ duration: 0.55, delay: 0.16, ease: EASE_EDITORIAL }}
             className={`hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] transition-colors whitespace-nowrap ${activeTab === 'work' ? 'text-black font-bold' : 'text-[#1D1D1F]/70 hover:text-black font-semibold'}`}
           >
             WORK
@@ -598,7 +606,7 @@ export default function App() {
             onClick={(e) => handleNavClick('about', e)}
             initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
             animate={homeLandingStarted || shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
-            transition={{ duration: 0.55, delay: 0.29, ease: EASE_EDITORIAL }}
+            transition={{ duration: 0.55, delay: 0.21, ease: EASE_EDITORIAL }}
             className={`hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] transition-colors whitespace-nowrap ${activeTab === 'about' ? 'text-black font-bold' : 'text-[#1D1D1F]/70 hover:text-black font-semibold'}`}
           >
             ABOUT
@@ -613,7 +621,7 @@ export default function App() {
             onTouchStart={prefetchPlay}
             initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
             animate={homeLandingStarted || shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
-            transition={{ duration: 0.55, delay: 0.34, ease: EASE_EDITORIAL }}
+            transition={{ duration: 0.55, delay: 0.26, ease: EASE_EDITORIAL }}
             className={`hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] transition-colors whitespace-nowrap ${currentScreen === 'play' || activeTab === 'play' ? 'text-black font-bold' : 'text-[#1D1D1F]/70 hover:text-black font-semibold'}`}
           >
             PLAY
@@ -625,7 +633,7 @@ export default function App() {
             rel="noopener noreferrer"
             initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
             animate={homeLandingStarted || shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
-            transition={{ duration: 0.55, delay: 0.39, ease: EASE_EDITORIAL }}
+            transition={{ duration: 0.55, delay: 0.31, ease: EASE_EDITORIAL }}
             className="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] text-[#1D1D1F]/70 hover:text-black transition-colors whitespace-nowrap font-semibold"
           >
             RESUME
@@ -636,7 +644,7 @@ export default function App() {
             onClick={(e) => handleNavClick('contact', e)}
             initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
             animate={homeLandingStarted || shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
-            transition={{ duration: 0.55, delay: 0.44, ease: EASE_EDITORIAL }}
+            transition={{ duration: 0.55, delay: 0.36, ease: EASE_EDITORIAL }}
             className={`hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] transition-colors whitespace-nowrap ${activeTab === 'contact' ? 'text-black font-bold' : 'text-[#1D1D1F]/70 hover:text-black font-semibold'}`}
           >
             CONTACT
@@ -647,7 +655,7 @@ export default function App() {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
             animate={homeLandingStarted || shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
-            transition={{ duration: 0.55, delay: 0.28, ease: EASE_EDITORIAL }}
+            transition={{ duration: 0.55, delay: 0.16, ease: EASE_EDITORIAL }}
             className="lg:hidden p-2 text-black bg-transparent hover:text-[#444444] transition-colors rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-black/20 cursor-pointer"
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={mobileMenuOpen}
@@ -736,7 +744,7 @@ export default function App() {
           <motion.div
             initial={shouldReduceMotion || skipInitialIntro ? false : { scale: 1.03 }}
             animate={homeLandingStarted || shouldReduceMotion ? { scale: 1 } : { scale: 1.03 }}
-            transition={{ duration: 0.45, delay: 0.02, ease: EASE_EDITORIAL }}
+            transition={{ duration: 0.65, delay: 0.08, ease: EASE_EDITORIAL }}
             className="flex-1 flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-10 lg:gap-16 w-full max-w-[1340px] mx-auto lg:mx-0 origin-center"
           >
             {/* Typographic Headline */}
@@ -755,7 +763,7 @@ export default function App() {
                       ? { opacity: 1, y: 0, rotate: -1 }
                       : { opacity: 0, y: 36, rotate: -1 }
                   }
-                  transition={{ duration: 0.42, delay: 0.04, ease: EASE_EDITORIAL }}
+                  transition={{ duration: 0.6, delay: 0.12, ease: EASE_EDITORIAL }}
                 >
                   Hi, I'm Kay
                 </motion.span>
@@ -774,7 +782,7 @@ export default function App() {
                       ? { opacity: 1, y: 0 }
                       : { opacity: 0, y: 28 }
                   }
-                  transition={{ duration: 0.42, delay: 0.11, ease: EASE_EDITORIAL }}
+                  transition={{ duration: 0.6, delay: 0.2, ease: EASE_EDITORIAL }}
                   className="mt-6 sm:mt-8 text-[18px] sm:text-[21px] md:text-[22px] lg:text-[24px] font-sans-display leading-[1.45] text-[#222222] font-medium max-w-[560px] will-change-transform"
                 >
                   <p>
@@ -803,7 +811,7 @@ export default function App() {
                       ? { opacity: 1, y: 0 }
                       : { opacity: 0, y: 20 }
                   }
-                  transition={{ duration: 0.4, delay: 0.18, ease: EASE_EDITORIAL }}
+                  transition={{ duration: 0.55, delay: 0.28, ease: EASE_EDITORIAL }}
                   className="mt-6 sm:mt-8 font-caps text-[11px] sm:text-[12px] tracking-[0.14em] text-[#555555] font-bold will-change-transform"
                 >
                   Product &middot; Research &middot; Visuals &middot; Code
@@ -815,7 +823,7 @@ export default function App() {
             <motion.div
               initial={shouldReduceMotion || skipInitialIntro ? false : { opacity: 0, y: 32 }}
               animate={homeLandingStarted || shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
-              transition={{ duration: 0.48, delay: 0.08, ease: EASE_EDITORIAL }}
+              transition={{ duration: 0.68, delay: 0.16, ease: EASE_EDITORIAL }}
               className="flex items-end justify-end shrink-0 md:self-end leading-none overflow-hidden w-full md:w-auto"
             >
               <HoverMaskCutout />
@@ -835,15 +843,12 @@ export default function App() {
           >
             {/* PROJECT 1: YOUTOPIA */}
             <div className="w-full lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
-              <ThreeDCarouselCard
-                scrollContainerRef={horizontalScrollRef}
-                onClick={(e) => handleCardClick(e, 'youtopia')}
-              >
+              <ThreeDCarouselCard scrollContainerRef={horizontalScrollRef}>
                 <motion.div
                   initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.65, ease: EASE_EDITORIAL }}
+                  viewport={{ once: true, amount: 0.01, margin: "120px" }}
+                  transition={{ duration: 0.55, ease: EASE_EDITORIAL }}
                   className="w-full"
                 >
                   <a
@@ -867,15 +872,10 @@ export default function App() {
                       width={1200}
                       height={633}
                       loading="eager"
-                      fetchPriority="high"
-                      scrollContainerRef={horizontalScrollRef}
+                      fetchPriority="auto"
                       tags={['AI', '0→1', 'Systems', 'Product Strategy']}
-                      onClick={(e) => handleCardClick(e, 'youtopia')}
                     />
-                    <div
-                      className="pt-4 sm:pt-5 flex flex-col gap-1.5 cursor-pointer"
-                      onClick={(e) => handleCardClick(e, 'youtopia')}
-                    >
+                    <div className="pt-4 sm:pt-5 flex flex-col gap-1.5">
                       <h3 className="font-sans text-[19px] sm:text-[20px] font-semibold text-[#1D1D1F] tracking-tight group-hover:text-black transition-colors flex items-center justify-between">
                         <span>Youtopia</span>
                         <ArrowUpRight className="w-4 h-4 text-[#86868B] group-hover:text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all opacity-0 group-hover:opacity-100" />
@@ -891,14 +891,11 @@ export default function App() {
 
             {/* PROJECT 2: JUSTICKETS */}
             <div className="w-full lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
-              <ThreeDCarouselCard
-                scrollContainerRef={horizontalScrollRef}
-                onClick={(e) => handleCardClick(e, 'justickets')}
-              >
+              <ThreeDCarouselCard scrollContainerRef={horizontalScrollRef}>
                 <motion.div
                   initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
+                  viewport={{ once: true, amount: 0.01, margin: "120px" }}
                   transition={{ duration: 0.65, delay: 0.08, ease: EASE_EDITORIAL }}
                   className="w-full"
                 >
@@ -921,14 +918,9 @@ export default function App() {
                       src="/JT/JT_GIF.mp4"
                       alt="Justickets Mobile App Interface Preview"
                       bg="bg-[#3B0F66]"
-                      scrollContainerRef={horizontalScrollRef}
                       tags={['Consumer', 'Design Systems', 'Production']}
-                      onClick={(e) => handleCardClick(e, 'justickets')}
                     />
-                    <div
-                      className="pt-4 sm:pt-5 flex flex-col gap-1.5 cursor-pointer"
-                      onClick={(e) => handleCardClick(e, 'justickets')}
-                    >
+                    <div className="pt-4 sm:pt-5 flex flex-col gap-1.5">
                       <h3 className="font-sans text-[19px] sm:text-[20px] font-semibold text-[#1D1D1F] tracking-tight group-hover:text-black transition-colors flex items-center justify-between">
                         <span>Justickets</span>
                         <ArrowUpRight className="w-4 h-4 text-[#86868B] group-hover:text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all opacity-0 group-hover:opacity-100" />
@@ -944,14 +936,11 @@ export default function App() {
 
             {/* PROJECT 3: REVLR */}
             <div className="w-full lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
-              <ThreeDCarouselCard
-                scrollContainerRef={horizontalScrollRef}
-                onClick={(e) => handleCardClick(e, 'revlr')}
-              >
+              <ThreeDCarouselCard scrollContainerRef={horizontalScrollRef}>
                 <motion.div
                   initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
+                  viewport={{ once: true, amount: 0.01, margin: "120px" }}
                   transition={{ duration: 0.65, ease: EASE_EDITORIAL }}
                   className="w-full"
                 >
@@ -976,14 +965,9 @@ export default function App() {
                       width={1584}
                       height={1042}
                       loading="lazy"
-                      scrollContainerRef={horizontalScrollRef}
                       tags={['Spatial', 'Interaction', 'Research']}
-                      onClick={(e) => handleCardClick(e, 'revlr')}
                     />
-                    <div
-                      className="pt-4 sm:pt-5 flex flex-col gap-1.5 cursor-pointer"
-                      onClick={(e) => handleCardClick(e, 'revlr')}
-                    >
+                    <div className="pt-4 sm:pt-5 flex flex-col gap-1.5">
                       <h3 className="font-sans text-[19px] sm:text-[20px] font-semibold text-[#1D1D1F] tracking-tight group-hover:text-black transition-colors flex items-center justify-between">
                         <span>REVLR</span>
                         <ArrowUpRight className="w-4 h-4 text-[#86868B] group-hover:text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all opacity-0 group-hover:opacity-100" />
@@ -999,14 +983,11 @@ export default function App() {
 
             {/* PROJECT 4: MY BLOCK COUNTS */}
             <div className="w-full lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
-              <ThreeDCarouselCard
-                scrollContainerRef={horizontalScrollRef}
-                onClick={(e) => handleCardClick(e, 'myblockcounts')}
-              >
+              <ThreeDCarouselCard scrollContainerRef={horizontalScrollRef}>
                 <motion.div
                   initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
+                  viewport={{ once: true, amount: 0.01, margin: "120px" }}
                   transition={{ duration: 0.65, delay: 0.08, ease: EASE_EDITORIAL }}
                   className="w-full"
                 >
@@ -1029,14 +1010,9 @@ export default function App() {
                       src="/MBC/MBC_GIF.mp4"
                       alt="My Block Counts Mobile App Interface Preview"
                       bg="bg-[#1bab51]"
-                      scrollContainerRef={horizontalScrollRef}
                       tags={['Civic Tech', 'Accessibility', 'Research']}
-                      onClick={(e) => handleCardClick(e, 'myblockcounts')}
                     />
-                    <div
-                      className="pt-4 sm:pt-5 flex flex-col gap-1.5 cursor-pointer"
-                      onClick={(e) => handleCardClick(e, 'myblockcounts')}
-                    >
+                    <div className="pt-4 sm:pt-5 flex flex-col gap-1.5">
                       <h3 className="font-sans text-[19px] sm:text-[20px] font-semibold text-[#1D1D1F] tracking-tight group-hover:text-black transition-colors flex items-center justify-between">
                         <span>My Block Counts</span>
                         <ArrowUpRight className="w-4 h-4 text-[#86868B] group-hover:text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all opacity-0 group-hover:opacity-100" />
@@ -1075,7 +1051,7 @@ export default function App() {
                 <motion.div
                   initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
+                  viewport={{ once: true, amount: 0.01, margin: "120px" }}
                   transition={{ duration: 0.65, ease: EASE_EDITORIAL }}
                   className="w-full"
                 >
@@ -1094,7 +1070,6 @@ export default function App() {
                       src="/Home/Mise_GIF.mp4"
                       alt="MISE Recipe App Preview"
                       bg="bg-black"
-                      scrollContainerRef={horizontalScrollRef}
                       tags={['Vibe Coding', 'AI UX', 'Mobile']}
                     />
                     <div className="pt-4 sm:pt-5 flex flex-col gap-1.5 cursor-pointer">
@@ -1117,7 +1092,7 @@ export default function App() {
                 <motion.div
                   initial={shouldReduceMotion ? false : { opacity: 0, y: 32 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
+                  viewport={{ once: true, amount: 0.01, margin: "120px" }}
                   transition={{ duration: 0.65, delay: 0.08, ease: EASE_EDITORIAL }}
                   className="w-full"
                 >
@@ -1136,7 +1111,6 @@ export default function App() {
                       src="/Home/NETFLIX_GIF.mp4"
                       alt="Netflix Social Feature Preview"
                       bg="bg-neutral-950"
-                      scrollContainerRef={horizontalScrollRef}
                       tags={['Full Stack', 'Vibe Coding', 'Social UX']}
                     />
                     <div className="pt-4 sm:pt-5 flex flex-col gap-1.5 cursor-pointer">
@@ -1281,7 +1255,7 @@ export default function App() {
               transition={{ duration: 0.65, delay: 0.15, ease: EASE_EDITORIAL }}
               className="w-full max-w-[1020px]"
             >
-              <PeekPhotosRow size="about" hoverLift={-96} />
+              <PeekPhotosRow size="about" hoverLift={-136} />
             </motion.div>
           </div>
         </section>

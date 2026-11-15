@@ -11,18 +11,12 @@ interface TrailBlob {
   maxAge: number;
 }
 
-interface HoverMaskCutoutProps {
-  triggerLandingPeek?: boolean;
-}
-
-export const HoverMaskCutout = React.memo(function HoverMaskCutout({ triggerLandingPeek = false }: HoverMaskCutoutProps) {
+export const HoverMaskCutout = React.memo(function HoverMaskCutout() {
   const containerRef = useRef<HTMLDivElement>(null);
   const idleCoverRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const headCircleRef = useRef<SVGCircleElement>(null);
   const trailGroupRef = useRef<SVGGElement>(null);
-  const startPeekRef = useRef<(() => void) | null>(null);
-  const hasPeekedRef = useRef(false);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -44,7 +38,6 @@ export const HoverMaskCutout = React.memo(function HoverMaskCutout({ triggerLand
 
     const state = {
       isHovered: false,
-      isPeeking: false,
       mouseX: 0,
       mouseY: 0,
       currX: 0,
@@ -55,7 +48,6 @@ export const HoverMaskCutout = React.memo(function HoverMaskCutout({ triggerLand
       targetHeadRadius: 0,
       blobs: [] as TrailBlob[],
       rafId: 0,
-      peekRafId: 0,
       running: false,
     };
 
@@ -93,69 +85,7 @@ export const HoverMaskCutout = React.memo(function HoverMaskCutout({ triggerLand
       }
     };
 
-    const stopPeek = () => {
-      if (state.isPeeking) {
-        state.isPeeking = false;
-        cancelAnimationFrame(state.peekRafId);
-      }
-    };
-
-    startPeekRef.current = () => {
-      if (state.isHovered || state.isPeeking) return;
-      const rect = container.getBoundingClientRect();
-      if (rect.width <= 0 || rect.height <= 0) return;
-
-      const startX = rect.width * 0.42;
-      const startY = rect.height * 0.28;
-      const endX = rect.width * 0.62;
-      const endY = rect.height * 0.56;
-
-      state.isPeeking = true;
-      state.currX = startX;
-      state.currY = startY;
-      state.mouseX = startX;
-      state.mouseY = startY;
-      state.lastSpawnX = startX;
-      state.lastSpawnY = startY;
-      state.targetHeadRadius = 74;
-      startLoop();
-
-      const startTime = performance.now();
-      const duration = 820;
-
-      const stepPeek = (now: number) => {
-        if (!state.isPeeking || state.isHovered) return;
-        const t = Math.min(1, (now - startTime) / duration);
-        // Smooth ease-in-out
-        const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-
-        const px = startX + (endX - startX) * eased + Math.sin(eased * Math.PI) * 18;
-        const py = startY + (endY - startY) * eased;
-
-        state.mouseX = px;
-        state.mouseY = py;
-        state.targetHeadRadius = t > 0.78 ? Math.max(0, 74 * (1 - (t - 0.78) / 0.22)) : 74;
-
-        const dist = Math.hypot(px - state.lastSpawnX, py - state.lastSpawnY);
-        if (dist > 14 && t < 0.8) {
-          spawnBlob(px, py, dist);
-          state.lastSpawnX = px;
-          state.lastSpawnY = py;
-        }
-
-        if (t < 1) {
-          state.peekRafId = requestAnimationFrame(stepPeek);
-        } else {
-          state.isPeeking = false;
-          state.targetHeadRadius = 0;
-        }
-      };
-
-      state.peekRafId = requestAnimationFrame(stepPeek);
-    };
-
     const updatePointer = (clientX: number, clientY: number) => {
-      stopPeek();
       const rect = container.getBoundingClientRect();
       const x = clientX - rect.left;
       const y = clientY - rect.top;
@@ -258,7 +188,7 @@ export const HoverMaskCutout = React.memo(function HoverMaskCutout({ triggerLand
         }
       }
 
-      if (state.isHovered || state.isPeeking || state.headRadius > 0 || state.blobs.length > 0) {
+      if (state.isHovered || state.headRadius > 0 || state.blobs.length > 0) {
         state.rafId = requestAnimationFrame(tick);
       } else {
         state.running = false;
@@ -275,8 +205,6 @@ export const HoverMaskCutout = React.memo(function HoverMaskCutout({ triggerLand
 
     return () => {
       cancelAnimationFrame(state.rafId);
-      cancelAnimationFrame(state.peekRafId);
-      startPeekRef.current = null;
       container.removeEventListener('mouseenter', handleMouseEnter);
       container.removeEventListener('mousemove', handleMouseMove);
       container.removeEventListener('mouseleave', handleMouseLeave);
@@ -286,18 +214,6 @@ export const HoverMaskCutout = React.memo(function HoverMaskCutout({ triggerLand
       trailGroup.innerHTML = '';
     };
   }, []);
-
-  useEffect(() => {
-    if (!triggerLandingPeek || hasPeekedRef.current) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    hasPeekedRef.current = true;
-    const timer = window.setTimeout(() => {
-      startPeekRef.current?.();
-    }, 520);
-
-    return () => window.clearTimeout(timer);
-  }, [triggerLandingPeek]);
 
   return (
     <div
@@ -315,7 +231,7 @@ export const HoverMaskCutout = React.memo(function HoverMaskCutout({ triggerLand
           height={1100}
           loading="eager"
           fetchPriority="high"
-          decoding="async"
+          decoding="sync"
         />
       </picture>
 

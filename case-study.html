@@ -8,7 +8,7 @@
 <link rel="icon" type="image/svg+xml" href="/Favicon.svg" media="(prefers-color-scheme: light)" />
 
 <!-- Dark Mode Favicon (loads when system is dark) -->
-<link rel="icon" type="image/svg+xml" href="/Faviconwhite.svg" media="(prefers-color-scheme: dark)" />
+<link rel="icon" type="image/svg+xml" href="/Favicon.svg" media="(prefers-color-scheme: dark)" />
 
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -20,8 +20,8 @@
     <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=Permanent+Marker&display=swap" rel="stylesheet"></noscript>
     <link rel="stylesheet" href="/src/index.css">
     <style>
-        .font-ugly-dave, .font-uglydave, .font-misfit, .font-madink, .font-brush {
-            font-family: 'Ugly Dave', 'Ugly Dave Alternates', 'Misfit', 'Mad Ink', 'Permanent Marker', cursive, sans-serif !important;
+        .font-ugly-dave {
+            font-family: 'Ugly Dave', 'Permanent Marker', cursive, sans-serif !important;
             letter-spacing: 0.02em;
         }
 
@@ -37,7 +37,7 @@
         }
 
         /* Home page typography match */
-        body, p, .cs-para {
+        body, p {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             letter-spacing: normal;
         }
@@ -60,50 +60,6 @@
             text-transform: uppercase;
             letter-spacing: 0.08em;
             font-weight: 500;
-        }
-
-        /* Apple macOS Glass Dropdown */
-        .cs-dropdown {
-            display: none;
-            position: absolute;
-            top: 44px;
-            right: 0;
-            background: rgba(255, 255, 255, 0.88);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            border-radius: 18px;
-            min-width: 220px;
-            box-shadow: 0 20px 48px -8px rgba(0, 0, 0, 0.14), 0 2px 8px -2px rgba(0, 0, 0, 0.04);
-            overflow: hidden;
-            white-space: nowrap;
-            backdrop-filter: blur(28px) saturate(180%);
-            -webkit-backdrop-filter: blur(28px) saturate(180%);
-            z-index: 100;
-            padding: 6px;
-        }
-        .cs-dropdown.open { display: block; }
-        .cs-dropdown-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            white-space: nowrap;
-            gap: 8px;
-            padding: 10px 16px;
-            font-size: 12.5px;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            color: #1F1F1F;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.15s;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-        }
-        .cs-dropdown-item:last-child {
-            border-bottom: none;
-        }
-        .cs-dropdown-item:hover, .cs-dropdown-item:focus, .cs-dropdown-item.active {
-            background: rgba(0, 0, 0, 0.05);
-            color: #000000;
-            font-weight: 700;
         }
 
         /* Metadata Shipped link and text styling — unified with Role, Duration, Team, Responsibilities */
@@ -193,17 +149,6 @@
             --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @keyframes csFadeDown {
-            from {
-                opacity: 0;
-                transform: translateY(-16px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         @keyframes csFadeUp {
             from {
                 opacity: 0;
@@ -213,10 +158,6 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
-
-        .cs-nav-animate {
-            animation: csFadeDown 0.35s var(--ease-editorial) both;
         }
 
         .cs-hero-title-animate {
@@ -246,6 +187,7 @@
         .cs-reveal.cs-revealed {
             opacity: 1;
             transform: translateY(0);
+            will-change: auto;
         }
 
         /* Card transition base (no hover elevation on static case study cards) */
@@ -254,7 +196,6 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .cs-nav-animate,
             .cs-hero-title-animate,
             .cs-hero-headline-animate,
             .cs-meta-animate,
@@ -276,10 +217,6 @@
         /* Monochrome Editorial Theme & Table of Contents Track and Dot styling */
         :root {
             --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
-            --cs-accent: #1D1D1F;
-            --cs-accent-dark: #000000;
-            --cs-accent-tint: #F7F7F8;
-            --cs-accent-border: rgba(0, 0, 0, 0.14);
         }
 
         .cs-toc-item {
@@ -318,11 +255,6 @@
         .cs-toc-item.active .cs-toc-text {
             color: #000000 !important;
             font-weight: 600 !important;
-        }
-
-        /* Clean Light Card Theme Mapping */
-        .divide-white\/15 > :not([hidden]) ~ :not([hidden]) {
-            border-color: rgba(0, 0, 0, 0.06) !important;
         }
 
         /* Diagrams: Clean light theme matching homepage Apple aesthetic */
@@ -384,43 +316,35 @@
         svg path.dark\:fill-\[\#5A6BFF\] {
             fill: #1D1D1F !important;
         }
-        #mbc-arrow path {
-            fill: #1D1D1F !important;
-        }
-
         .stroke-\[\#2036B8\], [stroke="#2036B8"] { stroke: #1D1D1F !important; }
         .fill-\[\#2036B8\], [fill="#2036B8"] { fill: #1D1D1F !important; }
-        /* Strictly Monochrome / Neutral Case Studies - Remove ALL colors (blue, purple, green) */
-        .text-\[\#2036B8\], .text-\[\#5A6BFF\], .text-\[\#8B95FF\], .text-\[\#7C3AED\], .text-\[\#581C87\], .text-\[\#16A34A\], .text-\[\#059669\] { 
+        /* Strictly Monochrome / Neutral Case Studies */
+        .text-\[\#2036B8\], .text-\[\#5A6BFF\], .text-\[\#8B95FF\] { 
             color: #1D1D1F !important; 
         }
-        .bg-\[\#2036B8\], .bg-\[\#5A6BFF\], .bg-\[\#7C3AED\], .bg-\[\#16A34A\] { 
+        .bg-\[\#2036B8\], .bg-\[\#5A6BFF\] { 
             background-color: #1D1D1F !important; 
             color: #FFFFFF !important; 
         }
-        .border-\[\#2036B8\], .border-\[\#5A6BFF\], .border-\[\#8B95FF\], .border-\[\#7C3AED\], .border-\[\#16A34A\], .dark\:border-\[\#8B95FF\], .dark\:border-\[\#5A6BFF\] { 
+        .border-\[\#2036B8\], .border-\[\#5A6BFF\], .border-\[\#8B95FF\], .dark\:border-\[\#8B95FF\], .dark\:border-\[\#5A6BFF\] { 
             border-color: rgba(0, 0, 0, 0.08) !important;
             background-color: #FFFFFF !important;
             box-shadow: none !important;
         }
         .stroke-\[\#2036B8\], .dark\:stroke-\[\#5A6BFF\], .stroke-\[\#5A6BFF\], .stroke-\[\#8B95FF\],
-        .stroke-\[\#7C3AED\], .stroke-\[\#16A34A\], .stroke-\[\#2036B8\]\/40, .dark\:stroke-\[\#5A6BFF\]\/40 {
+        .stroke-\[\#2036B8\]\/40, .dark\:stroke-\[\#5A6BFF\]\/40 {
             stroke: rgba(0, 0, 0, 0.14) !important;
         }
-        .fill-\[\#2036B8\], .dark\:fill-\[\#5A6BFF\], .fill-\[\#5A6BFF\], .fill-\[\#8B95FF\],
-        .fill-\[\#7C3AED\], .fill-\[\#16A34A\] {
+        .fill-\[\#2036B8\], .dark\:fill-\[\#5A6BFF\], .fill-\[\#5A6BFF\], .fill-\[\#8B95FF\] {
             fill: #1D1D1F !important;
         }
 
-        .border-\[\#cccad8\], .border-\[\#C8D4E8\], .border-\[\#D4D4D0\], .border-\[\#E2E2E0\], .border-\[\#E0E6F2\] {
+        .border-\[\#C8D4E8\] {
             border-color: rgba(0, 0, 0, 0.08) !important;
         }
         .stroke-\[\#C8D4E8\], [stroke="#C8D4E8"] { stroke: rgba(0, 0, 0, 0.1) !important; }
 
-        .text-fg { color: #1D1D1F !important; }
         .text-heading { color: #000000 !important; }
-        .text-accent { color: #000000 !important; }
-        .text-muted, .text-muted-fg { color: #86868B !important; }
 
         .diag-line { stroke: rgba(0, 0, 0, 0.12) !important; stroke-width: 1.5 !important; stroke-dasharray: 4 4 !important; }
         .diag-center-circle { fill: #1D1D1F !important; stroke: rgba(0, 0, 0, 0.08) !important; stroke-width: 2 !important; }
@@ -576,7 +500,7 @@
                                 id="cs-password-input"
                                 placeholder="Enter password"
                                 autocomplete="current-password"
-                                class="w-full px-9 py-2.5 rounded-full border border-black/[0.1] bg-[#ECECEE]/80 text-[#1D1D1F] placeholder:text-[#86868B] text-[13.5px] text-center focus:outline-none focus:border-black/30 focus:bg-white transition-colors font-sans font-medium"
+                                class="w-full pl-4 pr-10 py-2.5 rounded-full border border-black/[0.1] bg-[#ECECEE]/80 text-[#1D1D1F] placeholder:text-[#86868B] text-[13.5px] text-left focus:outline-none focus:border-black/30 focus:bg-white transition-colors font-sans font-medium"
                             />
                             <button
                                 type="button"
@@ -1633,7 +1557,7 @@
                     context: "MyBlockCounts was built with T.H.E. EJ Lab to collect environmental justice data from Baltimore communities. It existed, but it was functionally abandoned, so the redesign had to rebuild trust, not just usability.\n\nThe question I kept coming back to: how might we transform an abandoned civic tool into an engaging community platform?",
                     contextHTML: `
                         <div class="w-full rounded-[10px] overflow-hidden aspect-[16/9] min-h-[280px] sm:min-h-[360px]">
-                            <img src="/MBC/MB_Hero.webp" alt="My Block Counts Hero Image" class="w-full h-full object-cover rounded-[10px]" loading="lazy" decoding="async" />
+                            <img src="/MBC/MB_Hero.webp" alt="My Block Counts Hero Image" class="w-full h-full object-cover rounded-[10px]" loading="eager" fetchpriority="high" decoding="async" />
                         </div>
                     `,
                     problem: {
@@ -2037,7 +1961,7 @@
                     context: "Justickets kept picking up new things: offers, food ordering, Moviebuff content, special screening messages. Each one shipped on its own, and that was the problem.\n\nNot the features. The fragmentation underneath them. Every release made the next one a little harder to build, not easier.\n\nSo I kept asking myself: <strong class=\"font-normal text-[#333336]\">how might we keep shipping new features without every one of them re-solving problems the last one already solved?</strong>",
                     contextHTML: `
                         <div class="w-full rounded-[10px] overflow-hidden aspect-[16/9] min-h-[280px] sm:min-h-[360px]">
-                            <img src="/JT/J_Hero.webp" alt="Justickets Hero Image" class="w-full h-full object-cover rounded-[10px]" loading="lazy" decoding="async" />
+                            <img src="/JT/J_Hero.webp" alt="Justickets Hero Image" class="w-full h-full object-cover rounded-[10px]" loading="eager" fetchpriority="high" decoding="async" />
                         </div>
                     `,
                     problem: {
@@ -2113,96 +2037,6 @@
                 }
             }
         };
-
-        const PROJECT_THEMES = {
-            youtopia: {
-                accent: '#446E2B',        // Green from card image (/Home/Y_WC.webp)
-                accentDark: '#2D4B1C',
-                tint: '#F2F7ED',
-                border: '#CFDFCA',
-                badgeBg: '#E5EEDF',
-                badgeText: '#2D4B1C',
-                progressBg: '#446E2B',
-                palette: [
-                    { accent: '#446E2B', accentDark: '#2D4B1C', tint: '#F2F7ED', border: '#CFDFCA' },
-                    { accent: '#587D38', accentDark: '#365220', tint: '#F5F9F1', border: '#D7E5D2' },
-                    { accent: '#3F6527', accentDark: '#284318', tint: '#EEF5E8', border: '#C7DBC0' },
-                    { accent: '#4E7732', accentDark: '#314D1E', tint: '#F3F8EE', border: '#D1E1CB' }
-                ]
-            },
-            justickets: {
-                accent: '#7C3AED',        // Cinema purple
-                accentDark: '#581C87',
-                tint: '#F8F4FD',
-                border: '#E3D5F8',
-                badgeBg: '#EFE6FD',
-                badgeText: '#581C87',
-                progressBg: '#7C3AED',
-                palette: [
-                    { accent: '#7C3AED', accentDark: '#581C87', tint: '#F8F4FD', border: '#E3D5F8' },
-                    { accent: '#8B5CF6', accentDark: '#6D28D9', tint: '#FAF6FE', border: '#E9DEFB' },
-                    { accent: '#6D28D9', accentDark: '#4C1D95', tint: '#F5F0FB', border: '#DDD0F5' },
-                    { accent: '#7C3AED', accentDark: '#581C87', tint: '#F8F4FD', border: '#E3D5F8' }
-                ]
-            },
-            revlr: {
-                accent: '#7C3AED',        // Multi-color palette for spatial VR
-                accentDark: '#581C87',
-                tint: '#F6F3FE',
-                border: '#E0D4FC',
-                badgeBg: '#ECE4FB',
-                badgeText: '#581C87',
-                progressBg: 'linear-gradient(90deg, #7C3AED, #0284C7, #059669, #E11D48)',
-                isColorful: true,
-                palette: [
-                    { accent: '#7C3AED', accentDark: '#581C87', tint: '#F6F3FE', border: '#E0D4FC' }, // Violet
-                    { accent: '#0284C7', accentDark: '#075985', tint: '#F0F8FF', border: '#BAE6FD' }, // Cyan
-                    { accent: '#059669', accentDark: '#065F46', tint: '#F0FDF5', border: '#A7F3D0' }, // Emerald
-                    { accent: '#E11D48', accentDark: '#9F1239', tint: '#FFF1F3', border: '#FECDD6' }, // Rose
-                    { accent: '#D97706', accentDark: '#92400E', tint: '#FFFBEB', border: '#FDE68A' }  // Amber
-                ]
-            },
-            myblockcounts: {
-                accent: '#16A34A',        // Civic green
-                accentDark: '#14532D',
-                tint: '#EDFAF1',
-                border: '#B8ECC7',
-                badgeBg: '#DCF5E3',
-                badgeText: '#14532D',
-                progressBg: '#16A34A',
-                palette: [
-                    { accent: '#16A34A', accentDark: '#14532D', tint: '#EDFAF1', border: '#B8ECC7' },
-                    { accent: '#15803D', accentDark: '#14532D', tint: '#F0FDF4', border: '#BBF7D0' },
-                    { accent: '#059669', accentDark: '#065F46', tint: '#ECFDF5', border: '#A7F3D0' },
-                    { accent: '#16A34A', accentDark: '#14532D', tint: '#EDFAF1', border: '#B8ECC7' }
-                ]
-            }
-        };
-
-        function parseOutcomePoint(pt) {
-            // Check for leading metric: "+60%", "+3X", "92%", "45%", "34%", "+40%", "30%", "+100%", "+20%"
-            const leadingMetric = pt.match(/^(\+[0-9]+%|\+[0-9]+X|[0-9]+%)/i);
-            if (leadingMetric) {
-                const stat = leadingMetric[1];
-                const desc = pt.slice(stat.length).replace(/^[\s:–—-]+/, '');
-                return { isMetric: true, stat, desc, raw: pt };
-            }
-            // Check for "Shipped and live: 1M+ downloads..."
-            const mMatch = pt.match(/([0-9]+M\+)/i);
-            if (mMatch && pt.toLowerCase().includes('downloads')) {
-                const stat = mMatch[1];
-                return { isMetric: true, stat, desc: pt, raw: pt };
-            }
-            // Check for "4 major features shipped..."
-            const numMatch = pt.match(/^([0-9]+)\s+(major features)/i);
-            if (numMatch) {
-                const stat = numMatch[1];
-                const desc = pt.slice(stat.length).trim();
-                return { isMetric: true, stat, desc, raw: pt };
-            }
-            // Qualitative milestone
-            return { isMetric: false, stat: null, desc: pt, raw: pt };
-        }
 
         function renderCaseStudyHTML(data, project, projectId = 'youtopia') {
             let sections = [];
@@ -2736,13 +2570,6 @@
             const urlParams = new URLSearchParams(window.location.search);
             const projectId = urlParams.get('project') || 'youtopia';
             const project = PROJECTS[projectId] || PROJECTS.youtopia;
-            const theme = PROJECT_THEMES[projectId] || PROJECT_THEMES.youtopia;
-
-            // Apply clean monochrome accent tokens
-            document.documentElement.style.setProperty('--cs-accent', '#1D1D1F');
-            document.documentElement.style.setProperty('--cs-accent-dark', '#000000');
-            document.documentElement.style.setProperty('--cs-accent-tint', '#F7F7F8');
-            document.documentElement.style.setProperty('--cs-accent-border', 'rgba(0, 0, 0, 0.14)');
 
             const mainContent = document.getElementById('cs-main-content');
             const passwordGate = document.getElementById('cs-password-gate');
@@ -2985,9 +2812,11 @@
             });
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
+        if (document.readyState === 'loading') {
+            window.addEventListener('DOMContentLoaded', renderCaseStudy, { once: true });
+        } else {
             renderCaseStudy();
-        });
+        }
     </script>
 </body>
 </html>
