@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,57 +10,16 @@
 <!-- Dark Mode Favicon (loads when system is dark) -->
 <link rel="icon" type="image/svg+xml" href="/Faviconwhite.svg" media="(prefers-color-scheme: dark)" />
 
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link rel="preload" as="font" href="/fonts/UglyDave.woff" type="font/woff" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=Permanent+Marker&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=Permanent+Marker&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=Permanent+Marker&display=swap" rel="stylesheet"></noscript>
     <link rel="stylesheet" href="/src/index.css">
     <style>
-        @font-face {
-            font-family: 'Ugly Dave';
-            src: url('/fonts/UglyDave.woff') format('woff'),
-                 url('/fonts/UglyDaveRegular.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: 'Ugly Dave Alternates';
-            src: url('/fonts/UglyDaveAlternates.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: 'Misfit';
-            src: url('/fonts/Misfit.woff') format('woff'),
-                 url('/fonts/Misfit2.woff') format('woff'),
-                 url('/fonts/MISFITS_.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: 'Misfits';
-            src: url('/fonts/MISFITS_.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: 'Mad Ink';
-            src: url('/fonts/MadInk.woff2') format('woff2'),
-                 url('/fonts/MadInk.woff') format('woff'),
-                 url('/fonts/MadInk.otf') format('opentype'),
-                 url('/fonts/MadInk.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-
         .font-ugly-dave, .font-uglydave, .font-misfit, .font-madink, .font-brush {
             font-family: 'Ugly Dave', 'Ugly Dave Alternates', 'Misfit', 'Mad Ink', 'Permanent Marker', cursive, sans-serif !important;
             letter-spacing: 0.02em;
@@ -257,30 +216,30 @@
         }
 
         .cs-nav-animate {
-            animation: csFadeDown 0.65s var(--ease-editorial) both;
+            animation: csFadeDown 0.35s var(--ease-editorial) both;
         }
 
         .cs-hero-title-animate {
-            animation: csFadeUp 0.8s var(--ease-editorial) 0.08s both;
+            animation: csFadeUp 0.38s var(--ease-editorial) 0s both;
         }
 
         .cs-hero-headline-animate {
-            animation: csFadeUp 0.8s var(--ease-editorial) 0.2s both;
+            animation: csFadeUp 0.38s var(--ease-editorial) 0.04s both;
         }
 
         .cs-meta-animate {
-            animation: csFadeUp 0.8s var(--ease-editorial) 0.32s both;
+            animation: csFadeUp 0.38s var(--ease-editorial) 0.08s both;
         }
 
         .cs-hero-img-animate {
-            animation: csFadeUp 0.85s var(--ease-editorial) 0.44s both;
+            animation: csFadeUp 0.42s var(--ease-editorial) 0.12s both;
         }
 
         /* Scroll-triggered reveal matching Framer Motion whileInView */
         .cs-reveal {
             opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.65s var(--ease-editorial), transform 0.65s var(--ease-editorial);
+            transform: translateY(12px);
+            transition: opacity 0.42s var(--ease-editorial), transform 0.42s var(--ease-editorial);
             will-change: opacity, transform;
         }
 
@@ -489,7 +448,7 @@
             <a href="/#work" class="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] font-semibold text-[#1D1D1F]/70 hover:text-black transition-all whitespace-nowrap">WORK</a>
             <a href="/#about" class="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] font-semibold text-[#1D1D1F]/70 hover:text-black transition-all whitespace-nowrap">ABOUT</a>
             <a href="/#play" class="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] font-semibold text-[#1D1D1F]/70 hover:text-black transition-all whitespace-nowrap">PLAY</a>
-            <a href="https://drive.google.com/file/d/1ZJWXJ0DoubaRd7qDoCK57abnknj8BDMq/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] font-semibold text-[#1D1D1F]/70 hover:text-black transition-all whitespace-nowrap">RESUME</a>
+            <a href="https://drive.google.com/file/d/13OiD092iR2xWuALZzK1gx2DcoSyUmW_e/view" target="_blank" rel="noopener noreferrer" class="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] font-semibold text-[#1D1D1F]/70 hover:text-black transition-all whitespace-nowrap">RESUME</a>
             <a href="/#contact" class="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] font-semibold text-[#1D1D1F]/70 hover:text-black transition-all whitespace-nowrap">CONTACT</a>
 
             <!-- Mobile Hamburger Button -->
@@ -750,7 +709,7 @@
                 heroHTML: `
                     <div id="cs-hero-image" class="w-full mb-[120px] space-y-8">
                         <div class="w-full rounded-[10px] overflow-hidden aspect-[16/9] min-h-[280px] sm:min-h-[360px]">
-                            <img src="/Home/Y_WC.webp" alt="Youtopia Hero Image" class="w-full h-full object-cover rounded-[10px]" loading="eager" decoding="async" />
+                            <img src="/Home/Y_WC.webp" alt="Youtopia Hero Image" class="w-full h-full object-cover rounded-[10px]" loading="eager" fetchpriority="high" decoding="async" />
                         </div>
                         <div class="w-full border border-black/[0.08] rounded-[10px] bg-white p-6 sm:p-10 shadow-[0_2px_12px_rgba(0,0,0,0.03)] overflow-hidden">
                         <style>
@@ -1527,7 +1486,7 @@
                 next: 'myblockcounts',
                 heroHTML: `
                     <div id="cs-hero-image" class="w-full rounded-[10px] overflow-hidden mb-8 aspect-[16/9] min-h-[280px] sm:min-h-[360px]">
-                        <img src="/REVLR/R_Hero.avif" alt="REVLR Hero Image" class="w-full h-full object-cover rounded-[10px]" loading="eager" decoding="async" />
+                        <img src="/REVLR/R_Hero.avif" alt="REVLR Hero Image" class="w-full h-full object-cover rounded-[10px]" loading="eager" fetchpriority="high" decoding="async" />
                     </div>
                     <p class="w-full text-[15.5px] sm:text-[17px] leading-[1.6] text-[#333336] font-normal mb-[120px]">
                         REVLR puts users inside a 3D model of a complex system. I owned the interaction design: the control framework, the navigation patterns, and the design system, with no VR pattern library to start from. Testing showed 40% higher engagement and 30% lower cognitive load, and REVLR ended up with its first structured interaction system across VR and web.
@@ -1612,7 +1571,7 @@
                     systemPlaceholder: null,
                     systemHTML: `
                         <div class="w-full rounded-[10px] overflow-hidden my-8">
-                            <img src="/REVLR/R_testing.png" alt="REVLR Prototype and Meta Quest Testing" class="w-full h-auto block rounded-[10px]" loading="lazy" decoding="async" />
+                            <img src="/REVLR/R_testing.webp" alt="REVLR Prototype and Meta Quest Testing" class="w-full h-auto block rounded-[10px]" loading="lazy" decoding="async" />
                         </div>
                     `,
                     validation: "I ran usability and A/B testing with real users in the headset, covering discoverability, navigation, and task flow. People from a Maryland nonprofit also tried it, and each round of feedback went back into the component system.",
@@ -1663,7 +1622,7 @@
                 next: 'justickets',
                 heroHTML: `
                     <div id="cs-hero-image" class="w-full rounded-[10px] overflow-hidden mb-8 aspect-[16/9] min-h-[280px] sm:min-h-[360px] bg-[#1bab51] border border-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.05)] flex items-center justify-center">
-                        <video src="/MBC/MBC_GIF.mp4" poster="/MBC/MB_Hero.webp" autoplay loop muted playsinline class="h-full w-auto max-w-full object-contain block select-none" aria-label="My Block Counts Work Card Preview"></video>
+                        <video src="/MBC/MBC_GIF.mp4" poster="/MBC/MB_Hero.webp" preload="metadata" autoplay loop muted playsinline class="h-full w-auto max-w-full object-contain block select-none" aria-label="My Block Counts Work Card Preview"></video>
                     </div>
                     <p class="w-full text-[15.5px] sm:text-[17px] leading-[1.6] text-[#333336] font-normal mb-[120px]">
                         MyBlockCounts is an environmental justice survey app for Baltimore communities, but people were leaving before they could meaningfully participate. I led the redesign, starting with what would make people trust the app enough to take part. It shipped on the App Store in January 2025.
@@ -2066,7 +2025,7 @@
                 next: 'youtopia',
                 heroHTML: `
                     <div id="cs-hero-image" class="w-full rounded-[10px] overflow-hidden mb-8 aspect-[16/9] min-h-[280px] sm:min-h-[360px] bg-[#3B0F66] border border-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.05)] flex items-center justify-center">
-                        <video src="/JT/JT_GIF.mp4" poster="/JT/J_Hero.webp" autoplay loop muted playsinline class="h-full w-auto max-w-full object-contain block select-none" aria-label="Justickets Work Card Preview"></video>
+                        <video src="/JT/JT_GIF.mp4" poster="/JT/J_Hero.webp" preload="metadata" autoplay loop muted playsinline class="h-full w-auto max-w-full object-contain block select-none" aria-label="Justickets Work Card Preview"></video>
                     </div>
                     <p class="w-full text-[15.5px] sm:text-[17px] leading-[1.6] text-[#333336] font-normal mb-[120px]">
                         Justickets was adding features fast, and every one of them was built from scratch. I made the case for slowing down just long enough to build a shared system, starting with seat selection and payment. Four major features shipped on it after that, and other Qube products picked it up too.
@@ -3019,7 +2978,7 @@
                         obs.unobserve(entry.target);
                     }
                 });
-            }, { rootMargin: '0px 0px -40px 0px', threshold: 0.05 });
+            }, { rootMargin: '0px 0px 80px 0px', threshold: 0.01 });
 
             document.querySelectorAll('.cs-reveal:not(.cs-revealed)').forEach(el => {
                 scrollRevealObserver.observe(el);

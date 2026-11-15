@@ -7,14 +7,140 @@ interface ThreeDCarouselCardProps {
   onClick?: (e: React.MouseEvent) => void;
 }
 
+interface RegisteredCard {
+  outer: HTMLDivElement;
+  inner: HTMLDivElement;
+  lastTransform: string;
+  lastOpacity: string;
+  lastZIndex: string;
+}
+
+const registeredCards = new Set<RegisteredCard>();
+let rafPending = false;
+let attachedScrollEl: HTMLElement | null = null;
+let listenersAttached = false;
+
+function runBatchUpdate() {
+  rafPending = false;
+  const vw = window.innerWidth;
+
+  if (vw < 1024) {
+    registeredCards.forEach((entry) => {
+      if (entry.lastTransform !== 'none') {
+        entry.inner.style.transform = 'none';
+        entry.lastTransform = 'none';
+      }
+      if (entry.lastOpacity !== '1') {
+        entry.inner.style.opacity = '1';
+        entry.lastOpacity = '1';
+      }
+      if (entry.inner.style.willChange) {
+        entry.inner.style.willChange = 'auto';
+      }
+    });
+    return;
+  }
+
+  // Phase 1: Batch all layout reads before any style mutations (prevents layout thrashing)
+  const screenCenter = vw / 2;
+  const maxDist = Math.max(680, vw * 0.52);
+  const snapshots: { entry: RegisteredCard; left: number; right: number; width: number }[] = [];
+
+  registeredCards.forEach((entry) => {
+    const rect = entry.outer.getBoundingClientRect();
+    snapshots.push({ entry, left: rect.left, right: rect.right, width: rect.width });
+  });
+
+  // Phase 2: Batch all style writes
+  for (let i = 0; i < snapshots.length; i++) {
+    const { entry, left, right, width } = snapshots[i];
+    const inRange = right >= -320 && left <= vw + 320;
+
+    if (!inRange) {
+      if (entry.inner.style.willChange === 'transform, opacity') {
+        entry.inner.style.willChange = 'auto';
+      }
+      continue;
+    }
+
+    if (entry.inner.style.willChange !== 'transform, opacity') {
+      entry.inner.style.willChange = 'transform, opacity';
+    }
+
+    const cardCenter = left + width / 2;
+    const dist = cardCenter - screenCenter;
+    const factor = Math.max(-1, Math.min(1, dist / maxDist));
+    const rotateY = -factor * 14;
+    const absFactor = Math.abs(factor);
+    const translateZ = -absFactor * 80;
+    const scale = Math.max(0.95, 1 - absFactor * 0.06);
+    const opacity = Math.max(0.92, 1 - absFactor * 0.12);
+
+    const nextTransform = `translate3d(0, 0, ${translateZ.toFixed(1)}px) rotateY(${rotateY.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+    const nextOpacity = opacity.toFixed(3);
+    const nextZIndex = String(Math.round((1 - absFactor) * 50) + 10);
+
+    if (entry.lastTransform !== nextTransform) {
+      entry.inner.style.transform = nextTransform;
+      entry.lastTransform = nextTransform;
+    }
+    if (entry.lastOpacity !== nextOpacity) {
+      entry.inner.style.opacity = nextOpacity;
+      entry.lastOpacity = nextOpacity;
+    }
+    if (entry.lastZIndex !== nextZIndex) {
+      entry.outer.style.zIndex = nextZIndex;
+      entry.lastZIndex = nextZIndex;
+    }
+  }
+}
+
+function scheduleBatchUpdate() {
+  if (!rafPending) {
+    rafPending = true;
+    requestAnimationFrame(runBatchUpdate);
+  }
+}
+
+export function flushCarouselCards() {
+  if (registeredCards.size === 0) return;
+  runBatchUpdate();
+}
+
+function ensureGlobalListeners(scrollEl: HTMLElement | null) {
+  if (scrollEl && attachedScrollEl !== scrollEl) {
+    if (attachedScrollEl) {
+      attachedScrollEl.removeEventListener('scroll', scheduleBatchUpdate);
+    }
+    attachedScrollEl = scrollEl;
+    attachedScrollEl.addEventListener('scroll', scheduleBatchUpdate, { passive: true });
+  }
+  if (!listenersAttached && typeof window !== 'undefined') {
+    listenersAttached = true;
+    window.addEventListener('scroll', scheduleBatchUpdate, { passive: true });
+    window.addEventListener('resize', scheduleBatchUpdate, { passive: true });
+  }
+}
+
+function teardownGlobalListenersIfEmpty() {
+  if (registeredCards.size > 0) return;
+  if (attachedScrollEl) {
+    attachedScrollEl.removeEventListener('scroll', scheduleBatchUpdate);
+    attachedScrollEl = null;
+  }
+  if (listenersAttached && typeof window !== 'undefined') {
+    window.removeEventListener('scroll', scheduleBatchUpdate);
+    window.removeEventListener('resize', scheduleBatchUpdate);
+    listenersAttached = false;
+  }
+}
+
 /**
  * ThreeDCarouselCard - Positions work cards in a true 3D Perspective Horizontal Carousel.
  * Active strictly on desktop screens (>= 1024px) with horizontal scroll.
- * - Center card: faces viewer directly (rotateY: 0deg, scale: 1).
- * - Left/right cards: smooth 3D perspective yaw (rotateY) angled toward the viewer.
- * - Smaller screens (< 1024px): completely disabled, standard flat responsive layout.
+ * Uses a shared RAF read-then-write coordinator to eliminate scroll layout thrashing.
  */
-export const ThreeDCarouselCard: React.FC<ThreeDCarouselCardProps> = ({
+export const ThreeDCarouselCard: React.FC<ThreeDCarouselCardProps> = React.memo(({
   children,
   scrollContainerRef,
   className = '',
@@ -28,86 +154,36 @@ export const ThreeDCarouselCard: React.FC<ThreeDCarouselCardProps> = ({
 
   useEffect(() => {
     const handleResize = () => {
-      const desktop = window.innerWidth >= 1024;
-      setIsDesktop(desktop);
-      if (!desktop && innerRef.current) {
-        innerRef.current.style.transform = 'none';
-        innerRef.current.style.opacity = '1';
-      }
+      setIsDesktop(window.innerWidth >= 1024);
     };
-    handleResize();
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-    let ticking = false;
+  useEffect(() => {
+    const outer = outerRef.current;
+    const inner = innerRef.current;
+    if (!outer || !inner) return;
 
-    const update3D = () => {
-      ticking = false;
-      if (!innerRef.current || !outerRef.current) return;
-
-      if (window.innerWidth < 1024) {
-        innerRef.current.style.transform = 'none';
-        innerRef.current.style.opacity = '1';
-        return;
-      }
-
-      const rect = outerRef.current.getBoundingClientRect();
-      // Skip transform computation if card is completely out of viewport
-      if (rect.right < -400 || rect.left > window.innerWidth + 400) {
-        return;
-      }
-
-      const cardCenter = rect.left + rect.width / 2;
-      const screenCenter = window.innerWidth / 2;
-      const dist = cardCenter - screenCenter;
-
-      const maxDist = Math.max(680, window.innerWidth * 0.52);
-      const factor = Math.max(-1, Math.min(1, dist / maxDist));
-
-      // Perspective yaw: left cards rotate right (positive), right cards rotate left (negative)
-      const maxRotateY = 14; // degrees
-      const rotateY = -factor * maxRotateY;
-
-      // Recedes back in Z-space as card moves away from center
-      const absFactor = Math.abs(factor);
-      const translateZ = -absFactor * 80; // px
-      const scale = Math.max(0.95, 1 - absFactor * 0.06);
-      const opacity = Math.max(0.92, 1 - absFactor * 0.12);
-
-      innerRef.current.style.transform = `translate3d(0, 0, ${translateZ.toFixed(1)}px) rotateY(${rotateY.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
-      innerRef.current.style.opacity = opacity.toFixed(3);
-
-      // Elevate center card z-index so neighboring 3D perspective cards never obstruct clicks
-      const zIndex = Math.round((1 - absFactor) * 50) + 10;
-      outerRef.current.style.zIndex = String(zIndex);
+    const entry: RegisteredCard = {
+      outer,
+      inner,
+      lastTransform: '',
+      lastOpacity: '',
+      lastZIndex: '',
     };
 
-    const handleScroll = () => {
-      if (window.innerWidth >= 1024 && !ticking) {
-        ticking = true;
-        requestAnimationFrame(update3D);
-      }
-    };
-
-    if (window.innerWidth >= 1024) {
-      update3D();
-    }
-
+    registeredCards.add(entry);
     const scrollEl = scrollContainerRef?.current || document.getElementById('main-horizontal-container');
-    if (scrollEl) {
-      scrollEl.addEventListener('scroll', handleScroll, { passive: true });
-    }
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleResize);
+    ensureGlobalListeners(scrollEl);
+    scheduleBatchUpdate();
 
     return () => {
-      if (scrollEl) {
-        scrollEl.removeEventListener('scroll', handleScroll);
-      }
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
+      registeredCards.delete(entry);
+      teardownGlobalListenersIfEmpty();
     };
-  }, [scrollContainerRef]);
+  }, [scrollContainerRef, isDesktop]);
 
-  // For mobile & tablet screens: standard responsive layout without 3D perspective
   if (!isDesktop) {
     return (
       <div ref={outerRef} onClick={onClick} className={`w-full ${className}`}>
@@ -118,7 +194,6 @@ export const ThreeDCarouselCard: React.FC<ThreeDCarouselCardProps> = ({
     );
   }
 
-  // Desktop (>= 1024px): 3D Perspective Horizontal Carousel
   return (
     <div
       ref={outerRef}
@@ -134,11 +209,10 @@ export const ThreeDCarouselCard: React.FC<ThreeDCarouselCardProps> = ({
         style={{
           transformOrigin: '50% 50%',
           backfaceVisibility: 'hidden',
-          willChange: 'transform, opacity',
         }}
       >
         {children}
       </div>
     </div>
   );
-};
+});

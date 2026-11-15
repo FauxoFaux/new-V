@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { ArrowLeft, X, ChevronLeft, ChevronRight, ArrowDown } from 'lucide-react';
+import { ArrowLeft, X, ChevronLeft, ChevronRight, ArrowDown, ArrowUpRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { EditorialFooter } from './EditorialFooter';
 
@@ -7,9 +7,13 @@ export interface PlayItem {
   id: string;
   fileName: string;
   mediaUrl: string;
+  posterUrl?: string;
   mediaType: 'image' | 'video';
   title: string;
-  category: 'Graphic Design' | 'Animation' | 'Character Design' | 'Illustration';
+  category: 'Graphic Design' | 'Animation' | 'Illustration';
+  width: number;
+  height: number;
+  linkUrl?: string;
 }
 
 const PLAY_ITEMS: PlayItem[] = [
@@ -18,67 +22,89 @@ const PLAY_ITEMS: PlayItem[] = [
     id: 'puffy',
     fileName: 'Puffy.mp4',
     mediaUrl: '/PLAY/Puffy.mp4',
+    posterUrl: '/PLAY/Puffy_poster.webp',
     mediaType: 'video',
     title: 'Puffy',
     category: 'Animation',
+    width: 658,
+    height: 642,
   },
   {
     id: 'boxing',
     fileName: 'Boxing.mp4',
     mediaUrl: '/PLAY/Boxing.mp4',
+    posterUrl: '/PLAY/Boxing_poster.webp',
     mediaType: 'video',
     title: 'Boxing',
     category: 'Animation',
+    width: 720,
+    height: 720,
   },
   {
     id: 'macarena',
     fileName: 'MAcarena.mp4',
     mediaUrl: '/PLAY/MAcarena.mp4',
+    posterUrl: '/PLAY/MAcarena_poster.webp',
     mediaType: 'video',
     title: 'Macarena',
     category: 'Animation',
+    width: 720,
+    height: 1002,
   },
   {
     id: 'gooey',
-    fileName: 'Gooey.mp4',
-    mediaUrl: '/PLAY/Gooey.mp4',
+    fileName: 'Gooley Gum.mp4',
+    mediaUrl: '/PLAY/Gooley%20Gum.mp4',
+    posterUrl: '/PLAY/Gooley_Gum_poster.webp',
     mediaType: 'video',
-    title: 'Gooey Dynamics',
+    title: 'Gooley Gum',
     category: 'Animation',
+    width: 720,
+    height: 720,
   },
   {
     id: 'quicksketch',
-    fileName: 'QuickSketch.mp4',
-    mediaUrl: '/PLAY/QuickSketch.mp4',
+    fileName: 'Quick Sketch.mp4',
+    mediaUrl: '/PLAY/Quick%20Sketch.mp4',
+    posterUrl: '/PLAY/Quick_Sketch_poster.webp',
     mediaType: 'video',
-    title: 'Quick Motion Study',
+    title: 'Quick Sketch',
     category: 'Animation',
+    width: 720,
+    height: 540,
   },
   {
     id: 'sangi',
     fileName: 'Sangi.mp4',
     mediaUrl: '/PLAY/Sangi.mp4',
+    posterUrl: '/PLAY/Sangi_poster.webp',
     mediaType: 'video',
     title: 'Sangi',
     category: 'Animation',
+    width: 720,
+    height: 832,
   },
 
-  // Character Design (WebP)
+  // Illustration - Character Design (WebP)
   {
-    id: 'fox-2020',
-    fileName: '2020 fox.webp',
-    mediaUrl: '/PLAY/2020%20fox.webp',
+    id: 'eggosonic',
+    fileName: 'Eggosonic.webp',
+    mediaUrl: '/PLAY/Eggosonic.webp',
     mediaType: 'image',
-    title: 'Fox in Motion',
-    category: 'Character Design',
+    title: 'Eggosonic',
+    category: 'Illustration',
+    width: 1280,
+    height: 1280,
   },
   {
     id: 'elephant',
-    fileName: 'Elephant.webp',
-    mediaUrl: '/PLAY/Elephant.webp',
+    fileName: 'Elephant Character Illustration.webp',
+    mediaUrl: '/PLAY/Elephant%20Character%20Illustration.webp',
     mediaType: 'image',
-    title: 'Elephant',
-    category: 'Character Design',
+    title: 'Elephant Character Illustration',
+    category: 'Illustration',
+    width: 1280,
+    height: 1280,
   },
   {
     id: 'purple-villain',
@@ -86,91 +112,117 @@ const PLAY_ITEMS: PlayItem[] = [
     mediaUrl: '/PLAY/Purple%20Villian.webp',
     mediaType: 'image',
     title: 'Purple Villain',
-    category: 'Character Design',
+    category: 'Illustration',
+    width: 1280,
+    height: 1280,
   },
   {
     id: 'sushi-bug',
-    fileName: 'sushi bug.webp',
-    mediaUrl: '/PLAY/sushi%20bug.webp',
+    fileName: 'Sushi Bug.webp',
+    mediaUrl: '/PLAY/Sushi%20Bug.webp',
     mediaType: 'image',
     title: 'Sushi Bug',
-    category: 'Character Design',
+    category: 'Illustration',
+    width: 1280,
+    height: 1280,
   },
 
   // Graphic Design / Posters / Visual Studies (WebP)
   {
-    id: 'cards-2020',
-    fileName: '2020 cards.webp',
-    mediaUrl: '/PLAY/2020%20cards.webp',
+    id: 'cards-2021',
+    fileName: '2021 cards.webp',
+    mediaUrl: '/PLAY/2021%20cards.webp',
     mediaType: 'image',
-    title: 'Card Deck Systems',
+    title: '2021 Cards',
     category: 'Graphic Design',
+    width: 1280,
+    height: 936,
   },
   {
-    id: 'poster-2021',
-    fileName: '2021.webp',
-    mediaUrl: '/PLAY/2021.webp',
+    id: 'calendar-2021',
+    fileName: '2021 Calendar.webp',
+    mediaUrl: '/PLAY/2021%20Calendar.webp',
     mediaType: 'image',
-    title: 'Form & Typography',
+    title: '2021 Calendar',
     category: 'Graphic Design',
+    width: 1280,
+    height: 852,
+    linkUrl: 'https://www.behance.net/gallery/129547425/2021-Calendar-Cards',
   },
   {
-    id: 'graphic-2022',
-    fileName: '2022.webp',
-    mediaUrl: '/PLAY/2022.webp',
+    id: 'calendar-2022',
+    fileName: '2022 Calendar.webp',
+    mediaUrl: '/PLAY/2022%20Calendar.webp',
     mediaType: 'image',
-    title: 'Visual Synthesis',
+    title: '2022 Calendar',
     category: 'Graphic Design',
+    width: 1280,
+    height: 936,
+    linkUrl: 'https://www.behance.net/gallery/136242803/2022-Tribute-Calendar-Printable',
   },
   {
-    id: 'color-2023',
-    fileName: '2023.webp',
-    mediaUrl: '/PLAY/2023.webp',
+    id: 'calendar-2023',
+    fileName: '2023 Calendar.webp',
+    mediaUrl: '/PLAY/2023%20Calendar.webp',
     mediaType: 'image',
-    title: 'Color & Rhythm',
+    title: '2023 Calendar',
     category: 'Graphic Design',
+    width: 1280,
+    height: 1026,
+    linkUrl: 'https://www.behance.net/gallery/208813495/2023-Character-Illustrated-Calendar-Cards',
   },
   {
-    id: 'glowil',
-    fileName: 'glowil.webp',
-    mediaUrl: '/PLAY/glowil.webp',
+    id: 'calendar-2024',
+    fileName: '2024 Calendar.webp',
+    mediaUrl: '/PLAY/2024%20Calendar.webp',
     mediaType: 'image',
-    title: 'Glow & Light',
+    title: '2024 Calendar',
     category: 'Graphic Design',
+    width: 1280,
+    height: 968,
+    linkUrl: 'https://www.behance.net/gallery/208813801/2024-Marvel-Calendar-and-Card-Collection',
   },
 
   // Illustration / Digital Art (WebP)
   {
-    id: 'img-2778',
-    fileName: 'IMG_2778.webp',
-    mediaUrl: '/PLAY/IMG_2778.webp',
+    id: 'character-luminescence',
+    fileName: 'Character Luminescence.webp',
+    mediaUrl: '/PLAY/Character%20Luminescence.webp',
     mediaType: 'image',
-    title: 'Sketchbook Study',
+    title: 'Character Luminescence',
     category: 'Illustration',
+    width: 1280,
+    height: 1280,
   },
   {
     id: 'night',
     fileName: 'Night.webp',
     mediaUrl: '/PLAY/Night.webp',
     mediaType: 'image',
-    title: 'Night Atmosphere',
+    title: 'Night',
     category: 'Illustration',
+    width: 1280,
+    height: 1706,
   },
   {
     id: 'portrait',
     fileName: 'Potrait.webp',
     mediaUrl: '/PLAY/Potrait.webp',
     mediaType: 'image',
-    title: 'Portrait Study',
+    title: 'Portrait',
     category: 'Illustration',
+    width: 1280,
+    height: 1300,
   },
   {
     id: 'stay',
-    fileName: 'Stay.webp',
-    mediaUrl: '/PLAY/Stay.webp',
+    fileName: 'Stay Typography.webp',
+    mediaUrl: '/PLAY/Stay%20Typography.webp',
     mediaType: 'image',
-    title: 'Stay',
+    title: 'Stay Typography',
     category: 'Illustration',
+    width: 610,
+    height: 638,
   },
 ];
 
@@ -178,21 +230,45 @@ const PLAY_ITEMS: PlayItem[] = [
 const HERO_ORBIT_ITEMS: PlayItem[] = [
   'puffy',
   'elephant',
-  'poster-2021',
+  'calendar-2021',
   'boxing',
   'night',
-  'fox-2020',
-  'cards-2020',
+  'eggosonic',
+  'cards-2021',
   'gooey',
 ]
   .map((id) => PLAY_ITEMS.find((item) => item.id === id))
   .filter((item): item is PlayItem => Boolean(item));
 
+let heroMediaPrefetched = false;
+
+/** Pre-warms hero orbit images and lightweight video posters before entering Playground. */
+export function prefetchPlayHeroMedia() {
+  if (heroMediaPrefetched || typeof window === 'undefined') return;
+  const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+  if (conn?.saveData) return;
+
+  heroMediaPrefetched = true;
+  const urls = new Set<string>();
+  HERO_ORBIT_ITEMS.forEach((item) => {
+    if (item.mediaType === 'image') urls.add(item.mediaUrl);
+    if (item.posterUrl) urls.add(item.posterUrl);
+  });
+  PLAY_ITEMS.forEach((item) => {
+    if (item.posterUrl) urls.add(item.posterUrl);
+  });
+
+  urls.forEach((url) => {
+    const img = new Image();
+    img.decoding = 'async';
+    img.src = url;
+  });
+}
+
 const CATEGORIES = [
   'All',
   'Graphic Design',
   'Animation',
-  'Character Design',
   'Illustration',
 ] as const;
 
@@ -200,6 +276,72 @@ type Category = (typeof CATEGORIES)[number];
 
 interface PlayScreenProps {
   onBack: () => void;
+}
+
+function PlayMedia({
+  item,
+  variant,
+  eager = false,
+  fetchPriority,
+}: {
+  item: PlayItem;
+  variant: 'orbit' | 'masonry';
+  eager?: boolean;
+  fetchPriority?: 'high' | 'low' | 'auto';
+}) {
+  const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement | null>(null);
+
+  useEffect(() => {
+    if (item.mediaType === 'image' && imgRef.current?.complete && imgRef.current.naturalWidth > 0) {
+      setLoaded(true);
+    } else {
+      setLoaded(false);
+    }
+  }, [item.id, item.mediaType]);
+
+  if (item.mediaType === 'video') {
+    const isOrbit = variant === 'orbit';
+    return (
+      <video
+        src={isOrbit ? item.mediaUrl : undefined}
+        data-src={isOrbit ? undefined : item.mediaUrl}
+        poster={item.posterUrl}
+        width={item.width}
+        height={item.height}
+        autoPlay={isOrbit}
+        loop
+        muted
+        playsInline
+        preload={isOrbit ? 'auto' : 'none'}
+        aria-label={item.title}
+        className={`w-full ${
+          isOrbit ? 'h-full pointer-events-none' : 'h-auto group-hover:scale-[1.02] transition-transform duration-300 ease-out'
+        } block object-cover`}
+      />
+    );
+  }
+
+  return (
+    <img
+      ref={imgRef}
+      src={item.mediaUrl}
+      alt={item.title}
+      width={item.width}
+      height={item.height}
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+      fetchPriority={fetchPriority}
+      onLoad={() => setLoaded(true)}
+      className={`w-full ${
+        variant === 'orbit'
+          ? 'h-full pointer-events-none group-hover:scale-105'
+          : 'h-auto group-hover:scale-[1.02]'
+      } block object-cover transition-[transform,opacity] duration-200 ease-out ${
+        loaded ? 'opacity-100' : 'opacity-0'
+      }`}
+    />
+  );
 }
 
 export function PlayScreen({ onBack }: PlayScreenProps) {
@@ -212,7 +354,9 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
   const cardElementsRef = useRef<(HTMLDivElement | null)[]>([]);
   const isOrbitHoveredRef = useRef(false);
   const isHeroVisibleRef = useRef(true);
+  const isLightboxOpenRef = useRef(false);
   const orbitAngleRef = useRef(0);
+  isLightboxOpenRef.current = Boolean(selectedItem);
 
   // Filter items based on active category
   const filteredItems = useMemo(() => {
@@ -240,8 +384,8 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
       const dt = Math.min((now - lastTime) * 0.001, 0.1);
       lastTime = now;
 
-      // Advance circular orbit angle smoothly if not hovered (full circle in ~36 seconds)
-      if (!isOrbitHoveredRef.current) {
+      // Advance circular orbit angle smoothly if not hovered or previewing lightbox
+      if (!isOrbitHoveredRef.current && !isLightboxOpenRef.current) {
         orbitAngleRef.current = (orbitAngleRef.current + dt * (360 / 36)) % 360;
       }
 
@@ -309,41 +453,122 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
       observer.observe(heroEl);
     }
 
+    const handleVisibility = () => {
+      if (document.hidden) {
+        if (animId) {
+          cancelAnimationFrame(animId);
+          animId = 0;
+        }
+        heroEl?.querySelectorAll('video').forEach((v) => v.pause());
+      } else if (isHeroVisibleRef.current) {
+        startOrbit();
+        heroEl?.querySelectorAll('video').forEach((v) => v.play().catch(() => {}));
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
     startOrbit();
     return () => {
       disposed = true;
+      document.removeEventListener('visibilitychange', handleVisibility);
       if (animId) cancelAnimationFrame(animId);
       if (observer) observer.disconnect();
     };
   }, []);
 
-  // Pause offscreen masonry videos to keep scrolling smooth
+  // Stream and play masonry videos only when near/in viewport (and pause while lightbox is open)
   useEffect(() => {
+    const heroEl = heroSectionRef.current;
+    if (selectedItem && heroEl) {
+      heroEl.querySelectorAll('video').forEach((v) => v.pause());
+    } else if (!selectedItem && heroEl && isHeroVisibleRef.current) {
+      heroEl.querySelectorAll('video').forEach((v) => {
+        v.play().catch(() => {});
+      });
+    }
+
     const root = galleryRootRef.current;
-    if (!root || !('IntersectionObserver' in window)) return;
+    if (!root) return;
 
     const videos: HTMLVideoElement[] = Array.prototype.slice.call(
       root.querySelectorAll('video')
     );
     if (videos.length === 0) return;
 
-    const observer = new IntersectionObserver(
+    if (selectedItem) {
+      videos.forEach((v) => v.pause());
+      return;
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      videos.forEach((v) => {
+        if (!v.src && v.dataset.src) v.src = v.dataset.src;
+        v.preload = 'metadata';
+        v.play().catch(() => {});
+      });
+      return;
+    }
+
+    // Stage 1: attach video src when approaching viewport
+    const preloadObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const video = entry.target as HTMLVideoElement;
+          if (!video.src && video.dataset.src) {
+            video.src = video.dataset.src;
+            video.preload = 'metadata';
+          }
+          preloadObserver.unobserve(video);
+        });
+      },
+      { rootMargin: '250px 0px', threshold: 0.01 }
+    );
+
+    // Stage 2: play strictly while visible in viewport to prevent 6-stream decode spikes
+    const playObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           const video = entry.target as HTMLVideoElement;
           if (entry.isIntersecting) {
+            if (!video.src && video.dataset.src) {
+              video.src = video.dataset.src;
+            }
+            if (video.preload !== 'auto') {
+              video.preload = 'auto';
+            }
             video.play().catch(() => {});
           } else {
             video.pause();
           }
         });
       },
-      { rootMargin: '250px 0px', threshold: 0.01 }
+      { rootMargin: '0px', threshold: 0.08 }
     );
 
-    videos.forEach((v) => observer.observe(v));
-    return () => observer.disconnect();
-  }, [filteredItems]);
+    videos.forEach((v) => {
+      preloadObserver.observe(v);
+      playObserver.observe(v);
+    });
+    return () => {
+      preloadObserver.disconnect();
+      playObserver.disconnect();
+    };
+  }, [filteredItems, selectedItem]);
+
+  // Preload adjacent lightbox slides so Prev/Next switches feel instantaneous
+  useEffect(() => {
+    if (selectedIndex === -1 || filteredItems.length <= 1) return;
+    const prevItem = filteredItems[selectedIndex > 0 ? selectedIndex - 1 : filteredItems.length - 1];
+    const nextItem = filteredItems[selectedIndex < filteredItems.length - 1 ? selectedIndex + 1 : 0];
+    [prevItem, nextItem].forEach((neighbor) => {
+      if (neighbor?.mediaType === 'image') {
+        const img = new Image();
+        img.decoding = 'async';
+        img.src = neighbor.mediaUrl;
+      }
+    });
+  }, [selectedIndex, filteredItems]);
 
   // Keyboard navigation for lightbox
   useEffect(() => {
@@ -398,12 +623,12 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
 
   return (
     <div className="w-full min-h-screen bg-[#F6F6F7] text-[#1D1D1F] font-sans selection:bg-[#0071E3] selection:text-white flex flex-col relative overflow-x-hidden">
-      {/* TOP BAR WITH SOLID #F6F6F7 BACKGROUND */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-[#F6F6F7] border-b border-black/[0.06] px-5 sm:px-8 lg:px-12 py-4 sm:py-5">
+      {/* TOP BAR WITH NO BACKGROUND */}
+      <div className="fixed top-0 left-0 right-0 z-50 pointer-events-none px-5 sm:px-8 lg:px-12 py-4 sm:py-5">
         <div className="max-w-[1500px] mx-auto flex items-center justify-between">
           <button
             onClick={onBack}
-            className="group inline-flex items-center gap-1.5 text-[#1D1D1F] hover:text-black transition-colors font-caps text-[12px] tracking-[0.09em] font-semibold cursor-pointer py-1"
+            className="pointer-events-auto group inline-flex items-center gap-1.5 text-[#1D1D1F] hover:text-black transition-colors font-caps text-[12px] tracking-[0.09em] font-semibold cursor-pointer py-1"
             aria-label="Back to portfolio"
           >
             <ArrowLeft size={15} className="stroke-[2.5] transition-transform group-hover:-translate-x-0.5" />
@@ -438,27 +663,8 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
                   transform: 'translate3d(-50%, -50%, 0)',
                 }}
               >
-                <div className="w-[72px] h-[92px] sm:w-[100px] sm:h-[130px] md:w-[125px] md:h-[160px] lg:w-[145px] lg:h-[185px] rounded-[10px] sm:rounded-[14px] overflow-hidden bg-[#F5F5F7] border border-black/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.22)] hover:scale-110 hover:border-black/20 transition-all duration-200 select-none">
-                  {item.mediaType === 'video' ? (
-                    <video
-                      src={item.mediaUrl}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="metadata"
-                      aria-label={item.title}
-                      className="w-full h-full object-cover block pointer-events-none"
-                    />
-                  ) : (
-                    <img
-                      src={item.mediaUrl}
-                      alt={item.title}
-                      loading="eager"
-                      decoding="async"
-                      className="w-full h-full object-cover block group-hover:scale-105 transition-transform duration-300 pointer-events-none"
-                    />
-                  )}
+                <div className="w-[72px] h-[92px] sm:w-[100px] sm:h-[130px] md:w-[125px] md:h-[160px] lg:w-[145px] lg:h-[185px] rounded-[10px] sm:rounded-[14px] overflow-hidden bg-[#EAEAEF] border border-black/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.22)] hover:scale-110 hover:border-black/20 transition-[transform,box-shadow,border-color] duration-200 select-none [contain:layout_style_paint]">
+                  <PlayMedia item={item} variant="orbit" eager fetchPriority="high" />
                 </div>
               </div>
             ))}
@@ -472,11 +678,6 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
             <h1 className="font-ugly-dave text-[36px] sm:text-[48px] md:text-[60px] lg:text-[72px] xl:text-[80px] font-normal leading-[0.96] text-black tracking-[0.015em] drop-shadow-xs">
               Playground
             </h1>
-
-            {/* (2019 – 2026) */}
-            <p className="mt-1.5 sm:mt-2 font-caps text-[10.5px] sm:text-[11.5px] md:text-[12.5px] tracking-[0.14em] text-[#555555] font-semibold">
-              (2019 – 2026)
-            </p>
 
             {/* Scroll Indicator button */}
             <button
@@ -497,9 +698,9 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
       {/* 2. STICKY CATEGORY FILTER BAR (SOLID #F6F6F7) */}
       <div
         id="gallery"
-        className="sticky top-[56px] sm:top-[64px] z-40 w-full bg-[#F6F6F7] border-b border-black/[0.08] py-2"
+        className="sticky top-0 z-40 w-full bg-[#F6F6F7] border-b border-black/[0.08] py-2.5 sm:py-3"
       >
-        <div className="max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-center">
+        <div className="max-w-[1500px] mx-auto pl-20 pr-4 sm:pl-24 sm:pr-8 md:px-12 flex items-center justify-center">
           <div className="flex items-center gap-6 sm:gap-8 lg:gap-10 overflow-x-auto max-w-full py-1 scrollbar-none">
             {CATEGORIES.map((cat) => {
               const isActive = activeCategory === cat;
@@ -530,34 +731,20 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
 
       {/* 3. MASONRY GALLERY CANVAS */}
       <main ref={galleryRootRef} className="flex-1 max-w-[1600px] w-full mx-auto px-3 sm:px-6 lg:px-8 xl:px-10 py-6 sm:py-8">
-        <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 gap-3 sm:gap-4 lg:gap-4.5 [column-fill:_balance]">
+        <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 gap-3 sm:gap-4 lg:gap-4.5">
           {filteredItems.map((item, index) => (
             <div
               key={item.id}
               onClick={() => setSelectedItem(item)}
-              className="break-inside-avoid mb-3 sm:mb-4 lg:mb-4.5 group relative overflow-hidden rounded-[8px] sm:rounded-[10px] bg-[#F5F5F7] border border-black/[0.08] hover:border-black/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 cursor-pointer select-none"
+              className="break-inside-avoid mb-3 sm:mb-4 lg:mb-4.5 group relative overflow-hidden rounded-[8px] sm:rounded-[10px] bg-[#F5F5F7] border border-black/[0.08] hover:border-black/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-[box-shadow,border-color] duration-200 cursor-pointer select-none [contain:layout_style_paint]"
             >
-              <div className="relative w-full overflow-hidden bg-[#F0F0F2]">
-                {item.mediaType === 'video' ? (
-                  <video
-                    src={item.mediaUrl}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="metadata"
-                    aria-label={item.title}
-                    className="w-full h-auto block object-cover group-hover:scale-[1.02] transition-transform duration-300 ease-out"
-                  />
-                ) : (
-                  <img
-                    src={item.mediaUrl}
-                    alt={item.title}
-                    loading={index < 8 ? 'eager' : 'lazy'}
-                    decoding="async"
-                    className="w-full h-auto block object-cover group-hover:scale-[1.02] transition-transform duration-300 ease-out"
-                  />
-                )}
+              <div className="relative w-full overflow-hidden bg-[#EAEAEF]">
+                <PlayMedia
+                  item={item}
+                  variant="masonry"
+                  eager={index < 8}
+                  fetchPriority={index < 4 ? 'low' : 'auto'}
+                />
               </div>
             </div>
           ))}
@@ -589,15 +776,30 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
               {/* Modal Top Bar */}
               <div className="flex items-center justify-between px-5 sm:px-6 py-3 border-b border-white/10 bg-black/40">
                 <div className="flex items-center gap-2.5">
-                  <span className="text-white font-medium text-[14px] sm:text-[15px]">
-                    {selectedItem.title}
-                  </span>
+                  {selectedItem.linkUrl && (
+                    <span className="text-white font-medium text-[14px] sm:text-[15px]">
+                      {selectedItem.title}
+                    </span>
+                  )}
                   <span className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-1 rounded-[6px] bg-white/10 text-white border border-white/20 font-bold">
                     {selectedItem.category}
                   </span>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5">
+                  {selectedItem.linkUrl && (
+                    <a
+                      href={selectedItem.linkUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-colors text-[12px] font-medium"
+                      aria-label={`View ${selectedItem.title} on Behance`}
+                    >
+                      <span>View on Behance</span>
+                      <ArrowUpRight size={14} className="stroke-[2.2]" />
+                    </a>
+                  )}
                   <button
                     onClick={() => setSelectedItem(null)}
                     className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"

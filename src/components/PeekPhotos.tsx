@@ -312,7 +312,7 @@ export function PeekPhotoPair({ photos, className = '', size = 'md' }: PeekPhoto
 }
 
 // Horizontal playful peekaboo photo row specifically designed to sit under the About section
-export function PeekPhotosRow({
+export const PeekPhotosRow = React.memo(function PeekPhotosRow({
   photos = PEEK_PHOTOS,
   className = '',
   size = 'about',
@@ -365,7 +365,7 @@ export function PeekPhotosRow({
 
   return (
     <div
-      className={`relative flex items-center justify-start -space-x-1.5 min-[375px]:-space-x-2 sm:-space-x-3 md:-space-x-4 lg:-space-x-4.5 xl:-space-x-5 select-none overflow-visible pt-4 sm:pt-6 pb-2 w-full max-w-[1020px] ${className}`}
+      className={`relative flex items-center justify-start -space-x-1.5 min-[375px]:-space-x-2 sm:-space-x-3 md:-space-x-4 lg:-space-x-4.5 xl:-space-x-5 select-none overflow-visible pt-4 sm:pt-6 pb-2 w-full max-w-[1020px] [contain:layout_style] ${className}`}
     >
       {photos.map((photo, index) => {
         const isHovered = hoveredId === photo.id;
@@ -429,7 +429,7 @@ export function PeekPhotosRow({
       })}
     </div>
   );
-}
+});
 
 // Fallback all-in-one shelf component
 export function PeekPhotos() {

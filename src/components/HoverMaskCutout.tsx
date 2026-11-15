@@ -11,10 +11,18 @@ interface TrailBlob {
   maxAge: number;
 }
 
-export function HoverMaskCutout() {
+interface HoverMaskCutoutProps {
+  triggerLandingPeek?: boolean;
+}
+
+export const HoverMaskCutout = React.memo(function HoverMaskCutout({ triggerLandingPeek = false }: HoverMaskCutoutProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const idleCoverRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
   const headCircleRef = useRef<SVGCircleElement>(null);
   const trailGroupRef = useRef<SVGGElement>(null);
+  const startPeekRef = useRef<(() => void) | null>(null);
+  const hasPeekedRef = useRef(false);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -22,7 +30,7 @@ export function HoverMaskCutout() {
     const trailGroup = trailGroupRef.current;
     if (!container || !headCircle || !trailGroup) return;
 
-    const MAX_TRAIL = 24;
+    const MAX_TRAIL = 12;
     const circleEls: SVGCircleElement[] = [];
     for (let i = 0; i < MAX_TRAIL; i++) {
       const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -36,6 +44,7 @@ export function HoverMaskCutout() {
 
     const state = {
       isHovered: false,
+      isPeeking: false,
       mouseX: 0,
       mouseY: 0,
       currX: 0,
@@ -46,12 +55,23 @@ export function HoverMaskCutout() {
       targetHeadRadius: 0,
       blobs: [] as TrailBlob[],
       rafId: 0,
+      peekRafId: 0,
       running: false,
+    };
+
+    const setFilterActive = (active: boolean) => {
+      if (svgRef.current) {
+        svgRef.current.style.display = active ? 'block' : 'none';
+      }
+      if (idleCoverRef.current) {
+        idleCoverRef.current.style.display = active ? 'none' : 'block';
+      }
     };
 
     const startLoop = () => {
       if (!state.running) {
         state.running = true;
+        setFilterActive(true);
         state.rafId = requestAnimationFrame(tick);
       }
     };
@@ -73,7 +93,69 @@ export function HoverMaskCutout() {
       }
     };
 
+    const stopPeek = () => {
+      if (state.isPeeking) {
+        state.isPeeking = false;
+        cancelAnimationFrame(state.peekRafId);
+      }
+    };
+
+    startPeekRef.current = () => {
+      if (state.isHovered || state.isPeeking) return;
+      const rect = container.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return;
+
+      const startX = rect.width * 0.42;
+      const startY = rect.height * 0.28;
+      const endX = rect.width * 0.62;
+      const endY = rect.height * 0.56;
+
+      state.isPeeking = true;
+      state.currX = startX;
+      state.currY = startY;
+      state.mouseX = startX;
+      state.mouseY = startY;
+      state.lastSpawnX = startX;
+      state.lastSpawnY = startY;
+      state.targetHeadRadius = 74;
+      startLoop();
+
+      const startTime = performance.now();
+      const duration = 820;
+
+      const stepPeek = (now: number) => {
+        if (!state.isPeeking || state.isHovered) return;
+        const t = Math.min(1, (now - startTime) / duration);
+        // Smooth ease-in-out
+        const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+        const px = startX + (endX - startX) * eased + Math.sin(eased * Math.PI) * 18;
+        const py = startY + (endY - startY) * eased;
+
+        state.mouseX = px;
+        state.mouseY = py;
+        state.targetHeadRadius = t > 0.78 ? Math.max(0, 74 * (1 - (t - 0.78) / 0.22)) : 74;
+
+        const dist = Math.hypot(px - state.lastSpawnX, py - state.lastSpawnY);
+        if (dist > 14 && t < 0.8) {
+          spawnBlob(px, py, dist);
+          state.lastSpawnX = px;
+          state.lastSpawnY = py;
+        }
+
+        if (t < 1) {
+          state.peekRafId = requestAnimationFrame(stepPeek);
+        } else {
+          state.isPeeking = false;
+          state.targetHeadRadius = 0;
+        }
+      };
+
+      state.peekRafId = requestAnimationFrame(stepPeek);
+    };
+
     const updatePointer = (clientX: number, clientY: number) => {
+      stopPeek();
       const rect = container.getBoundingClientRect();
       const x = clientX - rect.left;
       const y = clientY - rect.top;
@@ -94,7 +176,7 @@ export function HoverMaskCutout() {
       const dy = y - state.lastSpawnY;
       const dist = Math.hypot(dx, dy);
 
-      if (dist > 10) {
+      if (dist > 14) {
         spawnBlob(x, y, dist);
         state.lastSpawnX = x;
         state.lastSpawnY = y;
@@ -176,10 +258,11 @@ export function HoverMaskCutout() {
         }
       }
 
-      if (state.isHovered || state.headRadius > 0 || state.blobs.length > 0) {
+      if (state.isHovered || state.isPeeking || state.headRadius > 0 || state.blobs.length > 0) {
         state.rafId = requestAnimationFrame(tick);
       } else {
         state.running = false;
+        setFilterActive(false);
       }
     };
 
@@ -192,6 +275,8 @@ export function HoverMaskCutout() {
 
     return () => {
       cancelAnimationFrame(state.rafId);
+      cancelAnimationFrame(state.peekRafId);
+      startPeekRef.current = null;
       container.removeEventListener('mouseenter', handleMouseEnter);
       container.removeEventListener('mousemove', handleMouseMove);
       container.removeEventListener('mouseleave', handleMouseLeave);
@@ -201,6 +286,18 @@ export function HoverMaskCutout() {
       trailGroup.innerHTML = '';
     };
   }, []);
+
+  useEffect(() => {
+    if (!triggerLandingPeek || hasPeekedRef.current) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    hasPeekedRef.current = true;
+    const timer = window.setTimeout(() => {
+      startPeekRef.current?.();
+    }, 520);
+
+    return () => window.clearTimeout(timer);
+  }, [triggerLandingPeek]);
 
   return (
     <div
@@ -222,8 +319,17 @@ export function HoverMaskCutout() {
         />
       </picture>
 
+      {/* Lightweight solid idle cover (avoids SVG blur filter cost until hover/peek) */}
+      <div
+        ref={idleCoverRef}
+        className="absolute -inset-2 bg-[#F6F6F7] pointer-events-none z-10"
+        aria-hidden="true"
+      />
+
       {/* Hover Mask Reveal effect on top in off-white (#F6F6F7) that reveals the image on hover */}
       <svg
+        ref={svgRef}
+        style={{ display: 'none' }}
         className="absolute -inset-2 w-[calc(100%+16px)] h-[calc(100%+16px)] pointer-events-none z-10"
         aria-hidden="true"
       >
@@ -236,11 +342,11 @@ export function HoverMaskCutout() {
             width="calc(100% + 40px)"
             height="calc(100% + 40px)"
           >
-            <feGaussianBlur in="SourceGraphic" stdDeviation="16" result="blur" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
             <feColorMatrix
               in="blur"
               mode="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 24 -10"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -9"
               result="goo"
             />
           </filter>
@@ -278,4 +384,4 @@ export function HoverMaskCutout() {
       <div className="absolute -bottom-1 -left-2 -right-2 h-3 bg-[#F6F6F7] pointer-events-none z-20" aria-hidden="true" />
     </div>
   );
-}
+});

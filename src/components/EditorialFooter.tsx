@@ -30,7 +30,7 @@ export const EditorialFooter: React.FC<EditorialFooterProps> = ({ className = ''
           <span className="text-[#86868B] select-none">·</span>
           <a href="/#play" className="hover:text-black hover:underline underline-offset-4 transition-colors">play</a>
           <span className="text-[#86868B] select-none">·</span>
-          <a href="https://drive.google.com/file/d/1ZJWXJ0DoubaRd7qDoCK57abnknj8BDMq/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="hover:text-black hover:underline underline-offset-4 transition-colors">resume</a>
+          <a href="https://drive.google.com/file/d/13OiD092iR2xWuALZzK1gx2DcoSyUmW_e/view" target="_blank" rel="noopener noreferrer" className="hover:text-black hover:underline underline-offset-4 transition-colors">resume</a>
           <span className="text-[#86868B] select-none">·</span>
           <a href="/#contact" className="hover:text-black hover:underline underline-offset-4 transition-colors">contact</a>
         </div>

@@ -22,7 +22,7 @@ interface TvCurvedMediaProps {
  * Crisp, modern rectangle with subtle rounded corners (rounded-[10px]) and frosted badges inside the image.
  * Immediate video playback with native autoplay, loop, and auto-recovery.
  */
-export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = ({
+export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = React.memo(({
   id,
   type,
   src,
@@ -54,35 +54,44 @@ export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = ({
       ? '/Home/Netflix_poster.webp'
       : undefined);
 
-  // Lazy-load video stream and manage playback on visibility
+  // Stage 1: attach video src/metadata near viewport; Stage 2: play only when actually visible
   useEffect(() => {
     if (type !== 'video') return;
 
     const container = containerRef.current;
     if (!container) return;
 
-    const playVideo = () => {
-      if (videoRef.current) {
-        videoRef.current.play().catch(() => {});
-      }
-    };
+    const preloadObserver = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setIsNearViewport(true);
+          preloadObserver.disconnect();
+        }
+      },
+      { rootMargin: '420px 420px 420px 420px', threshold: 0.01 }
+    );
 
-    const observer = new IntersectionObserver(
+    const playObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          const video = videoRef.current;
+          if (!video) return;
           if (entry.isIntersecting) {
-            setIsNearViewport(true);
-            playVideo();
+            video.play().catch(() => {});
           } else {
-            videoRef.current?.pause();
+            video.pause();
           }
         });
       },
-      { rootMargin: '550px 550px 550px 550px', threshold: 0.01 }
+      { rootMargin: '40px 40px 40px 40px', threshold: 0.05 }
     );
 
-    observer.observe(container);
-    return () => observer.disconnect();
+    preloadObserver.observe(container);
+    playObserver.observe(container);
+    return () => {
+      preloadObserver.disconnect();
+      playObserver.disconnect();
+    };
   }, [type, src]);
 
   return (
@@ -96,7 +105,7 @@ export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = ({
           onClick?.(e as unknown as React.MouseEvent);
         }
       }}
-      className={`relative w-full aspect-[16/10] md:aspect-[16/10] lg:aspect-auto lg:h-[480px] xl:h-[530px] 2xl:h-[570px] rounded-[10px] overflow-hidden border border-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.05)] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.1)] group-hover:border-black/20 transition-all duration-300 flex items-center justify-center cursor-pointer ${bg} ${className}`}
+      className={`relative w-full aspect-[16/10] md:aspect-[16/10] lg:aspect-auto lg:h-[480px] xl:h-[530px] 2xl:h-[570px] rounded-[10px] overflow-hidden border border-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.05)] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.1)] group-hover:border-black/20 transition-[box-shadow,border-color] duration-300 flex items-center justify-center cursor-pointer [contain:layout_style_paint] ${bg} ${className}`}
     >
       {type === 'image' ? (
         <img
@@ -115,17 +124,16 @@ export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = ({
           ref={videoRef}
           src={isNearViewport ? src : undefined}
           poster={resolvedPoster}
-          autoPlay
           loop
           muted
           playsInline
           preload={isNearViewport ? 'metadata' : 'none'}
           aria-label={alt}
           onLoadedData={(e) => {
-            e.currentTarget.play().catch(() => {});
-          }}
-          onCanPlay={(e) => {
-            e.currentTarget.play().catch(() => {});
+            const rect = containerRef.current?.getBoundingClientRect();
+            if (rect && rect.right > 0 && rect.left < window.innerWidth && rect.bottom > 0 && rect.top < window.innerHeight) {
+              e.currentTarget.play().catch(() => {});
+            }
           }}
           className="h-full w-auto max-w-full object-contain block group-hover:scale-[1.02] transition-transform duration-500 ease-out select-none"
         />
@@ -137,7 +145,7 @@ export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = ({
           {tags.map((tag) => (
             <span
               key={tag}
-              className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-1 rounded-[6px] bg-black/60 backdrop-blur-md text-white border border-white/20 font-bold shadow-sm"
+              className="font-caps text-[9px] sm:text-[9.5px] tracking-[0.06em] px-2.5 py-1 rounded-[6px] bg-[#141416]/85 text-white border border-white/15 font-bold shadow-sm"
             >
               {tag}
             </span>
@@ -146,4 +154,4 @@ export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = ({
       )}
     </div>
   );
-};
+});

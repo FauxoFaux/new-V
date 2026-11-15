@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Menu, X, ArrowUpRight, Lock } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import {
@@ -6,48 +6,176 @@ import {
 } from './components/PeekPhotos';
 import { HoverMaskCutout } from './components/HoverMaskCutout';
 import { TvCurvedMedia } from './components/TvCurvedMedia';
-import { ThreeDCarouselCard } from './components/ThreeDCarouselCard';
+import { ThreeDCarouselCard, flushCarouselCards } from './components/ThreeDCarouselCard';
+import { ContactCard3D } from './components/ContactCard3D';
+import { LogoLoadingScreen } from './components/LogoLoadingScreen';
+
+const loadPlayScreen = () => import('./components/PlayScreen');
 
 const PlayScreen = React.lazy(() =>
-  import('./components/PlayScreen').then((m) => ({ default: m.PlayScreen }))
+  loadPlayScreen().then((m) => ({ default: m.PlayScreen }))
 );
 
 const EASE_EDITORIAL = [0.16, 1, 0.3, 1] as const;
 
+const CASE_STUDY_PREFETCH_MEDIA: Record<string, string> = {
+  youtopia: '/Home/Y_WC.webp',
+  justickets: '/JT/J_Hero.webp',
+  revlr: '/REVLR/R_Hero.avif',
+  myblockcounts: '/MBC/MB_Hero.webp',
+};
+
+let caseStudyHtmlPrefetched = false;
+const prefetchedCaseAssets = new Set<string>();
+
+function shouldSkipInitialIntro(): boolean {
+  if (typeof window === 'undefined') return false;
+  const navEntry = performance.getEntriesByType?.('navigation')?.[0] as PerformanceNavigationTiming | undefined;
+  const isReload = navEntry?.type === 'reload';
+  const fromCaseStudy = document.referrer.includes('case-study.html');
+  const hash = window.location.hash.replace('#', '');
+  return fromCaseStudy || (!isReload && Boolean(hash));
+}
+
 export default function App() {
   const shouldReduceMotion = useReducedMotion();
+  const [skipInitialIntro] = useState(shouldSkipInitialIntro);
+  const [showLoader, setShowLoader] = useState(!skipInitialIntro);
+  const [homeLandingStarted, setHomeLandingStarted] = useState(skipInitialIntro);
+  const [logoLanded, setLogoLanded] = useState(skipInitialIntro);
+  const [fontsReady, setFontsReady] = useState(false);
+  const navLogoRef = useRef<SVGSVGElement>(null);
+
+  const handleLandingStart = useCallback(() => {
+    setHomeLandingStarted(true);
+  }, []);
+
+  const handleLoaderComplete = useCallback(() => {
+    setLogoLanded(true);
+    setShowLoader(false);
+  }, []);
+
+  const prefetchPlay = useCallback(() => {
+    loadPlayScreen()
+      .then((m) => {
+        m.prefetchPlayHeroMedia();
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (!logoLanded) return;
+    let cancelled = false;
+    const run = () => {
+      if (!cancelled) prefetchPlay();
+    };
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    if (typeof w.requestIdleCallback === 'function') {
+      const id = w.requestIdleCallback(run, { timeout: 1500 });
+      return () => {
+        cancelled = true;
+        w.cancelIdleCallback?.(id);
+      };
+    }
+    const timer = window.setTimeout(run, 800);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [logoLanded, prefetchPlay]);
+
+  const prefetchCaseStudy = useCallback((projectId: string) => {
+    const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    if (conn?.saveData) return;
+
+    if (!caseStudyHtmlPrefetched && typeof document !== 'undefined') {
+      caseStudyHtmlPrefetched = true;
+      const link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.as = 'document';
+      link.href = '/case-study.html';
+      document.head.appendChild(link);
+    }
+
+    const heroMedia = CASE_STUDY_PREFETCH_MEDIA[projectId];
+    if (heroMedia && !prefetchedCaseAssets.has(heroMedia)) {
+      prefetchedCaseAssets.add(heroMedia);
+      const img = new Image();
+      img.decoding = 'async';
+      img.src = heroMedia;
+    }
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    const fallbackTimer = window.setTimeout(() => {
+      if (active) setFontsReady(true);
+    }, 80);
+
+    if (document.fonts && typeof document.fonts.load === 'function') {
+      if (document.fonts.check('1em "Ugly Dave"')) {
+        setFontsReady(true);
+        window.clearTimeout(fallbackTimer);
+        return;
+      }
+      document.fonts
+        .load('1em "Ugly Dave"')
+        .then(() => {
+          if (active) setFontsReady(true);
+        })
+        .catch(() => {
+          if (active) setFontsReady(true);
+        });
+    } else {
+      setFontsReady(true);
+    }
+
+    return () => {
+      active = false;
+      window.clearTimeout(fallbackTimer);
+    };
+  }, []);
+
   const [currentScreen, setCurrentScreen] = useState<'home' | 'play'>('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('');
 
   const horizontalScrollRef = useRef<HTMLDivElement>(null);
   const cursorPillRef = useRef<HTMLDivElement>(null);
-  const [cardCursor, setCardCursor] = useState<{ visible: boolean; label: string }>({
-    visible: false,
-    label: 'View Case Study',
-  });
+  const cursorLabelRef = useRef<HTMLSpanElement>(null);
 
-  const handleCardMouseEnter = (e: React.MouseEvent<HTMLElement>, label = 'View Case Study') => {
+  const handleCardMouseEnter = useCallback((e: React.MouseEvent<HTMLElement>, label = 'View Case Study') => {
+    const pill = cursorPillRef.current;
+    if (pill) {
+      pill.style.transform = `translate3d(${e.clientX + 14}px, ${e.clientY - 12}px, 0)`;
+      pill.style.opacity = '1';
+    }
+    if (cursorLabelRef.current && cursorLabelRef.current.textContent !== label) {
+      cursorLabelRef.current.textContent = label;
+    }
+  }, []);
+
+  const handleCardMouseMove = useCallback((e: React.MouseEvent<HTMLElement>, label = 'View Case Study') => {
+    const pill = cursorPillRef.current;
+    if (pill) {
+      pill.style.transform = `translate3d(${e.clientX + 14}px, ${e.clientY - 12}px, 0)`;
+      if (pill.style.opacity !== '1') {
+        pill.style.opacity = '1';
+      }
+    }
+    if (cursorLabelRef.current && cursorLabelRef.current.textContent !== label) {
+      cursorLabelRef.current.textContent = label;
+    }
+  }, []);
+
+  const handleCardMouseLeave = useCallback(() => {
     if (cursorPillRef.current) {
-      cursorPillRef.current.style.transform = `translate3d(${e.clientX + 14}px, ${e.clientY - 12}px, 0)`;
+      cursorPillRef.current.style.opacity = '0';
     }
-    setCardCursor((prev) =>
-      prev.visible && prev.label === label ? prev : { visible: true, label }
-    );
-  };
-
-  const handleCardMouseMove = (e: React.MouseEvent<HTMLElement>, label = 'View Case Study') => {
-    if (cursorPillRef.current) {
-      cursorPillRef.current.style.transform = `translate3d(${e.clientX + 14}px, ${e.clientY - 12}px, 0)`;
-    }
-    if (!cardCursor.visible || cardCursor.label !== label) {
-      setCardCursor({ visible: true, label });
-    }
-  };
-
-  const handleCardMouseLeave = () => {
-    setCardCursor((prev) => (prev.visible ? { ...prev, visible: false } : prev));
-  };
+  }, []);
 
   const handleCardClick = (e: React.MouseEvent, projectId: string) => {
     if (e.metaKey || e.ctrlKey || e.shiftKey) return;
@@ -90,20 +218,66 @@ export default function App() {
     };
   }, [mobileMenuOpen]);
 
-  // Horizontal mouse wheel and trackpad listener on desktop (>= 1024px)
+  // Smooth inertial horizontal mouse wheel and keyboard listener on desktop (>= 1024px)
   useEffect(() => {
     if (currentScreen === 'play') return;
 
-    const handleWheel = (e: WheelEvent) => {
-      if (window.innerWidth < 1024) return; // Vertical flow on tablet & mobile
-      const container = horizontalScrollRef.current;
-      if (!container) return;
-      if (mobileMenuOpen) return;
+    let targetScrollLeft: number | null = null;
+    let wheelRaf = 0;
 
-      // Translate vertical wheel movement to horizontal scroll while letting native trackpad deltaX pass through
+    const stepScroll = () => {
+      const container = horizontalScrollRef.current;
+      if (!container || targetScrollLeft === null) {
+        wheelRaf = 0;
+        return;
+      }
+      const diff = targetScrollLeft - container.scrollLeft;
+      if (Math.abs(diff) < 1) {
+        container.scrollLeft = targetScrollLeft;
+        targetScrollLeft = null;
+        wheelRaf = 0;
+        flushCarouselCards();
+        return;
+      }
+      container.scrollLeft += diff * 0.38;
+      flushCarouselCards();
+      wheelRaf = requestAnimationFrame(stepScroll);
+    };
+
+    const cancelSmoothWheel = () => {
+      targetScrollLeft = null;
+      if (wheelRaf) {
+        cancelAnimationFrame(wheelRaf);
+        wheelRaf = 0;
+      }
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      if (window.innerWidth < 1024) return;
+      const container = horizontalScrollRef.current;
+      if (!container || mobileMenuOpen) return;
+
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
         e.preventDefault();
-        container.scrollLeft += e.deltaY;
+        const maxScroll = container.scrollWidth - container.clientWidth;
+        const delta = e.deltaMode === 1 ? e.deltaY * 32 : e.deltaMode === 2 ? e.deltaY * 240 : e.deltaY;
+
+        // Trackpad emits fine, continuous pixel events -> apply 1:1 with zero inertia lag
+        if (e.deltaMode === 0 && Math.abs(delta) < 42) {
+          cancelSmoothWheel();
+          container.scrollLeft = Math.max(0, Math.min(maxScroll, container.scrollLeft + delta));
+          flushCarouselCards();
+          return;
+        }
+
+        // Discrete mouse wheel notches -> crisp eased horizontal glide
+        const base = targetScrollLeft ?? container.scrollLeft;
+        targetScrollLeft = Math.max(0, Math.min(maxScroll, base + delta));
+        if (!wheelRaf) {
+          wheelRaf = requestAnimationFrame(stepScroll);
+        }
+      } else if (Math.abs(e.deltaX) > 0) {
+        cancelSmoothWheel();
       }
     };
 
@@ -112,64 +286,58 @@ export default function App() {
       const container = horizontalScrollRef.current;
       if (!container) return;
       if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+        cancelSmoothWheel();
         container.scrollBy({ left: 400, behavior: 'smooth' });
       } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        cancelSmoothWheel();
         container.scrollBy({ left: -400, behavior: 'smooth' });
       }
     };
 
+    const container = horizontalScrollRef.current;
+    container?.addEventListener('pointerdown', cancelSmoothWheel, { passive: true });
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('keydown', handleKeyDown);
     return () => {
+      cancelSmoothWheel();
+      container?.removeEventListener('pointerdown', cancelSmoothWheel);
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [currentScreen, mobileMenuOpen]);
 
-  // Active section scroll observer for navigation highlight (both horizontal on desktop & vertical on mobile/tablet)
+  // Active section scroll observer with cached geometry (zero per-frame layout reads)
   useEffect(() => {
     if (currentScreen === 'play') return;
-    const sections = ['work', 'things-i-built', 'mentorship', 'about', 'contact'];
+    const sectionIds = ['work', 'things-i-built', 'mentorship', 'about', 'contact'] as const;
     let ticking = false;
+    let cachedMetrics: { id: string; start: number; end: number }[] = [];
+    let cachedIsDesktop = window.innerWidth >= 1024;
+
+    const measureSections = () => {
+      cachedIsDesktop = window.innerWidth >= 1024;
+      cachedMetrics = [];
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const start = cachedIsDesktop ? el.offsetLeft : el.offsetTop;
+        const size = cachedIsDesktop ? el.offsetWidth : el.offsetHeight;
+        cachedMetrics.push({ id, start, end: start + size });
+      }
+    };
 
     const updateActiveTab = () => {
       ticking = false;
-      const isDesktop = window.innerWidth >= 1024;
       const container = horizontalScrollRef.current;
-
-      if (isDesktop && container) {
-        const scrollLeft = container.scrollLeft + 350;
-        let current = '';
-        for (const id of sections) {
-          const el = document.getElementById(id);
-          if (el) {
-            const left = el.offsetLeft;
-            const width = el.offsetWidth;
-            if (scrollLeft >= left && scrollLeft < left + width) {
-              if (id === 'things-i-built') current = '';
-              else if (id === 'contact') current = 'contact';
-              else current = id;
-            }
-          }
+      const pos = cachedIsDesktop && container ? container.scrollLeft + 350 : window.scrollY + 280;
+      let current = '';
+      for (let i = 0; i < cachedMetrics.length; i++) {
+        const m = cachedMetrics[i];
+        if (pos >= m.start && pos < m.end) {
+          current = m.id === 'things-i-built' ? '' : m.id;
         }
-        setActiveTab(current);
-      } else {
-        const scrollPos = window.scrollY + 280;
-        let current = '';
-        for (const id of sections) {
-          const el = document.getElementById(id);
-          if (el) {
-            const top = el.offsetTop;
-            const height = el.offsetHeight;
-            if (scrollPos >= top && scrollPos < top + height) {
-              if (id === 'things-i-built') current = '';
-              else if (id === 'contact') current = 'contact';
-              else current = id;
-            }
-          }
-        }
-        setActiveTab(current);
       }
+      setActiveTab((prev) => (prev === current ? prev : current));
     };
 
     const handleScroll = () => {
@@ -179,20 +347,22 @@ export default function App() {
       }
     };
 
+    const handleResize = () => {
+      measureSections();
+      handleScroll();
+    };
+
+    measureSections();
     const container = horizontalScrollRef.current;
-    if (container) {
-      container.addEventListener('scroll', handleScroll, { passive: true });
-    }
+    container?.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll);
+    window.addEventListener('resize', handleResize, { passive: true });
     updateActiveTab();
 
     return () => {
-      if (container) {
-        container.removeEventListener('scroll', handleScroll);
-      }
+      container?.removeEventListener('scroll', handleScroll);
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
+      window.removeEventListener('resize', handleResize);
     };
   }, [currentScreen]);
 
@@ -229,7 +399,7 @@ export default function App() {
       }
 
       if (hash === 'resume') {
-        window.open('https://drive.google.com/file/d/1ZJWXJ0DoubaRd7qDoCK57abnknj8BDMq/view?usp=sharing', '_blank', 'noopener,noreferrer');
+        window.open('https://drive.google.com/file/d/13OiD092iR2xWuALZzK1gx2DcoSyUmW_e/view', '_blank', 'noopener,noreferrer');
       } else if (hash === 'play') {
         setCurrentScreen('play');
         setActiveTab('play');
@@ -324,28 +494,45 @@ export default function App() {
 
   if (currentScreen === 'play') {
     return (
-      <React.Suspense fallback={<div className="min-h-screen bg-[#F6F6F7]" />}>
-        <PlayScreen
-          onBack={() => {
-            setCurrentScreen('home');
-            setActiveTab('');
-            if (window.location.hash === '#play') {
-              window.history.pushState('', document.title, window.location.pathname);
-            }
-          }}
-        />
-      </React.Suspense>
+      <>
+        {showLoader && (
+          <LogoLoadingScreen
+            mode="intro"
+            fontsReady={fontsReady}
+            onLandingStart={handleLandingStart}
+            onComplete={handleLoaderComplete}
+          />
+        )}
+        <React.Suspense fallback={<LogoLoadingScreen mode="indeterminate" />}>
+          <PlayScreen
+            onBack={() => {
+              setCurrentScreen('home');
+              setActiveTab('');
+              if (window.location.hash === '#play') {
+                window.history.pushState('', document.title, window.location.pathname);
+              }
+            }}
+          />
+        </React.Suspense>
+      </>
     );
   }
 
   return (
     <div className="w-full h-full min-h-screen bg-[#F6F6F7] text-[#1D1D1F] selection:bg-[#0071E3] selection:text-white flex flex-col font-sans lg:overflow-hidden">
+      {showLoader && (
+        <LogoLoadingScreen
+          mode="intro"
+          fontsReady={fontsReady}
+          targetLogoRef={navLogoRef}
+          onLandingStart={handleLandingStart}
+          onComplete={handleLoaderComplete}
+        />
+      )}
+
       {/* Navigation Header - Solid #F6F6F7 background */}
-      <motion.header
+      <header
         id="main-navigation-header"
-        initial={shouldReduceMotion ? false : { y: -16, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: EASE_EDITORIAL }}
         className={`fixed top-0 left-0 right-0 z-50 w-full px-5 sm:px-8 md:px-12 lg:px-16 py-4 transition-colors bg-[#F6F6F7] border-b border-black/[0.08] lg:bg-[#F6F6F7] lg:border-transparent pointer-events-auto lg:pointer-events-none ${
           mobileMenuOpen ? 'bg-[#F6F6F7] border-b border-black/[0.08]' : ''
         }`}
@@ -372,10 +559,13 @@ export default function App() {
             aria-label="Home"
           >
             <svg
+              ref={navLogoRef}
               viewBox="0 0 1562 1627"
               fill="none"
               stroke="currentColor"
-              className="h-7 w-auto shrink-0"
+              className={`h-7 w-auto shrink-0 ${
+                logoLanded || shouldReduceMotion ? 'opacity-100' : 'opacity-0'
+              }`}
               aria-hidden="true"
             >
               <path
@@ -392,57 +582,78 @@ export default function App() {
           </a>
 
           {/* Desktop Navigation Items: WORK, ABOUT, PLAY, RESUME, CONTACT */}
-          <a
+          <motion.a
             href="#work"
             onClick={(e) => handleNavClick('work', e)}
-            className={`hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] transition-all whitespace-nowrap ${activeTab === 'work' ? 'text-black font-bold' : 'text-[#1D1D1F]/70 hover:text-black font-semibold'}`}
+            initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
+            animate={homeLandingStarted || shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+            transition={{ duration: 0.55, delay: 0.24, ease: EASE_EDITORIAL }}
+            className={`hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] transition-colors whitespace-nowrap ${activeTab === 'work' ? 'text-black font-bold' : 'text-[#1D1D1F]/70 hover:text-black font-semibold'}`}
           >
             WORK
-          </a>
+          </motion.a>
 
-          <a
+          <motion.a
             href="#about"
             onClick={(e) => handleNavClick('about', e)}
-            className={`hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] transition-all whitespace-nowrap ${activeTab === 'about' ? 'text-black font-bold' : 'text-[#1D1D1F]/70 hover:text-black font-semibold'}`}
+            initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
+            animate={homeLandingStarted || shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+            transition={{ duration: 0.55, delay: 0.29, ease: EASE_EDITORIAL }}
+            className={`hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] transition-colors whitespace-nowrap ${activeTab === 'about' ? 'text-black font-bold' : 'text-[#1D1D1F]/70 hover:text-black font-semibold'}`}
           >
             ABOUT
-          </a>
+          </motion.a>
 
           {/* PLAY (Opens separate Instagram-style screen) */}
-          <a
+          <motion.a
             href="#play"
             onClick={(e) => handleNavClick('play', e)}
-            className={`hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] transition-all whitespace-nowrap ${currentScreen === 'play' || activeTab === 'play' ? 'text-black font-bold' : 'text-[#1D1D1F]/70 hover:text-black font-semibold'}`}
+            onMouseEnter={prefetchPlay}
+            onFocus={prefetchPlay}
+            onTouchStart={prefetchPlay}
+            initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
+            animate={homeLandingStarted || shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+            transition={{ duration: 0.55, delay: 0.34, ease: EASE_EDITORIAL }}
+            className={`hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] transition-colors whitespace-nowrap ${currentScreen === 'play' || activeTab === 'play' ? 'text-black font-bold' : 'text-[#1D1D1F]/70 hover:text-black font-semibold'}`}
           >
             PLAY
-          </a>
+          </motion.a>
 
-          <a
+          <motion.a
             href="https://drive.google.com/file/d/1ZJWXJ0DoubaRd7qDoCK57abnknj8BDMq/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] text-[#1D1D1F]/70 hover:text-black transition-all whitespace-nowrap font-semibold"
+            initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
+            animate={homeLandingStarted || shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+            transition={{ duration: 0.55, delay: 0.39, ease: EASE_EDITORIAL }}
+            className="hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] text-[#1D1D1F]/70 hover:text-black transition-colors whitespace-nowrap font-semibold"
           >
             RESUME
-          </a>
+          </motion.a>
 
-          <a
+          <motion.a
             href="#contact"
             onClick={(e) => handleNavClick('contact', e)}
-            className={`hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] transition-all whitespace-nowrap ${activeTab === 'contact' ? 'text-black font-bold' : 'text-[#1D1D1F]/70 hover:text-black font-semibold'}`}
+            initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
+            animate={homeLandingStarted || shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+            transition={{ duration: 0.55, delay: 0.44, ease: EASE_EDITORIAL }}
+            className={`hidden lg:inline-flex items-center font-caps text-[12px] tracking-[0.09em] transition-colors whitespace-nowrap ${activeTab === 'contact' ? 'text-black font-bold' : 'text-[#1D1D1F]/70 hover:text-black font-semibold'}`}
           >
             CONTACT
-          </a>
+          </motion.a>
 
           {/* Mobile & Tablet Hamburger Button */}
-          <button
+          <motion.button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
+            animate={homeLandingStarted || shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+            transition={{ duration: 0.55, delay: 0.28, ease: EASE_EDITORIAL }}
             className="lg:hidden p-2 text-black bg-transparent hover:text-[#444444] transition-colors rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-black/20 cursor-pointer"
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          </motion.button>
         </nav>
 
         {/* Mobile Navigation Dropdown Drawer - Covers half of screen, not a modal */}
@@ -467,6 +678,9 @@ export default function App() {
               <a
                 href="#play"
                 onClick={(e) => handleMobileNavClick('play', e)}
+                onMouseEnter={prefetchPlay}
+                onFocus={prefetchPlay}
+                onTouchStart={prefetchPlay}
                 className={`block px-3 py-2.5 rounded-lg font-caps text-[13px] tracking-[0.1em] transition-colors ${currentScreen === 'play' || activeTab === 'play' ? 'text-black font-bold' : 'text-[#6E6E73] hover:text-black font-semibold'}`}
               >
                 PLAY
@@ -496,7 +710,7 @@ export default function App() {
             </div>
           </div>
         )}
-      </motion.header>
+      </header>
 
       {/* Outside click area & subtle darkened background overlay when mobile menu is opened */}
       {mobileMenuOpen && (
@@ -517,80 +731,107 @@ export default function App() {
         {/* HERO SECTION: Fills 100vw on desktop */}
         <section 
           id="top" 
-          className="relative w-full lg:w-screen lg:min-w-[100vw] h-auto min-h-[90vh] lg:h-screen flex flex-col justify-between pt-28 sm:pt-32 md:pt-36 lg:pt-20 pb-12 sm:pb-16 md:pb-20 lg:pb-0 px-6 sm:px-10 lg:px-20 xl:px-24 shrink-0"
+          className="relative w-full lg:w-screen lg:min-w-[100vw] h-auto lg:h-screen flex flex-col justify-between pt-24 sm:pt-28 md:pt-32 lg:pt-20 pb-6 sm:pb-8 md:pb-12 lg:pb-0 px-6 sm:px-10 lg:px-20 xl:px-24 shrink-0"
         >
-          <div className="flex-1 flex flex-col lg:flex-row lg:items-end justify-between gap-8 lg:gap-16 w-full max-w-[1340px] mx-auto lg:mx-0">
+          <motion.div
+            initial={shouldReduceMotion || skipInitialIntro ? false : { scale: 1.03 }}
+            animate={homeLandingStarted || shouldReduceMotion ? { scale: 1 } : { scale: 1.03 }}
+            transition={{ duration: 0.45, delay: 0.02, ease: EASE_EDITORIAL }}
+            className="flex-1 flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-10 lg:gap-16 w-full max-w-[1340px] mx-auto lg:mx-0 origin-center"
+          >
             {/* Typographic Headline */}
-            <div className="relative z-20 pointer-events-none max-w-[580px] lg:max-w-[640px] pb-6 lg:pb-16 flex flex-col justify-end">
+            <div className="relative z-20 pointer-events-none max-w-[580px] lg:max-w-[640px] pb-4 md:pb-10 lg:pb-16 flex flex-col justify-end">
               {/* 1. Hi, I'm Kay */}
-              <h1 className="font-ugly-dave text-[52px] sm:text-[70px] md:text-[82px] lg:text-[90px] xl:text-[100px] font-normal leading-[0.96] text-black tracking-[0.015em]">
+              <h1 className="font-ugly-dave text-[52px] sm:text-[70px] md:text-[82px] lg:text-[90px] xl:text-[100px] font-normal leading-[0.96] text-black tracking-[0.015em] overflow-hidden pt-2 -mt-2 pb-3 -mb-3 px-2 -mx-2">
                 <motion.span
-                  className="inline-block transform -rotate-1 origin-left"
-                  initial={shouldReduceMotion ? false : { opacity: 0, y: 28, rotate: -3 }}
-                  animate={{ opacity: 1, y: 0, rotate: -1 }}
-                  transition={{ duration: 0.8, delay: 0.08, ease: EASE_EDITORIAL }}
+                  className="inline-block transform -rotate-1 origin-left will-change-transform"
+                  initial={
+                    shouldReduceMotion || skipInitialIntro
+                      ? false
+                      : { opacity: 0, y: 36, rotate: -1 }
+                  }
+                  animate={
+                    homeLandingStarted || shouldReduceMotion
+                      ? { opacity: 1, y: 0, rotate: -1 }
+                      : { opacity: 0, y: 36, rotate: -1 }
+                  }
+                  transition={{ duration: 0.42, delay: 0.04, ease: EASE_EDITORIAL }}
                 >
                   Hi, I'm Kay
                 </motion.span>
               </h1>
 
               {/* 2. Ambiguous problems quote */}
-              <motion.div
-                initial={shouldReduceMotion ? false : { opacity: 0, y: 22 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.22, ease: EASE_EDITORIAL }}
-                className="mt-6 sm:mt-8 text-[18px] sm:text-[21px] md:text-[22px] lg:text-[24px] font-sans-display leading-[1.45] text-[#222222] font-medium max-w-[560px]"
-              >
-                <p>
-                  I love turning{' '}
-                  <span className="text-black font-extrabold">
-                    ambiguous problems
-                  </span>{' '}
-                  into products people can{' '}
-                  <span className="text-black font-extrabold">
-                    actually use.
-                  </span>
-                </p>
-              </motion.div>
+              <div className="overflow-hidden">
+                <motion.div
+                  initial={
+                    shouldReduceMotion || skipInitialIntro
+                      ? false
+                      : { opacity: 0, y: 28 }
+                  }
+                  animate={
+                    homeLandingStarted || shouldReduceMotion
+                      ? { opacity: 1, y: 0 }
+                      : { opacity: 0, y: 28 }
+                  }
+                  transition={{ duration: 0.42, delay: 0.11, ease: EASE_EDITORIAL }}
+                  className="mt-6 sm:mt-8 text-[18px] sm:text-[21px] md:text-[22px] lg:text-[24px] font-sans-display leading-[1.45] text-[#222222] font-medium max-w-[560px] will-change-transform"
+                >
+                  <p>
+                    I love turning{' '}
+                    <span className="text-black font-extrabold">
+                      ambiguous problems
+                    </span>{' '}
+                    into products people can{' '}
+                    <span className="text-black font-extrabold">
+                      actually use.
+                    </span>
+                  </p>
+                </motion.div>
+              </div>
 
               {/* 3. Product · Research · Visuals · Code placed below */}
-              <motion.p
-                initial={shouldReduceMotion ? false : { opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.36, ease: EASE_EDITORIAL }}
-                className="mt-6 sm:mt-8 font-caps text-[11px] sm:text-[12px] tracking-[0.14em] text-[#555555] font-bold"
-              >
-                Product &middot; Research &middot; Visuals &middot; Code
-              </motion.p>
+              <div className="overflow-hidden">
+                <motion.p
+                  initial={
+                    shouldReduceMotion || skipInitialIntro
+                      ? false
+                      : { opacity: 0, y: 20 }
+                  }
+                  animate={
+                    homeLandingStarted || shouldReduceMotion
+                      ? { opacity: 1, y: 0 }
+                      : { opacity: 0, y: 20 }
+                  }
+                  transition={{ duration: 0.4, delay: 0.18, ease: EASE_EDITORIAL }}
+                  className="mt-6 sm:mt-8 font-caps text-[11px] sm:text-[12px] tracking-[0.14em] text-[#555555] font-bold will-change-transform"
+                >
+                  Product &middot; Research &middot; Visuals &middot; Code
+                </motion.p>
+              </div>
             </div>
 
             {/* Cutout portrait with Hover Mask Reveal - aligned to right on mobile and desktop */}
             <motion.div
-              initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.46, ease: EASE_EDITORIAL }}
-              className="flex items-end justify-end shrink-0 lg:self-end leading-none overflow-hidden w-full lg:w-auto"
+              initial={shouldReduceMotion || skipInitialIntro ? false : { opacity: 0, y: 32 }}
+              animate={homeLandingStarted || shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
+              transition={{ duration: 0.48, delay: 0.08, ease: EASE_EDITORIAL }}
+              className="flex items-end justify-end shrink-0 md:self-end leading-none overflow-hidden w-full md:w-auto"
             >
               <HoverMaskCutout />
             </motion.div>
-          </div>
+          </motion.div>
         </section>
 
         {/* 1. SELECTED WORK */}
         <section 
           id="work" 
-          className="relative z-10 py-12 sm:py-16 md:py-20 lg:py-0 lg:h-screen lg:flex lg:flex-row lg:items-center lg:gap-12 xl:gap-14 px-6 sm:px-10 lg:px-20 xl:px-24 shrink-0 w-full lg:w-auto max-w-[1340px] lg:max-w-none mx-auto lg:mx-0"
+          className="relative z-10 pt-8 pb-12 sm:pt-10 sm:pb-16 md:pt-12 md:pb-20 lg:py-0 lg:h-screen lg:flex lg:flex-row lg:items-center px-6 sm:px-10 lg:px-20 xl:px-24 shrink-0 w-full lg:w-auto max-w-[1340px] lg:max-w-none mx-auto lg:mx-0"
         >
-          {/* Header */}
-          <div className="mb-8 sm:mb-10 lg:mb-0 lg:w-[320px] xl:w-[360px] lg:shrink-0 flex flex-col justify-center">
-            <h2 className="font-ugly-dave text-[38px] sm:text-[46px] lg:text-[50px] font-normal leading-[1.05] text-black tracking-[0.015em]">
-              Selected Work
-            </h2>
-          </div>
 
           {/* Cards: 3D Perspective Horizontal Carousel on desktop, 2-per-row on tablet, full-width on mobile */}
           <div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row lg:items-center gap-8 sm:gap-10 lg:gap-10 xl:gap-14 w-full lg:w-auto lg:shrink-0 overflow-visible py-4"
+            className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row lg:items-center gap-8 sm:gap-10 lg:gap-10 xl:gap-14 w-full lg:w-auto lg:shrink-0 overflow-visible pt-2 pb-4 lg:py-4"
           >
             {/* PROJECT 1: YOUTOPIA */}
             <div className="w-full lg:max-w-none lg:w-[740px] xl:w-[820px] 2xl:w-[880px] lg:shrink-0 overflow-visible">
@@ -608,7 +849,12 @@ export default function App() {
                   <a
                     href="/case-study.html?project=youtopia"
                     onClick={(e) => handleCardClick(e, 'youtopia')}
-                    onMouseEnter={handleCardMouseEnter}
+                    onMouseEnter={(e) => {
+                      prefetchCaseStudy('youtopia');
+                      handleCardMouseEnter(e);
+                    }}
+                    onFocus={() => prefetchCaseStudy('youtopia')}
+                    onTouchStart={() => prefetchCaseStudy('youtopia')}
                     onMouseMove={handleCardMouseMove}
                     onMouseLeave={handleCardMouseLeave}
                     className="group block text-black w-full cursor-pointer transition-all"
@@ -659,7 +905,12 @@ export default function App() {
                   <a
                     href="/case-study.html?project=justickets"
                     onClick={(e) => handleCardClick(e, 'justickets')}
-                    onMouseEnter={handleCardMouseEnter}
+                    onMouseEnter={(e) => {
+                      prefetchCaseStudy('justickets');
+                      handleCardMouseEnter(e);
+                    }}
+                    onFocus={() => prefetchCaseStudy('justickets')}
+                    onTouchStart={() => prefetchCaseStudy('justickets')}
                     onMouseMove={handleCardMouseMove}
                     onMouseLeave={handleCardMouseLeave}
                     className="group block text-black w-full cursor-pointer transition-all"
@@ -707,7 +958,12 @@ export default function App() {
                   <a
                     href="/case-study.html?project=revlr"
                     onClick={(e) => handleCardClick(e, 'revlr')}
-                    onMouseEnter={handleCardMouseEnter}
+                    onMouseEnter={(e) => {
+                      prefetchCaseStudy('revlr');
+                      handleCardMouseEnter(e);
+                    }}
+                    onFocus={() => prefetchCaseStudy('revlr')}
+                    onTouchStart={() => prefetchCaseStudy('revlr')}
                     onMouseMove={handleCardMouseMove}
                     onMouseLeave={handleCardMouseLeave}
                     className="group block text-black w-full cursor-pointer transition-all"
@@ -757,7 +1013,12 @@ export default function App() {
                   <a
                     href="/case-study.html?project=myblockcounts"
                     onClick={(e) => handleCardClick(e, 'myblockcounts')}
-                    onMouseEnter={handleCardMouseEnter}
+                    onMouseEnter={(e) => {
+                      prefetchCaseStudy('myblockcounts');
+                      handleCardMouseEnter(e);
+                    }}
+                    onFocus={() => prefetchCaseStudy('myblockcounts')}
+                    onTouchStart={() => prefetchCaseStudy('myblockcounts')}
                     onMouseMove={handleCardMouseMove}
                     onMouseLeave={handleCardMouseLeave}
                     className="group block text-black w-full cursor-pointer transition-all"
@@ -948,8 +1209,8 @@ export default function App() {
                     src="/Home/about.webp"
                     alt="Kay portrait illustration"
                     className="w-full h-full object-contain"
-                    width={1111}
-                    height={1600}
+                    width={800}
+                    height={1152}
                     loading="lazy"
                     decoding="async"
                   />
@@ -977,8 +1238,8 @@ export default function App() {
                     src="/Home/about.webp"
                     alt="Kay portrait illustration"
                     className="w-full h-full object-contain"
-                    width={1111}
-                    height={1600}
+                    width={800}
+                    height={1152}
                     loading="lazy"
                     decoding="async"
                   />
@@ -1045,105 +1306,8 @@ export default function App() {
               </h2>
             </motion.div>
 
-            {/* Right Column: Contact Card in current UI style */}
-            <motion.div
-              initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.65, delay: 0.08, ease: EASE_EDITORIAL }}
-              className="w-full max-w-[540px] lg:max-w-[480px] xl:max-w-[520px] shrink-0"
-            >
-              <div className="p-7 sm:p-9 lg:p-9 xl:p-10 bg-white border border-black/[0.09] rounded-[10px] text-black shadow-none">
-                <span className="font-caps text-[11px] sm:text-[12px] tracking-[0.14em] text-[#86868B] block mb-3 font-bold">
-                  Get in Touch
-                </span>
-
-                <p className="text-[14px] sm:text-[15px] leading-[1.7] text-[#515154] font-normal mb-6">
-                  Whether you're exploring a new product, improving an existing one, or just want to talk about design, feel free to reach out.
-                </p>
-
-                <div className="mb-6 max-w-full">
-                  <a
-                    href="mailto:itskeerthanaravichandran@gmail.com"
-                    className="inline-flex items-center gap-1.5 sm:gap-2 text-[14.5px] sm:text-base lg:text-[16.5px] xl:text-lg font-sans text-[#1D1D1F] hover:text-[#0071E3] transition-colors font-semibold tracking-tight max-w-full break-all py-1 group"
-                  >
-                    <span className="break-all">itskeerthanaravichandran@gmail.com</span>
-                    <ArrowUpRight size={18} className="shrink-0 inline-block align-middle select-none stroke-[2.5]" aria-hidden="true" />
-                  </a>
-                </div>
-
-                {/* SOCIAL LINKS CONNECTED GRID BAR (matching screenshot design) */}
-                <div className="grid grid-cols-4 border border-black/[0.1] rounded-[8px] sm:rounded-[10px] overflow-hidden divide-x divide-black/[0.1] bg-white">
-                  {/* Instagram */}
-                  <a 
-                    href="https://www.instagram.com/summershuttle/?hl=en" 
-                    target="_blank" 
-                    rel="noreferrer"
-                    aria-label="Instagram"
-                    title="Instagram"
-                    className="flex items-center justify-center py-4 sm:py-5 hover:bg-black/[0.04] text-[#1D1D1F] hover:text-black transition-colors group"
-                  >
-                    <svg className="w-5 h-5 sm:w-5.5 sm:h-5.5 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                    </svg>
-                  </a>
-
-                  {/* Behance */}
-                  <a 
-                    href="https://www.behance.net/keertharavicha1" 
-                    target="_blank" 
-                    rel="noreferrer"
-                    aria-label="Behance"
-                    title="Behance"
-                    className="flex items-center justify-center py-4 sm:py-5 hover:bg-black/[0.04] text-[#1D1D1F] hover:text-black transition-colors group"
-                  >
-                    <svg className="w-5 h-5 sm:w-5.5 sm:h-5.5 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M4.5 5.5v13" />
-                      <path d="M4.5 5.5h4a3 3 0 0 1 0 6h-4" />
-                      <path d="M4.5 11.5h4.5a3.5 3.5 0 0 1 0 7h-4.5" />
-                      <path d="M13.5 7.5h5" />
-                      <path d="M12.5 15h6a3 3 0 1 0-6 0c0 2 1.5 3.5 3.5 3.5 1.3 0 2.4-.6 3-1.6" />
-                    </svg>
-                  </a>
-
-                  {/* Email */}
-                  <a 
-                    href="mailto:itskeerthanaravichandran@gmail.com" 
-                    aria-label="Email"
-                    title="Email"
-                    className="flex items-center justify-center py-4 sm:py-5 hover:bg-black/[0.04] text-[#1D1D1F] hover:text-black transition-colors group"
-                  >
-                    <svg className="w-5 h-5 sm:w-5.5 sm:h-5.5 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                    </svg>
-                  </a>
-
-                  {/* LinkedIn */}
-                  <a 
-                    href="https://www.linkedin.com/in/keerthanaravichandran/" 
-                    target="_blank" 
-                    rel="noreferrer"
-                    aria-label="LinkedIn"
-                    title="LinkedIn"
-                    className="flex items-center justify-center py-4 sm:py-5 hover:bg-black/[0.04] text-[#1D1D1F] hover:text-black transition-colors group"
-                  >
-                    <svg className="w-5 h-5 sm:w-5.5 sm:h-5.5 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                      <rect x="2" y="9" width="4" height="12"></rect>
-                      <circle cx="4" cy="4" r="2"></circle>
-                    </svg>
-                  </a>
-                </div>
-
-                {/* FOOTER */}
-                <footer className="mt-6 pt-3 text-[11px] font-sans tracking-normal text-[#86868B] font-normal border-t border-black/[0.08] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5">
-                  <span>© 2026 Kay Ravichandran</span>
-                </footer>
-              </div>
-            </motion.div>
+            {/* Right Column: Contact Card with periodic 3D 360° turn & bounce */}
+            <ContactCard3D />
           </div>
         </section>
       </div>
@@ -1152,12 +1316,14 @@ export default function App() {
       <div
         ref={cursorPillRef}
         aria-hidden="true"
-        className={`fixed top-0 left-0 z-[100] pointer-events-none hidden lg:inline-flex items-center px-3.5 py-1.5 rounded-full bg-[#1D1D1F]/90 backdrop-blur-xl border border-white/15 text-white shadow-xl transition-opacity duration-150 will-change-transform ${
-          cardCursor.visible ? 'opacity-100' : 'opacity-0'
-        }`}
+        style={{ opacity: 0 }}
+        className="fixed top-0 left-0 z-[100] pointer-events-none hidden lg:inline-flex items-center px-3.5 py-1.5 rounded-full bg-[#1D1D1F] border border-white/15 text-white shadow-lg transition-opacity duration-150 will-change-transform"
       >
-        <span className="font-sans text-[11px] tracking-normal font-medium text-white whitespace-nowrap">
-          {cardCursor.label}
+        <span
+          ref={cursorLabelRef}
+          className="font-sans text-[11px] tracking-normal font-medium text-white whitespace-nowrap"
+        >
+          View Case Study
         </span>
       </div>
     </div>
