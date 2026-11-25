@@ -2,7 +2,7 @@ import React from 'react';
 
 export const EditorialFooter: React.FC = () => {
   return (
-    <footer className="w-full border-t border-black/[0.1] mt-16 sm:mt-24 pt-8 sm:pt-10 pb-10 sm:pb-12 text-[#1D1D1F] font-sans">
+    <footer className="relative z-10 w-full border-t border-black/[0.1] mt-16 sm:mt-24 pt-8 sm:pt-10 pb-10 sm:pb-12 text-[#1D1D1F] font-sans">
       <div className="max-w-[1340px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8">
         
         {/* Left Column: Name & Email */}

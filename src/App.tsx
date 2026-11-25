@@ -30,11 +30,13 @@ const prefetchedCaseAssets = new Set<string>();
 
 function shouldSkipInitialIntro(): boolean {
   if (typeof window === 'undefined') return false;
+  const hash = window.location.hash.replace('#', '');
+  if (hash === 'play') return true;
   const navEntry = performance.getEntriesByType?.('navigation')?.[0] as PerformanceNavigationTiming | undefined;
   const isReload = navEntry?.type === 'reload';
+  if (isReload) return false;
   const fromCaseStudy = document.referrer.includes('case-study.html');
-  const hash = window.location.hash.replace('#', '');
-  return fromCaseStudy || (!isReload && Boolean(hash));
+  return fromCaseStudy && Boolean(hash);
 }
 
 export default function App() {
@@ -139,7 +141,11 @@ export default function App() {
     };
   }, []);
 
-  const [currentScreen, setCurrentScreen] = useState<'home' | 'play'>('home');
+  const [currentScreen, setCurrentScreen] = useState<'home' | 'play'>(() =>
+    typeof window !== 'undefined' && window.location.hash.replace('#', '') === 'play'
+      ? 'play'
+      : 'home'
+  );
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('');
 
@@ -501,28 +507,21 @@ export default function App() {
 
   if (currentScreen === 'play') {
     return (
-      <>
-        {showLoader && (
-          <LogoLoadingScreen
-            mode="intro"
-            fontsReady={fontsReady}
-            onLandingStart={handleLandingStart}
-            onComplete={handleLoaderComplete}
-          />
-        )}
-        <React.Suspense fallback={<LogoLoadingScreen mode="indeterminate" />}>
-          <PlayScreen
-            onBack={() => {
-              setCurrentScreen('home');
-              setActiveTab('');
-              window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-              if (window.location.hash === '#play') {
-                window.history.pushState('', document.title, window.location.pathname);
-              }
-            }}
-          />
-        </React.Suspense>
-      </>
+      <React.Suspense fallback={<div className="w-full min-h-screen bg-[#F6F6F7]" />}>
+        <PlayScreen
+          onBack={() => {
+            setShowLoader(false);
+            setHomeLandingStarted(true);
+            setLogoLanded(true);
+            setCurrentScreen('home');
+            setActiveTab('');
+            window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+            if (window.location.hash === '#play') {
+              window.history.pushState('', document.title, window.location.pathname);
+            }
+          }}
+        />
+      </React.Suspense>
     );
   }
 
@@ -628,7 +627,7 @@ export default function App() {
           </motion.a>
 
           <motion.a
-            href="https://drive.google.com/file/d/1ZJWXJ0DoubaRd7qDoCK57abnknj8BDMq/view?usp=sharing"
+            href="https://drive.google.com/file/d/13OiD092iR2xWuALZzK1gx2DcoSyUmW_e/view"
             target="_blank"
             rel="noopener noreferrer"
             initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
@@ -694,7 +693,7 @@ export default function App() {
                 PLAY
               </a>
               <a
-                href="https://drive.google.com/file/d/1ZJWXJ0DoubaRd7qDoCK57abnknj8BDMq/view?usp=sharing"
+                href="https://drive.google.com/file/d/13OiD092iR2xWuALZzK1gx2DcoSyUmW_e/view"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
@@ -748,7 +747,7 @@ export default function App() {
             className="flex-1 flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-10 lg:gap-16 w-full max-w-[1340px] mx-auto lg:mx-0 origin-center"
           >
             {/* Typographic Headline */}
-            <div className="relative z-20 pointer-events-none max-w-[580px] lg:max-w-[640px] pb-4 md:pb-10 lg:pb-16 flex flex-col justify-end">
+            <div className="relative z-20 pointer-events-none max-w-[580px] lg:max-w-[640px] pt-12 sm:pt-14 md:pt-0 pb-4 md:pb-10 lg:pb-16 flex flex-col justify-end">
               {/* 1. Hi, I'm Kay */}
               <h1 className="font-ugly-dave text-[52px] sm:text-[70px] md:text-[82px] lg:text-[90px] xl:text-[100px] font-normal leading-[0.96] text-black tracking-[0.015em] overflow-hidden pt-2 -mt-2 pb-3 -mb-3 px-2 -mx-2">
                 <motion.span
@@ -763,7 +762,7 @@ export default function App() {
                       ? { opacity: 1, y: 0, rotate: -1 }
                       : { opacity: 0, y: 36, rotate: -1 }
                   }
-                  transition={{ duration: 0.6, delay: 0.12, ease: EASE_EDITORIAL }}
+                  transition={{ duration: 0.52, delay: 0.1, ease: EASE_EDITORIAL }}
                 >
                   Hi, I'm Kay
                 </motion.span>
@@ -782,7 +781,7 @@ export default function App() {
                       ? { opacity: 1, y: 0 }
                       : { opacity: 0, y: 28 }
                   }
-                  transition={{ duration: 0.6, delay: 0.2, ease: EASE_EDITORIAL }}
+                  transition={{ duration: 0.52, delay: 0.38, ease: EASE_EDITORIAL }}
                   className="mt-6 sm:mt-8 text-[18px] sm:text-[21px] md:text-[22px] lg:text-[24px] font-sans-display leading-[1.45] text-[#222222] font-medium max-w-[560px] will-change-transform"
                 >
                   <p>
@@ -811,7 +810,7 @@ export default function App() {
                       ? { opacity: 1, y: 0 }
                       : { opacity: 0, y: 20 }
                   }
-                  transition={{ duration: 0.55, delay: 0.28, ease: EASE_EDITORIAL }}
+                  transition={{ duration: 0.48, delay: 0.66, ease: EASE_EDITORIAL }}
                   className="mt-6 sm:mt-8 font-caps text-[11px] sm:text-[12px] tracking-[0.14em] text-[#555555] font-bold will-change-transform"
                 >
                   Product &middot; Research &middot; Visuals &middot; Code
@@ -1234,7 +1233,7 @@ export default function App() {
 
               <div className="mt-6 sm:mt-7 flex items-center gap-4">
                 <a
-                  href="https://drive.google.com/file/d/1ZJWXJ0DoubaRd7qDoCK57abnknj8BDMq/view?usp=sharing"
+                  href="https://drive.google.com/file/d/13OiD092iR2xWuALZzK1gx2DcoSyUmW_e/view"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#1D1D1F] hover:bg-black text-white text-[13.5px] font-sans font-medium transition-all shadow-md hover:scale-[1.02] active:scale-[0.98]"

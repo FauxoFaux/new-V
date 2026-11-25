@@ -269,30 +269,11 @@ function PlayMedia({
   eager?: boolean;
   fetchPriority?: 'high' | 'low' | 'auto';
 }) {
-  const [loaded, setLoaded] = useState(false);
-  const imgRef = useRef<HTMLImageElement | null>(null);
-
-  const setImgNode = (node: HTMLImageElement | null) => {
-    imgRef.current = node;
-    if (node && node.complete && node.naturalWidth > 0 && !loaded) {
-      setLoaded(true);
-    }
-  };
-
-  useEffect(() => {
-    if (item.mediaType === 'image' && imgRef.current?.complete && imgRef.current.naturalWidth > 0) {
-      setLoaded(true);
-    } else if (item.mediaType === 'image') {
-      setLoaded(false);
-    }
-  }, [item.id, item.mediaType]);
-
   if (item.mediaType === 'video') {
     const isOrbit = variant === 'orbit';
     return (
       <video
-        src={isOrbit ? item.mediaUrl : undefined}
-        data-src={isOrbit ? undefined : item.mediaUrl}
+        src={item.mediaUrl}
         poster={item.posterUrl}
         width={item.width}
         height={item.height}
@@ -300,10 +281,10 @@ function PlayMedia({
         loop
         muted
         playsInline
-        preload={isOrbit ? 'auto' : 'none'}
+        preload={isOrbit ? 'auto' : 'metadata'}
         aria-label={item.title}
-        className={`w-full ${
-          isOrbit ? 'h-full pointer-events-none' : 'h-auto group-hover:scale-[1.02] transition-transform duration-300 ease-out'
+        className={`w-full h-full ${
+          isOrbit ? 'pointer-events-none' : 'group-hover:scale-[1.02] transition-transform duration-300 ease-out'
         } block object-cover`}
       />
     );
@@ -311,7 +292,6 @@ function PlayMedia({
 
   return (
     <img
-      ref={setImgNode}
       src={item.mediaUrl}
       alt={item.title}
       width={item.width}
@@ -319,21 +299,28 @@ function PlayMedia({
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"
       fetchPriority={fetchPriority}
-      onLoad={() => setLoaded(true)}
-      className={`w-full ${
+      className={`w-full h-full ${
         variant === 'orbit'
-          ? 'h-full pointer-events-none group-hover:scale-105'
-          : 'h-auto group-hover:scale-[1.02]'
-      } block object-cover transition-[transform,opacity] duration-200 ease-out ${
-        loaded || eager ? 'opacity-100' : 'opacity-0'
-      }`}
+          ? 'pointer-events-none group-hover:scale-105'
+          : 'group-hover:scale-[1.02]'
+      } block object-cover transition-transform duration-200 ease-out`}
     />
   );
+}
+
+function getColumnCount(width: number): number {
+  if (width >= 1024) return 5;
+  if (width >= 768) return 4;
+  if (width >= 640) return 3;
+  return 2;
 }
 
 export function PlayScreen({ onBack }: PlayScreenProps) {
   const [activeCategory, setActiveCategory] = useState<Category>('All');
   const [selectedItem, setSelectedItem] = useState<PlayItem | null>(null);
+  const [columnCount, setColumnCount] = useState<number>(() =>
+    typeof window !== 'undefined' ? getColumnCount(window.innerWidth) : 5
+  );
 
   // Orbit Cards State & Refs
   const heroSectionRef = useRef<HTMLElement | null>(null);
@@ -345,11 +332,42 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
   const orbitAngleRef = useRef(0);
   isLightboxOpenRef.current = Boolean(selectedItem);
 
+  useEffect(() => {
+    const onResize = () => {
+      const next = getColumnCount(window.innerWidth);
+      setColumnCount((prev) => (prev === next ? prev : next));
+    };
+    window.addEventListener('resize', onResize, { passive: true });
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   // Filter items based on active category
   const filteredItems = useMemo(() => {
     if (activeCategory === 'All') return PLAY_ITEMS;
     return PLAY_ITEMS.filter((item) => item.category === activeCategory);
   }, [activeCategory]);
+
+  // Distribute items across responsive columns balanced by aspect-ratio height
+  const masonryColumns = useMemo(() => {
+    const cols: { item: PlayItem; index: number }[][] = Array.from(
+      { length: columnCount },
+      () => []
+    );
+    const heights = new Array<number>(columnCount).fill(0);
+
+    filteredItems.forEach((item, index) => {
+      let shortestIdx = 0;
+      for (let c = 1; c < columnCount; c++) {
+        if (heights[c] < heights[shortestIdx]) {
+          shortestIdx = c;
+        }
+      }
+      cols[shortestIdx].push({ item, index });
+      heights[shortestIdx] += item.height / item.width;
+    });
+
+    return cols;
+  }, [filteredItems, columnCount]);
 
   const selectedIndex = useMemo(() => {
     if (!selectedItem) return -1;
@@ -490,7 +508,7 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
     };
   }, []);
 
-  // Stream and play masonry videos only when near/in viewport (and pause while lightbox is open)
+  // Play masonry videos only when visible in viewport (and pause while lightbox is open)
   useEffect(() => {
     const heroEl = heroSectionRef.current;
     if (selectedItem && heroEl) {
@@ -516,38 +534,16 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
 
     if (!('IntersectionObserver' in window)) {
       videos.forEach((v) => {
-        if (!v.src && v.dataset.src) v.src = v.dataset.src;
-        v.preload = 'metadata';
         v.play().catch(() => {});
       });
       return;
     }
 
-    // Stage 1: attach video src when approaching viewport
-    const preloadObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const video = entry.target as HTMLVideoElement;
-          if (!video.src && video.dataset.src) {
-            video.src = video.dataset.src;
-            video.preload = 'metadata';
-          }
-          preloadObserver.unobserve(video);
-        });
-      },
-      { rootMargin: '250px 0px', threshold: 0.01 }
-    );
-
-    // Stage 2: play strictly while visible in viewport to prevent 6-stream decode spikes
     const playObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           const video = entry.target as HTMLVideoElement;
           if (entry.isIntersecting) {
-            if (!video.src && video.dataset.src) {
-              video.src = video.dataset.src;
-            }
             if (video.preload !== 'auto') {
               video.preload = 'auto';
             }
@@ -557,18 +553,16 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
           }
         });
       },
-      { rootMargin: '0px', threshold: 0.08 }
+      { rootMargin: '80px 0px', threshold: 0.05 }
     );
 
     videos.forEach((v) => {
-      preloadObserver.observe(v);
       playObserver.observe(v);
     });
     return () => {
-      preloadObserver.disconnect();
       playObserver.disconnect();
     };
-  }, [filteredItems, selectedItem]);
+  }, [filteredItems, selectedItem, columnCount]);
 
   // Preload adjacent lightbox slides so Prev/Next switches feel instantaneous
   useEffect(() => {
@@ -751,22 +745,29 @@ export function PlayScreen({ onBack }: PlayScreenProps) {
       </div>
 
       {/* 3. MASONRY GALLERY CANVAS */}
-      <main ref={galleryRootRef} className="flex-1 max-w-[1600px] w-full mx-auto px-3 sm:px-6 lg:px-8 xl:px-10 py-6 sm:py-8">
-        <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 gap-3 sm:gap-4 lg:gap-4.5">
-          {filteredItems.map((item, index) => (
-            <div
-              key={item.id}
-              onClick={() => setSelectedItem(item)}
-              className="break-inside-avoid mb-3 sm:mb-4 lg:mb-4.5 group relative overflow-hidden rounded-[8px] sm:rounded-[10px] bg-[#F5F5F7] border border-black/[0.08] hover:border-black/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-[box-shadow,border-color] duration-200 cursor-pointer select-none [contain:layout_style_paint]"
-            >
-              <div className="relative w-full overflow-hidden bg-[#EAEAEF]">
-                <PlayMedia
-                  item={item}
-                  variant="masonry"
-                  eager={index < 8}
-                  fetchPriority={index < 4 ? 'low' : 'auto'}
-                />
-              </div>
+      <main ref={galleryRootRef} className="relative z-0 flex-1 max-w-[1600px] w-full mx-auto px-3 sm:px-6 lg:px-8 xl:px-10 py-6 sm:py-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 items-start gap-3 sm:gap-4 lg:gap-4.5">
+          {masonryColumns.map((column, colIdx) => (
+            <div key={`col-${colIdx}`} className="flex flex-col gap-3 sm:gap-4 lg:gap-4.5 min-w-0">
+              {column.map(({ item, index }) => (
+                <div
+                  key={item.id}
+                  onClick={() => setSelectedItem(item)}
+                  className="group relative w-full overflow-hidden rounded-[8px] sm:rounded-[10px] bg-[#F5F5F7] border border-black/[0.08] hover:border-black/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-[box-shadow,border-color] duration-200 cursor-pointer select-none"
+                >
+                  <div
+                    className="relative w-full overflow-hidden bg-[#EAEAEF]"
+                    style={{ aspectRatio: `${item.width} / ${item.height}` }}
+                  >
+                    <PlayMedia
+                      item={item}
+                      variant="masonry"
+                      eager={index < 8}
+                      fetchPriority={index < 4 ? 'low' : 'auto'}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
           ))}
         </div>

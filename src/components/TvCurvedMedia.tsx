@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 interface TvCurvedMediaProps {
   id?: string;
@@ -32,64 +32,49 @@ export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = React.memo(({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isNearViewport, setIsNearViewport] = useState(false);
 
   // Default lightweight posters for video cards to display immediately
   const resolvedPoster =
     id === 'justickets'
       ? '/JT/J_Hero.webp'
       : id === 'myblockcounts'
-      ? '/MBC/MB_Hero.webp'
+      ? '/MBC/MBC_poster.webp'
       : id === 'mise'
       ? '/Home/Mise_poster.webp'
       : id === 'netflix'
       ? '/Home/Netflix_poster.webp'
       : undefined;
 
-  // Stage 1: attach video src/metadata near viewport; Stage 2: play only when actually visible
   useEffect(() => {
     if (type !== 'video') return;
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.play().catch(() => {});
 
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || !('IntersectionObserver' in window)) return;
 
-    const preloadObserver = new IntersectionObserver(
+    const resumeObserver = new IntersectionObserver(
       (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          setIsNearViewport(true);
-          preloadObserver.disconnect();
+        if (entries.some((e) => e.isIntersecting) && video.paused) {
+          video.muted = true;
+          video.play().catch(() => {});
         }
       },
-      { rootMargin: '640px 640px 640px 640px', threshold: 0.01 }
+      { threshold: 0.01 }
     );
 
-    const playObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const video = videoRef.current;
-          if (!video) return;
-          if (entry.isIntersecting) {
-            video.play().catch(() => {});
-          } else {
-            video.pause();
-          }
-        });
-      },
-      { rootMargin: '60px 60px 60px 60px', threshold: 0.05 }
-    );
-
-    preloadObserver.observe(container);
-    playObserver.observe(container);
-    return () => {
-      preloadObserver.disconnect();
-      playObserver.disconnect();
-    };
+    resumeObserver.observe(container);
+    return () => resumeObserver.disconnect();
   }, [type, src]);
 
   return (
     <div
       ref={containerRef}
-      className={`relative w-full aspect-[16/10] md:aspect-[16/10] lg:aspect-auto lg:h-[480px] xl:h-[530px] 2xl:h-[570px] rounded-[10px] overflow-hidden border border-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.05)] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.1)] group-hover:border-black/20 transition-[box-shadow,border-color] duration-300 flex items-center justify-center cursor-pointer [contain:layout_style_paint] ${bg}`}
+      className={`relative w-full aspect-[16/10] md:aspect-[16/10] lg:aspect-auto lg:h-[480px] xl:h-[530px] 2xl:h-[570px] rounded-[10px] overflow-hidden border border-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.05)] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.1)] group-hover:border-black/20 transition-[box-shadow,border-color] duration-300 flex items-center justify-center cursor-pointer ${bg}`}
     >
       {type === 'image' ? (
         <img
@@ -106,16 +91,21 @@ export const TvCurvedMedia: React.FC<TvCurvedMediaProps> = React.memo(({
       ) : (
         <video
           ref={videoRef}
-          src={isNearViewport ? src : undefined}
-          poster={isNearViewport || loading === 'eager' ? resolvedPoster : undefined}
+          src={src}
+          poster={resolvedPoster}
+          autoPlay
           loop
           muted
           playsInline
-          preload={isNearViewport ? 'auto' : 'none'}
+          preload="auto"
           aria-label={alt}
           onLoadedData={(e) => {
-            const rect = containerRef.current?.getBoundingClientRect();
-            if (rect && rect.right > 0 && rect.left < window.innerWidth && rect.bottom > 0 && rect.top < window.innerHeight) {
+            e.currentTarget.muted = true;
+            e.currentTarget.play().catch(() => {});
+          }}
+          onCanPlay={(e) => {
+            if (e.currentTarget.paused) {
+              e.currentTarget.muted = true;
               e.currentTarget.play().catch(() => {});
             }
           }}
